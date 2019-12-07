@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Timers;
 using System.Windows;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -10,11 +11,15 @@ using FantaAsta.Enums;
 
 namespace FantaAsta.ViewModels
 {
-	public class AstaViewModel : BindableBase
+	public class AstaViewModel : BindableBase, IDisposable
 	{
 		#region Private fields
 
+		private readonly Timer m_timer;
+
 		private readonly Lega m_lega;
+
+		private int m_repetitions;
 
 		private string m_ruoloSelezionato;
 
@@ -26,7 +31,7 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		#region Binding
+		#region Proprietà
 
 		public List<string> Ruoli => new List<string> { "P", "D", "C", "A" };
 
@@ -56,29 +61,64 @@ namespace FantaAsta.ViewModels
 			set { SetProperty(ref m_prezzo, value); AssegnaGiocatoreCommand?.RaiseCanExecuteChanged(); }
 		}
 
+		#region Commands
+
+		public DelegateCommand EstraiGiocatoreCommand { get; }
+		public DelegateCommand AssegnaGiocatoreCommand { get; }
+
+		#endregion
+
 		#endregion
 
 		public AstaViewModel(Lega lega)
 		{
 			m_lega = lega;
 
+			m_timer = new Timer { AutoReset = true, Enabled = false, Interval = 50 };
+			m_timer.Elapsed += OnTick;
+
 			EstraiGiocatoreCommand = new DelegateCommand(EstraiGiocatore, AbilitaEstraiGiocatore);
 			AssegnaGiocatoreCommand = new DelegateCommand(AssegnaGiocatore, AbilitaAssegnaGiocatore);
 		}
 
-		#region Comandi
+		#region Private methods
 
-		public DelegateCommand EstraiGiocatoreCommand { get; private set; }
+		private void OnTick(object sender, ElapsedEventArgs e)
+		{
+			m_repetitions++;
+
+			if (m_repetitions == 6)
+			{
+				m_timer.Stop();
+				m_timer.Interval = 75;
+				m_timer.Enabled = false;
+
+				m_repetitions = 0;
+
+				EstraiGiocatoreCommand?.RaiseCanExecuteChanged();
+			}
+			else
+			{
+				m_timer.Interval += 50;
+
+				GiocatoreCorrente = m_lega.EstraiGiocatore((Ruoli)Enum.Parse(typeof(Ruoli), RuoloSelezionato));
+			}
+		}
+
+		#region Commands
+
 		private void EstraiGiocatore()
 		{
-			GiocatoreCorrente = m_lega.EstraiGiocatore((Ruoli)Enum.Parse(typeof(Ruoli), RuoloSelezionato));
+			m_timer.Enabled = true;
+			m_timer.Start();
+
+			EstraiGiocatoreCommand?.RaiseCanExecuteChanged();
 		}
 		private bool AbilitaEstraiGiocatore()
 		{
-			return !string.IsNullOrEmpty(RuoloSelezionato);
+			return !string.IsNullOrEmpty(RuoloSelezionato) && !m_timer.Enabled;
 		}
 
-		public DelegateCommand AssegnaGiocatoreCommand { get; private set; }
 		private void AssegnaGiocatore()
 		{
 			if (!double.TryParse(Prezzo, NumberStyles.AllowDecimalPoint, null, out double prezzo))
@@ -109,6 +149,47 @@ namespace FantaAsta.ViewModels
 		private bool AbilitaAssegnaGiocatore()
 		{
 			return GiocatoreCorrente != null && !string.IsNullOrEmpty(SquadraSelezionata) && !string.IsNullOrEmpty(Prezzo);
+		}
+
+		#endregion
+
+		#endregion
+
+		#region IDisposable
+
+		private bool disposedValue = false;
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!disposedValue)
+			{
+				if (disposing)
+				{
+					// eliminare lo stato gestito (oggetti gestiti).
+
+					m_timer.Dispose();
+				}
+
+				// liberare risorse non gestite (oggetti non gestiti) ed eseguire sotto l'override di un finalizzatore.
+				// impostare campi di grandi dimensioni su Null.
+
+				disposedValue = true;
+			}
+		}
+
+		// eseguire l'override di un finalizzatore solo se Dispose(bool disposing) include il codice per liberare risorse non gestite.
+		// ~AstaViewModel()
+		// {
+		//   // Non modificare questo codice. Inserire il codice di pulizia in Dispose(bool disposing) sopra.
+		//   Dispose(false);
+		// }
+
+		public void Dispose()
+		{
+			// Non modificare questo codice. Inserire il codice di pulizia in Dispose(bool disposing) sopra.
+			Dispose(true);
+			// rimuovere il commento dalla riga seguente se è stato eseguito l'override del finalizzatore.
+			// GC.SuppressFinalize(this);
 		}
 
 		#endregion
