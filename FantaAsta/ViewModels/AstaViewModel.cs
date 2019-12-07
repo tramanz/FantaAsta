@@ -85,6 +85,8 @@ namespace FantaAsta.ViewModels
 
 		private void OnTick(object sender, ElapsedEventArgs e)
 		{
+			GiocatoreCorrente = m_lega.EstraiGiocatore((Ruoli)Enum.Parse(typeof(Ruoli), RuoloSelezionato));
+
 			m_repetitions++;
 
 			if (m_repetitions == 6)
@@ -100,8 +102,6 @@ namespace FantaAsta.ViewModels
 			else
 			{
 				m_timer.Interval += 50;
-
-				GiocatoreCorrente = m_lega.EstraiGiocatore((Ruoli)Enum.Parse(typeof(Ruoli), RuoloSelezionato));
 			}
 		}
 
