@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -12,6 +9,8 @@ using FantaAsta.Modules;
 using FantaAsta.Regions;
 using FantaAsta.ViewModels;
 using FantaAsta.Views;
+using System.IO;
+using System;
 
 namespace FantaAsta
 {
@@ -26,7 +25,7 @@ namespace FantaAsta
 		}
 
 		protected override void RegisterTypes(IContainerRegistry containerRegistry)
-		{ 
+		{
 			containerRegistry.RegisterDialog<ModificaView, ModificaViewModel>("Modifica");
 
 			containerRegistry.RegisterSingleton<Lega>();
@@ -48,39 +47,7 @@ namespace FantaAsta
 
 		protected override void OnExit(ExitEventArgs e)
 		{
-			//string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "FantaRose2019-2020.csv");
-			//StringBuilder output = new StringBuilder();
-
-			//string s = string.Empty;
-			//foreach (var squadra in m_mainModel.Squadre)
-			//{
-			//	s += $"{squadra.Nome};;;;";
-			//}
-			//output.AppendLine(s);
-
-			//for (int i = 0; i < 25; i++)
-			//{
-			//	s = string.Empty;
-			//	foreach (var squadra in m_mainModel.Squadre)
-			//	{
-			//		if (i < squadra.Giocatori.Count)
-			//		{
-			//			s += $"{squadra.Giocatori[i].Ruolo};{squadra.Giocatori[i].Nome};{squadra.Giocatori[i].Squadra};{squadra.Giocatori[i].Prezzo};";
-			//		}
-			//		else
-			//		{
-			//			s += "/;/;/;/;";
-			//		}
-			//	}
-			//	output.AppendLine(s);
-			//}
-
-			//if (File.Exists(filePath))
-			//{
-			//	File.Delete(filePath);
-			//}
-
-			//File.WriteAllText(filePath, output.ToString());
+			Container.Resolve<Lega>().SalvaSquadre();
 
 			base.OnExit(e);
 		}

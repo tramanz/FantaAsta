@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace FantaAsta.Models
 {
+	[DataContract(Name = "FantaSquadra", Namespace = "")]
 	public class FantaSquadra
 	{ 
 		#region Properties
 
-		public string Nome { get; }
-		public List<Giocatore> Giocatori { get; }
-		public double Budget { get; private set; }
+		[DataMember(Name = "Nome")]
+		public string Nome { get; set;  }
+
+		[DataMember(Name = "Giocatori")]
+		public List<Giocatore> Giocatori { get; set; }
+
+		[DataMember(Name = "Budget")]
+		public double Budget { get; set; }
 
 		#endregion
 

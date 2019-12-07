@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Xml;
 using FantaAsta.Enums;
 using FantaAsta.EventArgs;
+using FantaAsta.Utilities;
 
 namespace FantaAsta.Models
 {
+	[DataContract(Name = "FantaLega", Namespace = "")]
 	public class Lega
 	{
 		#region Private fields
@@ -20,7 +24,8 @@ namespace FantaAsta.Models
 
 		public List<Giocatore> Lista { get; private set; }
 
-		public List<FantaSquadra> FantaSquadre { get; private set; }
+		[DataMember(Name = "FantaSquadre")]
+		public List<FantaSquadra> FantaSquadre { get; set; }
 
 		#endregion
 
@@ -170,6 +175,22 @@ namespace FantaAsta.Models
 			}
 		}
 
+		public void SalvaSquadre()
+		{
+			if (!Directory.Exists(Constants.DATA_DIRECTORY_PATH))
+			{
+				Directory.CreateDirectory(Constants.DATA_DIRECTORY_PATH);
+			}
+
+			DataContractSerializer dcs = new DataContractSerializer(typeof(Lega));
+
+			using (FileStream fs = new FileStream(Constants.DATA_FILE_PATH, FileMode.OpenOrCreate))
+			using (XmlDictionaryWriter xdw = XmlDictionaryWriter.CreateTextWriter(fs, Encoding.UTF8))
+			{
+				dcs.WriteObject(xdw, this);
+			}
+		}
+
 		#endregion
 
 		#region Private methods
@@ -178,7 +199,7 @@ namespace FantaAsta.Models
 		{
 			Lista = new List<Giocatore>();
 
-			using (var reader = new StreamReader(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Resources", "Quotazioni_Fantacalcio.csv")))
+			using (var reader = new StreamReader(Constants.RAW_DATA_FILE_PATH))
 			{
 				while (!reader.EndOfStream)
 				{
@@ -191,19 +212,40 @@ namespace FantaAsta.Models
 
 		private void CaricaFantaSquadre()
 		{
-			FantaSquadre = new List<FantaSquadra>
+			if (File.Exists(Constants.DATA_FILE_PATH))
 			{
-				new FantaSquadra("Trama"),
-				new FantaSquadra("Busi"),
-				new FantaSquadra("Mirco"),
-				new FantaSquadra("Tommi"),
-				new FantaSquadra("Mac"),
-				new FantaSquadra("Sabbi"),
-				new FantaSquadra("Sandro"),
-				new FantaSquadra("Scudi"),
-				new FantaSquadra("Caso"),
-				new FantaSquadra("Ciucci")
-			}.OrderBy(s => s.Nome).ToList();
+				CaricaSquadraDaFile();
+			}
+			else
+			{
+				FantaSquadre = new List<FantaSquadra>
+				{
+					new FantaSquadra("Trama"),
+					new FantaSquadra("Busi"),
+					new FantaSquadra("Mirco"),
+					new FantaSquadra("Tommi"),
+					new FantaSquadra("Mac"),
+					new FantaSquadra("Sabbi"),
+					new FantaSquadra("Sandro"),
+					new FantaSquadra("Scudi"),
+					new FantaSquadra("Caso"),
+					new FantaSquadra("Ciucci")
+				}.OrderBy(s => s.Nome).ToList();
+			}
+		}
+
+		private void CaricaSquadraDaFile()
+		{
+			FantaSquadre = new List<FantaSquadra>();
+
+			using (FileStream fs = new FileStream(Constants.DATA_FILE_PATH, FileMode.Open))
+			{
+				DataContractSerializer ser = new DataContractSerializer(typeof(Lega));
+
+				XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas());
+
+				FantaSquadre = new List<FantaSquadra>(((Lega)ser.ReadObject(reader)).FantaSquadre);
+			}
 		}
 
 		private IEnumerable<Giocatore> GeneraListaPerRuolo(IEnumerable<Giocatore> lista, Ruoli ruolo)
