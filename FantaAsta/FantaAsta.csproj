@@ -86,13 +86,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Converters\GiocatoreToNomeConverter.cs" />
+    <Compile Include="Converters\StringDoubleConverter.cs" />
     <Compile Include="Converters\ThreeInitialsConverter.cs" />
-    <Compile Include="Models\MainModel.cs" />
+    <Compile Include="Models\Lega.cs" />
     <Compile Include="Models\Giocatore.cs" />
-    <Compile Include="Models\Squadra.cs" />
+    <Compile Include="Models\FantaSquadra.cs" />
+    <Compile Include="Modules\AstaModule.cs" />
+    <Compile Include="Modules\ListaModule.cs" />
+    <Compile Include="Modules\RoseModule.cs" />
+    <Compile Include="Regions\TabControlRegionAdapter.cs" />
+    <Compile Include="Utilities\Enums.cs" />
+    <Compile Include="Utilities\EventArgs.cs" />
     <Compile Include="ViewModels\AstaViewModel.cs" />
     <Compile Include="ViewModels\ListaViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ModificaViewModel.cs" />
     <Compile Include="ViewModels\RoseViewModel.cs" />
     <Compile Include="Views\AstaView.xaml.cs">
@@ -107,7 +114,7 @@
     <Compile Include="Views\RoseView.xaml.cs">
       <DependentUpon>RoseView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Shell.xaml">
+    <Page Include="Views\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -115,8 +122,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Shell.xaml.cs">
-      <DependentUpon>Shell.xaml</DependentUpon>
+    <Compile Include="Views\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\AstaView.xaml">

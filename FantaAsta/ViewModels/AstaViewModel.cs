@@ -6,57 +6,72 @@ using System.Windows;
 using Prism.Commands;
 using Prism.Mvvm;
 using FantaAsta.Models;
+using FantaAsta.Enums;
 
 namespace FantaAsta.ViewModels
 {
-    public class AstaViewModel : BindableBase
-    {
-		private readonly MainModel m_mainModel;
+	public class AstaViewModel : BindableBase
+	{
+		#region Private fields
+
+		private readonly Lega m_lega;
+
+		private string m_ruoloSelezionato;
 
 		private Giocatore m_giocatoreCorrente;
-		public Giocatore GiocatoreCorrente
-		{
-			get { return m_giocatoreCorrente; }
-			set { SetProperty(ref m_giocatoreCorrente, value); }
-		}
+
+		private string m_squadraSelezionata;
+
+		private string m_prezzo;
+
+		#endregion
+
+		#region Binding
 
 		public List<string> Ruoli => new List<string> { "P", "D", "C", "A" };
 
-		private string m_ruoloSelezionato;
+		public List<string> Squadre => m_lega?.FantaSquadre.Select(s => s.Nome).ToList();
+
 		public string RuoloSelezionato
 		{
 			get { return m_ruoloSelezionato; }
 			set { SetProperty(ref m_ruoloSelezionato, value); EstraiGiocatoreCommand?.RaiseCanExecuteChanged(); }
 		}
 
-		public List<string> Squadre => m_mainModel.Squadre.Select(s => s.Nome).ToList();
+		public Giocatore GiocatoreCorrente
+		{
+			get { return m_giocatoreCorrente; }
+			set { SetProperty(ref m_giocatoreCorrente, value); }
+		}
 
-		private string m_squadraSelezionata;
 		public string SquadraSelezionata
 		{
 			get { return m_squadraSelezionata; }
 			set { SetProperty(ref m_squadraSelezionata, value); AssegnaGiocatoreCommand?.RaiseCanExecuteChanged(); }
 		}
 
-		private string m_prezzo;
 		public string Prezzo
 		{
 			get { return m_prezzo; }
 			set { SetProperty(ref m_prezzo, value); AssegnaGiocatoreCommand?.RaiseCanExecuteChanged(); }
 		}
 
-		public AstaViewModel(MainModel mainModel)
+		#endregion
+
+		public AstaViewModel(Lega lega)
 		{
-			m_mainModel = mainModel;
+			m_lega = lega;
 
 			EstraiGiocatoreCommand = new DelegateCommand(EstraiGiocatore, AbilitaEstraiGiocatore);
 			AssegnaGiocatoreCommand = new DelegateCommand(AssegnaGiocatore, AbilitaAssegnaGiocatore);
 		}
 
+		#region Comandi
+
 		public DelegateCommand EstraiGiocatoreCommand { get; private set; }
 		private void EstraiGiocatore()
 		{
-			GiocatoreCorrente = m_mainModel.EstraiGiocatore((Ruoli)Enum.Parse(typeof(Ruoli), RuoloSelezionato));
+			GiocatoreCorrente = m_lega.EstraiGiocatore((Ruoli)Enum.Parse(typeof(Ruoli), RuoloSelezionato));
 		}
 		private bool AbilitaEstraiGiocatore()
 		{
@@ -70,7 +85,7 @@ namespace FantaAsta.ViewModels
 			{
 				MessageBox.Show("Inserire un numero", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
-			else if (m_mainModel.Squadre.Select(s => s.Giocatori).Where(g => g.Contains(GiocatoreCorrente)).Count() > 0)
+			else if (m_lega.FantaSquadre.Select(s => s.Giocatori).Where(g => g.Contains(GiocatoreCorrente)).Count() > 0)
 			{
 				MessageBox.Show("Il giocatore selezionato è già assegnato ad una squadra", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
@@ -80,9 +95,9 @@ namespace FantaAsta.ViewModels
 			}
 			else
 			{
-				var squadra = m_mainModel.Squadre.Where(s => s.Nome.Equals(SquadraSelezionata)).Single();
+				var squadra = m_lega.FantaSquadre.Where(s => s.Nome.Equals(SquadraSelezionata)).Single();
 
-				bool result = m_mainModel.AggiungiGiocatore(squadra, GiocatoreCorrente, Convert.ToDouble(Prezzo));
+				bool result = m_lega.AggiungiGiocatore(squadra, GiocatoreCorrente, Convert.ToDouble(Prezzo));
 
 				string msg = result ? "Giocatore aggiunto" : "Il giocatore non può essere aggiunto";
 				string capt = result ? "OPERAZIONE COMPLETATA" : "OPERAZIONE FALLITA";
@@ -95,5 +110,7 @@ namespace FantaAsta.ViewModels
 		{
 			return GiocatoreCorrente != null && !string.IsNullOrEmpty(SquadraSelezionata) && !string.IsNullOrEmpty(Prezzo);
 		}
+
+		#endregion
 	}
 }
