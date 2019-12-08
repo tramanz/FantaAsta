@@ -23,11 +23,11 @@
 
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
-					<Border BorderBrush="DarkGray" BorderThickness="2" CornerRadius="3" Margin="5,0">
+					<Border BorderBrush="Black" BorderThickness="2" CornerRadius="3" Margin="5,0">
 						<StackPanel Width="250" Margin="3">
-                            <Button Content="Modifica" Command="{Binding DataContext.ModificaCommand, Source={x:Reference Name=Rose}}" CommandParameter="{Binding}" HorizontalAlignment="Center" FontSize="14" VerticalAlignment="Center" Width="100" Height="25" Margin="0,0,0,5"/>
+                            <Button Content="Modifica" Command="{Binding DataContext.ModificaCommand, Source={x:Reference Name=Rose}}" CommandParameter="{Binding}" HorizontalAlignment="Center" FontSize="12" VerticalAlignment="Center" Width="100" Height="25" Margin="0,0,0,5"/>
 							<Label Content="{Binding Nome}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,5"/>
-							<Separator Background="DarkGray" Margin="5"/>
+							<Separator Background="Black" Margin="5"/>
 							<ItemsControl ItemsSource="{Binding Giocatori}" Margin="0,0,0,5">
 								<ItemsControl.ItemsPanel>
 									<ItemsPanelTemplate>
@@ -49,7 +49,7 @@
 									</DataTemplate>
 								</ItemsControl.ItemTemplate>
 							</ItemsControl>
-							<Separator Background="DarkGray" Margin="5"/>
+							<Separator Background="Black" Margin="5"/>
 							<StackPanel Margin="0,5,0,0">
 								<Label Content="Budget rimanente" HorizontalAlignment="Center"/>
 								<Label Content="{Binding Budget}" HorizontalAlignment="Center"/>

@@ -5,15 +5,9 @@
     xmlns:conv="clr-namespace:FantaAsta.Converters"
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True">
-  
+
     <UserControl.Resources>
-
         <conv:ThreeInitialsConverter x:Key="ThreeInitialsConverter"/>
-
-        <Style TargetType="{x:Type Label}">
-            <Setter Property="FontSize" Value="18"/>
-        </Style>
-
     </UserControl.Resources>
     
     <ScrollViewer VerticalScrollBarVisibility="Visible">
@@ -25,10 +19,10 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" BorderBrush="DarkGray" BorderThickness="2" CornerRadius="3" Margin="5,0">
+            <Border Grid.Column="0" BorderBrush="Black" BorderThickness="2" CornerRadius="3" Margin="5,0">
                 <StackPanel HorizontalAlignment="Stretch" Margin="3">
                     <Label Content="Portieri" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
-                    <Separator Background="DarkGray" Margin="5"/>
+                    <Separator Background="Black" Margin="5"/>
                     <ItemsControl ItemsSource="{Binding Portieri}" Margin="0,0,0,5">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -53,10 +47,10 @@
                 </StackPanel>
             </Border>
             
-            <Border Grid.Column="1" BorderBrush="DarkGray" BorderThickness="2" CornerRadius="3" Margin="5,0">
+            <Border Grid.Column="1" BorderBrush="Black" BorderThickness="2" CornerRadius="3" Margin="5,0">
                 <StackPanel HorizontalAlignment="Stretch" Margin="3">
                     <Label Content="Difensori" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
-                    <Separator Background="DarkGray" Margin="5"/>
+                    <Separator Background="Black" Margin="5"/>
                     <ItemsControl ItemsSource="{Binding Difensori}" Margin="0,0,0,5">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -80,11 +74,11 @@
                     </ItemsControl>
                 </StackPanel>
             </Border>
-            
-            <Border Grid.Column="2" BorderBrush="DarkGray" BorderThickness="2" CornerRadius="3" Margin="5,0">
+
+            <Border Grid.Column="2" BorderBrush="Black" BorderThickness="2" CornerRadius="3" Margin="5,0">
                 <StackPanel HorizontalAlignment="Stretch" Margin="3">
                     <Label Content="Centrocampisti" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
-                    <Separator Background="DarkGray" Margin="5"/>
+                    <Separator Background="Black" Margin="5"/>
                     <ItemsControl ItemsSource="{Binding Centrocampisti}" Margin="0,0,0,5">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -108,11 +102,11 @@
                     </ItemsControl>
                 </StackPanel>
             </Border>
-            
-            <Border Grid.Column="3" BorderBrush="DarkGray" BorderThickness="2" CornerRadius="3" Margin="5,0">
+
+            <Border Grid.Column="3" BorderBrush="Black" BorderThickness="2" CornerRadius="3" Margin="5,0">
                 <StackPanel HorizontalAlignment="Stretch" Margin="3">
                     <Label Content="Attaccanti" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
-                    <Separator Background="DarkGray" Margin="5"/>
+                    <Separator Background="Black" Margin="5"/>
                     <ItemsControl ItemsSource="{Binding Attaccanti}" Margin="0,0,0,5">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
