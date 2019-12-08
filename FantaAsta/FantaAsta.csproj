@@ -117,6 +117,10 @@
     <Compile Include="Views\RoseView.xaml.cs">
       <DependentUpon>RoseView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Resources\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -169,6 +173,14 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Resource Include="Resources\Nunito\Nunito-Black.ttf" />
+    <Resource Include="Resources\Nunito\Nunito-Bold.ttf" />
+    <Resource Include="Resources\Nunito\Nunito-ExtraBold.ttf" />
+    <Resource Include="Resources\Nunito\Nunito-ExtraLight.ttf" />
+    <Resource Include="Resources\Nunito\Nunito-Light.ttf" />
+    <Resource Include="Resources\Nunito\Nunito-Medium.ttf" />
+    <Resource Include="Resources\Nunito\Nunito-Regular.ttf" />
+    <Resource Include="Resources\Nunito\Nunito-SemiBold.ttf" />
     <None Include="Resources\Quotazioni_Fantacalcio.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -176,6 +188,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Nunito\SIL Open Font License.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

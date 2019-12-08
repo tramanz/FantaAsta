@@ -1,0 +1,17 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--Default label-->
+    <Style x:Key="{x:Type Label}" TargetType="{x:Type Label}">
+        <Setter Property="FontFamily" Value="{StaticResource NunitoRegular}"/>
+        <Setter Property="FontSize" Value="20"/>
+    </Style>
+    
+    <!--Default text block-->
+    <Style x:Key="{x:Type TextBlock}" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontFamily" Value="{StaticResource NunitoRegular}"/>
+        <Setter Property="FontSize" Value="20"/>
+    </Style>
+
+</ResourceDictionary>

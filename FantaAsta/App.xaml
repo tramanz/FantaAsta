@@ -5,7 +5,20 @@
     xmlns:prism="http://prismlibrary.com/">
 
     <Application.Resources>
+        <ResourceDictionary>
+            <FontFamily x:Key="NunitoBlack">pack://application:,,,/Resources/Nunito/#Nunito Black</FontFamily>
+            <FontFamily x:Key="NunitoBold">pack://application:,,,/Resources/Nunito/#Nunito Bold</FontFamily>
+            <FontFamily x:Key="NunitoExtraBold">pack://application:,,,/Resources/Nunito/#Nunito ExtraBold</FontFamily>
+            <FontFamily x:Key="NunitoExtraLight">pack://application:,,,/Resources/Nunito/#Nunito ExtraLight</FontFamily>
+            <FontFamily x:Key="NunitoLight">pack://application:,,,/Resources/Nunito/#Nunito Light</FontFamily>
+            <FontFamily x:Key="NunitoMedium">pack://application:,,,/Resources/Nunito/#Nunito Medium</FontFamily>
+            <FontFamily x:Key="NunitoRegular">pack://application:,,,/Resources/Nunito/#Nunito Regular</FontFamily>
+            <FontFamily x:Key="NunitoSemiBold">pack://application:,,,/Resources/Nunito/#Nunito SemiBold</FontFamily>
 
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 
 </prism:PrismApplication>
