@@ -152,17 +152,18 @@ namespace FantaAsta.Models
 		}
 
 		/// <summary>
-		/// Metodo per rimuovere un giocatore dalla rosa di una fantasquadra.
+		/// Metodo per rimuovere un giocatore dalla rosa di una fantasquadra
 		/// </summary>
-		/// <param name="squadra">La fantasquadra da cui rimuovere il giocatore.</param>
-		/// <param name="giocatore">Il giocatore da rimuovere.</param>
-		public void RimuoviGiocatore(FantaSquadra squadra, Giocatore giocatore)
+		/// <param name="squadra">La fantasquadra da cui rimuovere il giocatore</param>
+		/// <param name="giocatore">Il giocatore da rimuovere</param>
+		/// <param name="prezzo">Il prezzo di vendita</param>
+		public void RimuoviGiocatore(FantaSquadra squadra, Giocatore giocatore, double prezzo)
 		{
 			// Se il giocatore è nella rosa della fantasquadra
 			if (squadra.Giocatori.Contains(giocatore))
 			{
 				// Rimuovo il giocatore
-				squadra.RimuoviGiocatore(giocatore);
+				squadra.RimuoviGiocatore(giocatore, prezzo);
 
 				// Azzero il prezzo d'acquisto del giocatore
 				giocatore.Prezzo = 0;
@@ -175,11 +176,19 @@ namespace FantaAsta.Models
 			}
 		}
 
+		/// <summary>
+		/// Metodo per salvare i dati riguardanti le fantasquadre
+		/// </summary>
 		public void SalvaSquadre()
 		{
 			if (!Directory.Exists(Constants.DATA_DIRECTORY_PATH))
 			{
 				Directory.CreateDirectory(Constants.DATA_DIRECTORY_PATH);
+			}
+
+			if (File.Exists(Constants.DATA_FILE_PATH))
+			{
+				File.Delete(Constants.DATA_FILE_PATH);
 			}
 
 			DataContractSerializer dcs = new DataContractSerializer(typeof(Lega));
@@ -195,6 +204,9 @@ namespace FantaAsta.Models
 
 		#region Private methods
 
+		/// <summary>
+		/// Metodo per caricare la lista dei giocatori
+		/// </summary>
 		private void CaricaListe()
 		{
 			Lista = new List<Giocatore>();
@@ -210,6 +222,9 @@ namespace FantaAsta.Models
 			}
 		}
 
+		/// <summary>
+		/// Metodo per caricare le fantasquadre
+		/// </summary>
 		private void CaricaFantaSquadre()
 		{
 			if (File.Exists(Constants.DATA_FILE_PATH))
@@ -234,6 +249,9 @@ namespace FantaAsta.Models
 			}
 		}
 
+		/// <summary>
+		/// Metodo per caricare le fantasquadre dai dati salvati
+		/// </summary>
 		private void CaricaSquadraDaFile()
 		{
 			FantaSquadre = new List<FantaSquadra>();
@@ -248,6 +266,12 @@ namespace FantaAsta.Models
 			}
 		}
 
+		/// <summary>
+		/// Metodo per generare la lista dei giocatori del ruolo specificato a partire da un'altra lista
+		/// </summary>
+		/// <param name="lista">La lista da cui estrarre la lista dei giocatori per ruolo</param>
+		/// <param name="ruolo">Il ruolo specificato</param>
+		/// <returns>La lista dei giocaori del ruolo specificato</returns>
 		private IEnumerable<Giocatore> GeneraListaPerRuolo(IEnumerable<Giocatore> lista, Ruoli ruolo)
 		{
 			return lista.Where(g => g.Ruolo == ruolo);

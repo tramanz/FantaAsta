@@ -26,7 +26,8 @@ namespace FantaAsta.ViewModels
 		private Giocatore m_giocatoreSelezionato;
 		private Giocatore m_svincolatoSelezionato;
 
-		private double m_prezzo;
+		private double m_prezzoAcquisto;
+		private double m_prezzoVendita;
 
 		#endregion
 
@@ -37,7 +38,6 @@ namespace FantaAsta.ViewModels
 			get { return m_svincolati; }
 			set { SetProperty(ref m_svincolati, value); }
 		}
-
 		public ObservableCollection<Giocatore> Rosa
 		{
 			get { return m_rosa; }
@@ -49,17 +49,21 @@ namespace FantaAsta.ViewModels
 			get { return m_giocatoreSelezionato; }
 			set { SetProperty(ref m_giocatoreSelezionato, value); RimuoviCommand?.RaiseCanExecuteChanged(); }
 		}
-
 		public Giocatore SvincolatoSelezionato
 		{
 			get { return m_svincolatoSelezionato; }
 			set { SetProperty(ref m_svincolatoSelezionato, value); AggiungiCommand?.RaiseCanExecuteChanged(); }
 		}
 
-		public double Prezzo
+		public double PrezzoAcquisto
 		{
-			get { return m_prezzo; }
-			set { SetProperty(ref m_prezzo, value); AggiungiCommand?.RaiseCanExecuteChanged(); }
+			get { return m_prezzoAcquisto; }
+			set { SetProperty(ref m_prezzoAcquisto, value); AggiungiCommand?.RaiseCanExecuteChanged(); }
+		}
+		public double PrezzoVendita
+		{
+			get { return m_prezzoVendita; }
+			set { SetProperty(ref m_prezzoVendita, value); RimuoviCommand?.RaiseCanExecuteChanged(); }
 		}
 
 		#region IDialogAware
@@ -163,21 +167,21 @@ namespace FantaAsta.ViewModels
 
 		private void Aggiungi()
 		{
-			if (double.IsNaN(Prezzo))
+			if (double.IsNaN(PrezzoAcquisto))
 			{
-				MessageBox.Show("Inserire un prezzo.", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
+				MessageBox.Show("Inserire un prezzo di acquisto.", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 			else if (m_lega.FantaSquadre.Select(s => s.Giocatori).Where(g => g.Contains(SvincolatoSelezionato)).Count() > 0)
 			{
 				MessageBox.Show("Il giocatore selezionato è già assegnato ad una fantasquadra.", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
-			else if (Prezzo < SvincolatoSelezionato.Quotazione)
+			else if (PrezzoAcquisto < SvincolatoSelezionato.Quotazione)
 			{
 				MessageBox.Show("Il prezzo di acquisto non può essere inferiore alla quotazione del giocatore.", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 			else
 			{
-				bool result = m_lega.AggiungiGiocatore(m_squadra, SvincolatoSelezionato, Convert.ToDouble(Prezzo));
+				bool result = m_lega.AggiungiGiocatore(m_squadra, SvincolatoSelezionato, Convert.ToDouble(PrezzoAcquisto));
 
 				string msg = result ? "Giocatore aggiunto" : "Il giocatore non può essere aggiunto";
 				string capt = result ? "OPERAZIONE COMPLETATA" : "OPERAZIONE FALLITA";
@@ -188,18 +192,33 @@ namespace FantaAsta.ViewModels
 		}
 		private bool AbilitaAggiungi()
 		{
-			return SvincolatoSelezionato != null && !double.IsNaN(Prezzo);
+			return SvincolatoSelezionato != null && !double.IsNaN(PrezzoAcquisto);
 		}
 
 		private void Rimuovi()
 		{
-			m_lega.RimuoviGiocatore(m_squadra, GiocatoreSelezionato);
+			if (double.IsNaN(PrezzoVendita))
+			{
+				MessageBox.Show("Inserire un prezzo di vendita.", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+			else if (!m_squadra.Giocatori.Contains(GiocatoreSelezionato))
+			{
+				MessageBox.Show("Il giocatore selezionato non è presente nella rosa della fantasquadra.", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+			else if (PrezzoVendita <= 0)
+			{
+				MessageBox.Show("Il prezzo di acquisto non può essere minore o uguale a 0.", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+			else
+			{
+				m_lega.RimuoviGiocatore(m_squadra, GiocatoreSelezionato, PrezzoVendita);
 
-			MessageBox.Show("Giocatore rimosso", "OPERAZIONE COMPLETATA", MessageBoxButton.OK, MessageBoxImage.Information);
+				MessageBox.Show("Giocatore rimosso", "OPERAZIONE COMPLETATA", MessageBoxButton.OK, MessageBoxImage.Information);
+			}
 		}
 		private bool AbilitaRimuovi()
 		{
-			return GiocatoreSelezionato != null;
+			return GiocatoreSelezionato != null && !double.IsNaN(PrezzoVendita);
 		}
 
 		private void Chiudi()

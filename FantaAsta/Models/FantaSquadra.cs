@@ -38,12 +38,12 @@ namespace FantaAsta.Models
 			}
 		}
 
-		public void RimuoviGiocatore(Giocatore giocatore)
+		public void RimuoviGiocatore(Giocatore giocatore, double prezzo)
 		{
 			if (Giocatori.Contains(giocatore))
 			{
 				Giocatori.Remove(giocatore);
-				Budget += giocatore.Prezzo;
+				Budget += prezzo;
 			}
 		}
 
