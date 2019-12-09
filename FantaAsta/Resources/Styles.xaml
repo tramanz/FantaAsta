@@ -5,13 +5,11 @@
     <!--Default label-->
     <Style x:Key="{x:Type Label}" TargetType="{x:Type Label}">
         <Setter Property="FontFamily" Value="{StaticResource NunitoRegular}"/>
-        <Setter Property="FontSize" Value="20"/>
     </Style>
 
     <!--Default text block-->
     <Style x:Key="{x:Type TextBlock}" TargetType="{x:Type TextBlock}">
         <Setter Property="FontFamily" Value="{StaticResource NunitoRegular}"/>
-        <Setter Property="FontSize" Value="20"/>
     </Style>
 
     <!--Default button-->
@@ -165,7 +163,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
                     <Border x:Name="Border" BorderThickness="2" BorderBrush="Black" CornerRadius="8,8,0,0" MinWidth="100">
-                        <ContentPresenter x:Name="Content" ContentSource="Header" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,2"/>
+                        <ContentPresenter x:Name="Content" ContentSource="Header" VerticalAlignment="Center" TextElement.FontSize="24" HorizontalAlignment="Center" Margin="10,2"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="False">

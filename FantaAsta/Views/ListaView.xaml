@@ -37,9 +37,9 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Content="{Binding Quotazione}" HorizontalAlignment="Center"/>
-                                    <Label Grid.Column="1" Content="{Binding Nome}"/>
-                                    <Label Grid.Column="2" Content="{Binding Squadra, Converter={StaticResource ThreeInitialsConverter}}" HorizontalAlignment="Center"/>
+                                    <Label Grid.Column="0" FontSize="20" Content="{Binding Quotazione}" HorizontalAlignment="Center"/>
+                                    <Label Grid.Column="1" FontSize="20" Content="{Binding Nome}"/>
+                                    <Label Grid.Column="2" FontSize="20" Content="{Binding Squadra, Converter={StaticResource ThreeInitialsConverter}}" HorizontalAlignment="Center"/>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -65,9 +65,9 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Content="{Binding Quotazione}" HorizontalAlignment="Center"/>
-                                    <Label Grid.Column="1" Content="{Binding Nome}"/>
-                                    <Label Grid.Column="2" Content="{Binding Squadra, Converter={StaticResource ThreeInitialsConverter}}" HorizontalAlignment="Center"/>
+                                    <Label Grid.Column="0" FontSize="20" Content="{Binding Quotazione}" HorizontalAlignment="Center"/>
+                                    <Label Grid.Column="1" FontSize="20" Content="{Binding Nome}"/>
+                                    <Label Grid.Column="2" FontSize="20" Content="{Binding Squadra, Converter={StaticResource ThreeInitialsConverter}}" HorizontalAlignment="Center"/>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -93,9 +93,9 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Content="{Binding Quotazione}" HorizontalAlignment="Center"/>
-                                    <Label Grid.Column="1" Content="{Binding Nome}"/>
-                                    <Label Grid.Column="2" Content="{Binding Squadra, Converter={StaticResource ThreeInitialsConverter}}" HorizontalAlignment="Center"/>
+                                    <Label Grid.Column="0" FontSize="20" Content="{Binding Quotazione}" HorizontalAlignment="Center"/>
+                                    <Label Grid.Column="1" FontSize="20" Content="{Binding Nome}"/>
+                                    <Label Grid.Column="2" FontSize="20" Content="{Binding Squadra, Converter={StaticResource ThreeInitialsConverter}}" HorizontalAlignment="Center"/>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -121,9 +121,9 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" Content="{Binding Quotazione}" HorizontalAlignment="Center"/>
-                                    <Label Grid.Column="1" Content="{Binding Nome}"/>
-                                    <Label Grid.Column="2" Content="{Binding Squadra, Converter={StaticResource ThreeInitialsConverter}}" HorizontalAlignment="Center"/>
+                                    <Label Grid.Column="0" FontSize="20" Content="{Binding Quotazione}" HorizontalAlignment="Center"/>
+                                    <Label Grid.Column="1" FontSize="20" Content="{Binding Nome}"/>
+                                    <Label Grid.Column="2" FontSize="20" Content="{Binding Squadra, Converter={StaticResource ThreeInitialsConverter}}" HorizontalAlignment="Center"/>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
