@@ -1,14 +1,10 @@
-﻿<Window
-    x:Class="FantaAsta.Views.MainView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:prism="http://prismlibrary.com/"
-    prism:ViewModelLocator.AutoWireViewModel="True"
-    Title="Fanta Lega Manager"
-    WindowStartupLocation="CenterScreen" WindowState="Maximized" ResizeMode="CanMinimize">
+﻿<UserControl
+	x:Class="FantaAsta.Views.MainView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:prism="http://prismlibrary.com/"
+	prism:ViewModelLocator.AutoWireViewModel="True">
 
-    <Grid Background="LightGray">
-        <TabControl prism:RegionManager.RegionName="ContentRegion" Background="LightGray"/>
-    </Grid>
+	<TabControl prism:RegionManager.RegionName="ContentRegion" Background="LightGray"/>
 
-</Window>
+</UserControl>

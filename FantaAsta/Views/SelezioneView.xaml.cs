@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace FantaAsta.Views
 {
 	/// <summary>
-	/// Interaction logic for MainView.xaml
+	/// Interaction logic for SelezioneView.xaml
 	/// </summary>
-	public partial class MainView : UserControl
+	public partial class SelezioneView : UserControl
 	{
-		public MainView()
+		public SelezioneView()
 		{
 			InitializeComponent();
 		}

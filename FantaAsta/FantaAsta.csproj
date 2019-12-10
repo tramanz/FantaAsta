@@ -95,7 +95,9 @@
     <Compile Include="Models\Squadra.cs" />
     <Compile Include="Modules\AstaModule.cs" />
     <Compile Include="Modules\ListaModule.cs" />
+    <Compile Include="Modules\MainModule.cs" />
     <Compile Include="Modules\RoseModule.cs" />
+    <Compile Include="Modules\SelezioneModule.cs" />
     <Compile Include="Regions\TabControlRegionAdapter.cs" />
     <Compile Include="Utilities\Constants.cs" />
     <Compile Include="Utilities\Enums.cs" />
@@ -105,11 +107,15 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ModificaViewModel.cs" />
     <Compile Include="ViewModels\RoseViewModel.cs" />
+    <Compile Include="ViewModels\SelezioneViewModel.cs" />
     <Compile Include="Views\AstaView.xaml.cs">
       <DependentUpon>AstaView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ListaView.xaml.cs">
       <DependentUpon>ListaView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ModificaView.xaml.cs">
       <DependentUpon>ModificaView.xaml</DependentUpon>
@@ -122,6 +128,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SelezioneView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Shell.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -129,8 +143,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\MainView.xaml.cs">
-      <DependentUpon>MainView.xaml</DependentUpon>
+    <Compile Include="Views\SelezioneView.xaml.cs">
+      <DependentUpon>SelezioneView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shell.xaml.cs">
+      <DependentUpon>Shell.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\AstaView.xaml">

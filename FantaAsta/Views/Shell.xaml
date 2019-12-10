@@ -1,0 +1,11 @@
+﻿<Window
+	x:Class="FantaAsta.Views.Shell"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:prism="http://prismlibrary.com/"
+	Title="Fanta Lega Manager"
+	WindowStartupLocation="CenterScreen" WindowState="Maximized" ResizeMode="CanMinimize">
+
+	<Grid prism:RegionManager.RegionName="MainRegion" Background="LightGray"/>
+
+</Window>

@@ -21,7 +21,7 @@ namespace FantaAsta
 	{
 		protected override Window CreateShell()
 		{
-			return Container.Resolve<MainView>();
+			return Container.Resolve<Shell>();
 		}
 
 		protected override void RegisterTypes(IContainerRegistry containerRegistry)

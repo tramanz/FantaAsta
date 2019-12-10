@@ -1,0 +1,25 @@
+﻿<UserControl
+	x:Class="FantaAsta.Views.SelezioneView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:prism="http://prismlibrary.com/"
+	prism:ViewModelLocator.AutoWireViewModel="True">
+	
+	<UniformGrid Rows="4">
+		<Label Content="Seleziona modalità" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
+
+		<UniformGrid Columns="2" Margin="0,5">
+			<Button Content="Asta estiva" FontSize="24" Command="{Binding AstaEstivaCommand}" Width="275" Height="75" Margin="0,0,5,0"/>
+			<Button Content="Asta invernale" FontSize="24" Command="{Binding AstaInvernaleCommand}" Width="275" Height="75" Margin="5,0,0,0"/>
+		</UniformGrid>
+		
+		<Label Content="Comandi utili" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5"/>
+
+		<UniformGrid Columns="3" Margin="0,5,0,0">
+			<Button Content="Gestisci rose" FontSize="24" Command="{Binding GestisciRoseCommand}" Width="275" Height="75" Margin="0,0,5,0"/>
+			<Button Content="Svuota rose" FontSize="24" Command="{Binding SvuotaRoseCommand}" Width="275" Height="75" Margin="5,0"/>
+			<Button Content="Importa lista" FontSize="24" Command="{Binding SvuotaRoseCommand}" Width="275" Height="75" Margin="5,0,0,0"/>
+		</UniformGrid>
+	</UniformGrid>
+	
+</UserControl>
