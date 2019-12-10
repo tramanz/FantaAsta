@@ -6,6 +6,6 @@
 	Title="Fanta Lega Manager"
 	WindowStartupLocation="CenterScreen" WindowState="Maximized" ResizeMode="CanMinimize">
 
-	<Grid prism:RegionManager.RegionName="MainRegion" Background="LightGray"/>
+	<ContentControl prism:RegionManager.RegionName="MainRegion" Background="LightGray"/>
 
 </Window>

@@ -20,11 +20,6 @@ namespace FantaAsta.Modules
 
 		#region Public methods
 
-		public void NavigateToMainModule()
-		{
-			m_regionManager.RequestNavigate("MainRegion", "MainView");
-		}
-
 		#region IModule
 
 		public void OnInitialized(IContainerProvider containerProvider)

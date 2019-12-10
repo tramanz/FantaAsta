@@ -20,11 +20,6 @@ namespace FantaAsta.Modules
 
 		#region Public methods
 
-		public void NavigateToSelezioneModule()
-		{
-			m_regionManager.RequestNavigate("MainRegion", "SelezioneView");
-		}
-
 		#region IModule
 
 		public void OnInitialized(IContainerProvider containerProvider)

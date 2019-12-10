@@ -9,8 +9,6 @@ using FantaAsta.Modules;
 using FantaAsta.Regions;
 using FantaAsta.ViewModels;
 using FantaAsta.Views;
-using System.IO;
-using System;
 
 namespace FantaAsta
 {
@@ -36,6 +34,8 @@ namespace FantaAsta
 			moduleCatalog.AddModule<AstaModule>();
 			moduleCatalog.AddModule<RoseModule>();
 			moduleCatalog.AddModule<ListaModule>();
+			moduleCatalog.AddModule<SelezioneModule>();
+			moduleCatalog.AddModule<MainModule>();
 		}
 
 		protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)

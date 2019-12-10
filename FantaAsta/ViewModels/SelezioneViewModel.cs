@@ -1,5 +1,7 @@
 ﻿using Prism.Commands;
+using Prism.Regions;
 using FantaAsta.Models;
+using FantaAsta.Views;
 
 namespace FantaAsta.ViewModels
 {
@@ -7,6 +9,7 @@ namespace FantaAsta.ViewModels
 	{
 		#region Private fields
 
+		private readonly IRegionManager m_regionManager;
 		private readonly Lega m_lega;
 
 		#endregion
@@ -25,8 +28,10 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public SelezioneViewModel(Lega lega)
+		public SelezioneViewModel(IRegionManager regionManager, Lega lega)
 		{
+			m_regionManager = regionManager;
+
 			m_lega = lega;
 
 			AstaEstivaCommand = new DelegateCommand(AvviaAstaEstiva);
@@ -38,16 +43,21 @@ namespace FantaAsta.ViewModels
 
 		#region Private methods
 
+		private void NavigateToMain()
+		{
+			m_regionManager.RequestNavigate("MainRegion", nameof(MainView));
+		}
+
 		#region Commands
 
 		private void AvviaAstaEstiva()
 		{
-
+			NavigateToMain();
 		}
 
 		private void AvviaAstaInvernale()
 		{
-
+			NavigateToMain();
 		}
 
 		private void GestisciRose()
