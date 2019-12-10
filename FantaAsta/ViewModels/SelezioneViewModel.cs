@@ -5,12 +5,15 @@ using FantaAsta.Views;
 
 namespace FantaAsta.ViewModels
 {
-	public class SelezioneViewModel
+	public class SelezioneViewModel	: INavigationAware
 	{
 		#region Private fields
 
 		private readonly IRegionManager m_regionManager;
+
 		private readonly Lega m_lega;
+
+		private bool m_isAstaInvernale;
 
 		#endregion
 
@@ -57,6 +60,13 @@ namespace FantaAsta.ViewModels
 
 		private void AvviaAstaInvernale()
 		{
+			foreach (FantaSquadra squadra in m_lega.FantaSquadre)
+			{
+				squadra.Budget += 100;
+			}
+
+			m_isAstaInvernale = true;
+
 			NavigateToMain();
 		}
 
@@ -73,6 +83,27 @@ namespace FantaAsta.ViewModels
 		private void ImportaLista()
 		{
 
+		}
+
+		public void OnNavigatedTo(NavigationContext navigationContext)
+		{ }
+
+		public bool IsNavigationTarget(NavigationContext navigationContext)
+		{
+			return true;
+		}
+
+		public void OnNavigatedFrom(NavigationContext navigationContext)
+		{
+			if (m_isAstaInvernale)
+			{
+				foreach (FantaSquadra squadra in m_lega.FantaSquadre)
+				{
+					squadra.Budget -= 100;
+				}
+
+				m_isAstaInvernale = false;
+			}
 		}
 
 		#endregion

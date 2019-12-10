@@ -1,4 +1,5 @@
-﻿using Prism.Regions;
+﻿using Prism.Commands;
+using Prism.Regions;
 using FantaAsta.Views;
 
 namespace FantaAsta.ViewModels
@@ -7,9 +8,13 @@ namespace FantaAsta.ViewModels
 	{
 		private readonly IRegionManager m_regionManager;
 
+		public DelegateCommand IndietroCommand { get; }
+
 		public MainViewModel(IRegionManager regionManager)
 		{
 			m_regionManager = regionManager;
+
+			IndietroCommand = new DelegateCommand(NavigateToSelezione);
 		}
 
 		private void NavigateToSelezione()

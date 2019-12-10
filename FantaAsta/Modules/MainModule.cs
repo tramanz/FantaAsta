@@ -7,32 +7,20 @@ namespace FantaAsta.Modules
 {
 	public class MainModule : IModule
 	{
-		#region Private fields
-
-		private readonly IRegionManager m_regionManager;
-
-		#endregion
-
-		public MainModule(IRegionManager regionManager)
-		{
-			m_regionManager = regionManager;
-		}
+		public MainModule()
+		{ }
 
 		#region Public methods
 
-		#region IModule
-
 		public void OnInitialized(IContainerProvider containerProvider)
 		{
-			m_regionManager.RegisterViewWithRegion("MainRegion", typeof(MainView));
+			containerProvider.Resolve<IRegionManager>().RegisterViewWithRegion("MainRegion", typeof(MainView));
 		}
 
 		public void RegisterTypes(IContainerRegistry containerRegistry)
 		{
 			containerRegistry.RegisterForNavigation<MainView>();
 		}
-
-		#endregion
 
 		#endregion
 	}
