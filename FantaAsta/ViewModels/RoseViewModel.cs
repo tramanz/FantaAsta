@@ -24,10 +24,10 @@ namespace FantaAsta.ViewModels
 
 		private readonly Lega m_lega;
 
-		// Variabili per gestire la visualizzazione del tasto "Indietro"
 		private bool m_isActive;
-		private Thickness m_margin;
-		private Visibility m_indietroCommandVisibility;
+
+		// Variabili per gestire la visualizzazione del tasto "Indietro"
+		private bool m_isStandalone;
 
 		#endregion
 
@@ -35,16 +35,10 @@ namespace FantaAsta.ViewModels
 
 		public List<FantaSquadraViewModel> Squadre { get; }
 
-		public Thickness Margin
+		public bool IsStandalone
 		{
-			get { return m_margin; }
-			set { SetProperty(ref m_margin, value); }
-		}
-
-		public Visibility IndietroCommandVisibility
-		{
-			get { return m_indietroCommandVisibility; }
-			set { SetProperty(ref m_indietroCommandVisibility, value); }
+			get { return m_isStandalone; }
+			set { SetProperty(ref m_isStandalone, value); }
 		}
 
 		#region IActiveAware
@@ -52,7 +46,7 @@ namespace FantaAsta.ViewModels
 		public bool IsActive
 		{
 			get { return m_isActive; }
-			set { m_isActive = value; UpdateUI(false); }
+			set { m_isActive = value; IsStandalone = false; }
 		}
 
 		#endregion
@@ -102,9 +96,7 @@ namespace FantaAsta.ViewModels
 
 		public void OnNavigatedTo(NavigationContext navigationContext)
 		{
-			string parameter = navigationContext.Parameters["Modalità"] as string;
-
-			UpdateUI(parameter.Equals("Gestione rose", StringComparison.OrdinalIgnoreCase));
+			IsStandalone = ((string)navigationContext.Parameters["Modalità"]).Equals("Gestione rose", StringComparison.OrdinalIgnoreCase);
 		}
 
 		public void OnNavigatedFrom(NavigationContext navigationContext)
@@ -152,12 +144,6 @@ namespace FantaAsta.ViewModels
 		private void NavigateToSelezione()
 		{
 			m_regionManager.RequestNavigate("MainRegion", nameof(SelezioneView));
-		}
-
-		private void UpdateUI(bool isStandalone)
-		{
-			IndietroCommandVisibility = isStandalone ? Visibility.Visible : Visibility.Collapsed;
-			Margin = isStandalone ? new Thickness(0, 43, 0, 0) : new Thickness(0, 10, 0, 0);
 		}
 
 		#endregion
