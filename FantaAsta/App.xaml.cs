@@ -47,7 +47,14 @@ namespace FantaAsta
 
 		protected override void OnExit(ExitEventArgs e)
 		{
-			Container.Resolve<Lega>().SalvaSquadre();
+			Lega lega = Container.Resolve<Lega>();
+
+			if (lega.IsAstaInvernale)
+			{
+				lega.TerminaAstaInvernale();
+			}
+
+			lega.SalvaSquadre();
 
 			base.OnExit(e);
 		}

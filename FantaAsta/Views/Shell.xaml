@@ -4,7 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:prism="http://prismlibrary.com/"
 	Title="Fanta Lega Manager" Background="LightGray"
-	WindowStartupLocation="CenterScreen" WindowState="Maximized" ResizeMode="CanMinimize">
+	WindowStartupLocation="CenterScreen" WindowState="Maximized" ResizeMode="CanResize">
 
 	<ContentControl prism:RegionManager.RegionName="MainRegion" Background="LightGray"/>
 

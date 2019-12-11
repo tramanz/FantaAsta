@@ -45,6 +45,7 @@ namespace FantaAsta.ViewModels
 
 			m_lega.GiocatoreAggiunto += OnGiocatoreAggiunto;
 			m_lega.GiocatoreRimosso += OnGiocatoreRimosso;
+			m_lega.ModalitàAstaInvernale += OnModalitàAstaInvernale;
 
 			ModificaCommand = new DelegateCommand<FantaSquadraViewModel>(Modifica);
 		}
@@ -61,6 +62,14 @@ namespace FantaAsta.ViewModels
 		private void OnGiocatoreRimosso(object sender, GiocatoreEventArgs e)
 		{
 			Squadre.Where(s => s.FantaSquadra.Equals(e.FantaSquadra)).Single().RimuoviGiocatore(e.Giocatore);
+		}
+
+		private void OnModalitàAstaInvernale(object sender, System.EventArgs e)
+		{
+			for (int i = 0; i < Squadre.Count; i++)
+			{
+				Squadre[i].Budget = m_lega.FantaSquadre[i].Budget.ToString();
+			}
 		}
 
 		#endregion

@@ -27,6 +27,8 @@ namespace FantaAsta.Models
 		[DataMember(Name = "FantaSquadre")]
 		public List<FantaSquadra> FantaSquadre { get; set; }
 
+		public bool IsAstaInvernale { get; private set; }
+
 		#endregion
 
 		#region Events
@@ -34,6 +36,8 @@ namespace FantaAsta.Models
 		public event EventHandler<GiocatoreEventArgs> GiocatoreAggiunto;
 
 		public event EventHandler<GiocatoreEventArgs> GiocatoreRimosso;
+
+		public event EventHandler ModalitàAstaInvernale;
 
 		#endregion
 
@@ -198,6 +202,30 @@ namespace FantaAsta.Models
 			{
 				dcs.WriteObject(xdw, this);
 			}
+		}
+
+		public void AvviaAstaInvernale()
+		{
+			IsAstaInvernale = true;
+
+			foreach(FantaSquadra squadra in FantaSquadre)
+			{
+				squadra.Budget += 100;
+			}
+
+			ModalitàAstaInvernale?.Invoke(this, System.EventArgs.Empty);
+		}
+
+		public void TerminaAstaInvernale()
+		{
+			IsAstaInvernale = false;
+
+			foreach (FantaSquadra squadra in FantaSquadre)
+			{
+				squadra.Budget -= 100;
+			}
+
+			ModalitàAstaInvernale?.Invoke(this, System.EventArgs.Empty);
 		}
 
 		#endregion
