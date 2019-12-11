@@ -7,14 +7,24 @@ namespace FantaAsta.Modules
 {
 	public class RoseModule : IModule
 	{
+		public RoseModule()
+		{ }
+
+		#region Public methods
+
 		public void OnInitialized(IContainerProvider containerProvider)
 		{
-			containerProvider.Resolve<IRegionManager>().RegisterViewWithRegion("ContentRegion", typeof(RoseView));
+			IRegionManager regionManager = containerProvider.Resolve<IRegionManager>();
+
+			regionManager.RegisterViewWithRegion("MainRegion", typeof(RoseView));
+			regionManager.RegisterViewWithRegion("ContentRegion", typeof(RoseView));
 		}
 
 		public void RegisterTypes(IContainerRegistry containerRegistry)
 		{
-			
+			containerRegistry.RegisterForNavigation<RoseView>();
 		}
+
+		#endregion
 	}
 }

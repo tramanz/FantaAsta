@@ -5,60 +5,63 @@
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True">
 
-    <UserControl.Resources>
+	<UserControl.Resources>
 
-        <Style TargetType="{x:Type Label}">
+		<Style TargetType="{x:Type Label}">
 			<Setter Property="FontSize" Value="24"/>
 		</Style>
 
 	</UserControl.Resources>
 
-	<ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto">
-		<ItemsControl ItemsSource="{Binding Squadre}">
-			<ItemsControl.ItemsPanel>
-				<ItemsPanelTemplate>
-					<VirtualizingStackPanel Orientation="Horizontal"/>
-				</ItemsPanelTemplate>
-			</ItemsControl.ItemsPanel>
+	<Grid>
+		<Button Content="Indietro" Command="{Binding IndietroCommand}" Visibility="{Binding IndietroCommandVisibility}" FontSize="18" HorizontalAlignment="Right" VerticalAlignment="Top" Height="35" Width="100" Margin="0,4,8,0"/>
+		<ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto" Margin="{Binding Margin}">
+			<ItemsControl ItemsSource="{Binding Squadre}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<VirtualizingStackPanel Orientation="Horizontal"/>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
 
-			<ItemsControl.ItemTemplate>
-				<DataTemplate>
-					<Border BorderBrush="Black" BorderThickness="2" CornerRadius="3" Margin="5,0">
-						<StackPanel Width="250" Margin="3">
-                            <Button Content="Modifica" Command="{Binding DataContext.ModificaCommand, Source={x:Reference Name=Rose}}" CommandParameter="{Binding}" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" Width="125" Height="50" Margin="0,5"/>
-							<Label Content="{Binding Nome}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,5"/>
-							<Separator Background="Black" Margin="5"/>
-                            <StackPanel Margin="0,5" Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Label Content="Budget:"/>
-                                <Label Content="{Binding Budget}"/>
-                            </StackPanel>
-                            <Separator Background="Black" Margin="5"/>
-                            <ItemsControl ItemsSource="{Binding Giocatori}" Margin="0,5">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel/>
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid HorizontalAlignment="Stretch">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="auto"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0" Content="{Binding Ruolo}" HorizontalAlignment="Center"/>
-                                            <Label Grid.Column="1" Content="{Binding Nome}"/>
-                                            <Label Grid.Column="2" Content="{Binding Prezzo}" HorizontalAlignment="Center"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-					</Border>
-				</DataTemplate>
-			</ItemsControl.ItemTemplate>
-		</ItemsControl>
-	</ScrollViewer>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Border BorderBrush="Black" BorderThickness="2" CornerRadius="3" Margin="5,0">
+							<StackPanel Width="250" Margin="3">
+								<Button Content="Modifica" Command="{Binding DataContext.ModificaCommand, Source={x:Reference Name=Rose}}" CommandParameter="{Binding}" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" Width="125" Height="50" Margin="0,5"/>
+								<Label Content="{Binding Nome}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,5"/>
+								<Separator Background="Black" Margin="5"/>
+								<StackPanel Margin="0,5" Orientation="Horizontal" HorizontalAlignment="Center">
+									<Label Content="Budget:"/>
+									<Label Content="{Binding Budget}"/>
+								</StackPanel>
+								<Separator Background="Black" Margin="5"/>
+								<ItemsControl ItemsSource="{Binding Giocatori}" Margin="0,5">
+									<ItemsControl.ItemsPanel>
+										<ItemsPanelTemplate>
+											<StackPanel/>
+										</ItemsPanelTemplate>
+									</ItemsControl.ItemsPanel>
+									<ItemsControl.ItemTemplate>
+										<DataTemplate>
+											<Grid HorizontalAlignment="Stretch">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="auto"/>
+													<ColumnDefinition Width="*"/>
+													<ColumnDefinition Width="auto"/>
+												</Grid.ColumnDefinitions>
+												<Label Grid.Column="0" Content="{Binding Ruolo}" HorizontalAlignment="Center"/>
+												<Label Grid.Column="1" Content="{Binding Nome}"/>
+												<Label Grid.Column="2" Content="{Binding Prezzo}" HorizontalAlignment="Center"/>
+											</Grid>
+										</DataTemplate>
+									</ItemsControl.ItemTemplate>
+								</ItemsControl>
+							</StackPanel>
+						</Border>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
+	</Grid>
 
 </UserControl>

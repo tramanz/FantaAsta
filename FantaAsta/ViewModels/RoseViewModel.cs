@@ -1,38 +1,85 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
+using Prism;
 using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Regions;
 using Prism.Services.Dialogs;
 using FantaAsta.EventArgs;
 using FantaAsta.Models;
-using System.Collections.Generic;
+using FantaAsta.Views;
 
 namespace FantaAsta.ViewModels
 {
-	public class RoseViewModel : BindableBase
+	public class RoseViewModel : BindableBase, INavigationAware, IActiveAware
 	{
 		#region Private fields
+
+		private readonly IRegionManager m_regionManager;
 
 		private readonly IDialogService m_dialogService;
 
 		private readonly Lega m_lega;
 
+		// Variabili per gestire la visualizzazione del tasto "Indietro"
+		private bool m_isActive;
+		private Thickness m_margin;
+		private Visibility m_indietroCommandVisibility;
+
 		#endregion
 
-		#region Public fields
+		#region Properties
 
 		public List<FantaSquadraViewModel> Squadre { get; }
+
+		public Thickness Margin
+		{
+			get { return m_margin; }
+			set { SetProperty(ref m_margin, value); }
+		}
+
+		public Visibility IndietroCommandVisibility
+		{
+			get { return m_indietroCommandVisibility; }
+			set { SetProperty(ref m_indietroCommandVisibility, value); }
+		}
+
+		#region IActiveAware
+
+		public bool IsActive
+		{
+			get { return m_isActive; }
+			set { m_isActive = value; UpdateUI(false); }
+		}
+
+		#endregion
 
 		#region Commands
 
 		public DelegateCommand<FantaSquadraViewModel> ModificaCommand { get; private set; }
 
-		#endregion
+		public DelegateCommand IndietroCommand { get; }
 
 		#endregion
 
-		public RoseViewModel(IDialogService dialogService, Lega lega)
+		#endregion
+
+		#region Events
+
+		#region IActiveAware
+
+		public event EventHandler IsActiveChanged { add { } remove { } }
+
+		#endregion
+
+		#endregion
+
+		public RoseViewModel(IRegionManager regionManager, IDialogService dialogService, Lega lega)
 		{
+			m_regionManager = regionManager;
 			m_dialogService = dialogService;
 
 			m_lega = lega;
@@ -48,7 +95,27 @@ namespace FantaAsta.ViewModels
 			m_lega.ModalitàAstaInvernale += OnModalitàAstaInvernale;
 
 			ModificaCommand = new DelegateCommand<FantaSquadraViewModel>(Modifica);
+			IndietroCommand = new DelegateCommand(NavigateToSelezione);
 		}
+
+		#region Public methods
+
+		public void OnNavigatedTo(NavigationContext navigationContext)
+		{
+			string parameter = navigationContext.Parameters["Modalità"] as string;
+
+			UpdateUI(parameter.Equals("Gestione rose", StringComparison.OrdinalIgnoreCase));
+		}
+
+		public void OnNavigatedFrom(NavigationContext navigationContext)
+		{ }
+
+		public bool IsNavigationTarget(NavigationContext navigationContext)
+		{
+			return true;
+		}
+
+		#endregion
 
 		#region Private methods
 
@@ -80,6 +147,17 @@ namespace FantaAsta.ViewModels
 		{
 			FantaSquadra fantaSquadra = m_lega.FantaSquadre.Where(s => s.Equals(squadraVM.FantaSquadra)).Single();
 			m_dialogService.Show("Modifica", new DialogParameters { { "squadra", fantaSquadra } }, null);
+		}
+
+		private void NavigateToSelezione()
+		{
+			m_regionManager.RequestNavigate("MainRegion", nameof(SelezioneView));
+		}
+
+		private void UpdateUI(bool isStandalone)
+		{
+			IndietroCommandVisibility = isStandalone ? Visibility.Visible : Visibility.Collapsed;
+			Margin = isStandalone ? new Thickness(0, 43, 0, 0) : new Thickness(0, 10, 0, 0);
 		}
 
 		#endregion
@@ -141,5 +219,4 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 	}
-
 }

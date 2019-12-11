@@ -49,6 +49,11 @@ namespace FantaAsta.ViewModels
 			m_regionManager.RequestNavigate("MainRegion", nameof(MainView), parameters);
 		}
 
+		private void NavigateToGestioneRose()
+		{
+			m_regionManager.RequestNavigate("MainRegion", nameof(RoseView), new NavigationParameters { { "Modalità", "Gestione rose" } });
+		}
+
 		#region Commands
 
 		private void AvviaAstaEstiva()
@@ -63,7 +68,7 @@ namespace FantaAsta.ViewModels
 
 		private void GestisciRose()
 		{
-
+			NavigateToGestioneRose();
 		}
 
 		private void SvuotaRose()

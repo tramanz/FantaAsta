@@ -6,8 +6,8 @@
 	prism:ViewModelLocator.AutoWireViewModel="True">
 
     <Grid>
-        <TabControl prism:RegionManager.RegionName="ContentRegion" Background="LightGray"/>
-        <Button Content="Indietro" Command="{Binding IndietroCommand}" FontSize="18" HorizontalAlignment="Right" VerticalAlignment="Top" Height="35" Width="100" Margin="0,0,8,0"/>
+        <TabControl prism:RegionManager.RegionName="ContentRegion" Background="LightGray" Margin="0,4,0,0"/>
+        <Button Content="Indietro" Command="{Binding IndietroCommand}" FontSize="18" HorizontalAlignment="Right" VerticalAlignment="Top" Height="35" Width="100" Margin="0,4,8,0"/>
     </Grid>
 
 </UserControl>
