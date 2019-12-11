@@ -13,14 +13,38 @@ namespace FantaAsta.ViewModels
 
 		private readonly Lega m_mainModel;
 
+		private ObservableCollection<Giocatore> m_portieri;
+		private ObservableCollection<Giocatore> m_difensori;
+		private ObservableCollection<Giocatore> m_centrocampisti;
+		private ObservableCollection<Giocatore> m_attaccanti;
+
 		#endregion
 
 		#region Public fields
 
-		public ObservableCollection<Giocatore> Portieri { get; }
-		public ObservableCollection<Giocatore> Difensori { get; }
-		public ObservableCollection<Giocatore> Centrocampisti { get; }
-		public ObservableCollection<Giocatore> Attaccanti { get; }
+		public ObservableCollection<Giocatore> Portieri 
+		{
+			get { return m_portieri; }
+			private set { SetProperty(ref m_portieri, value); }
+		}
+
+		public ObservableCollection<Giocatore> Difensori
+		{
+			get { return m_difensori; }
+			private set { SetProperty(ref m_difensori, value); }
+		}
+
+		public ObservableCollection<Giocatore> Centrocampisti
+		{
+			get { return m_centrocampisti; }
+			private set { SetProperty(ref m_centrocampisti, value); }
+		}
+
+		public ObservableCollection<Giocatore> Attaccanti
+		{
+			get { return m_attaccanti; }
+			private set { SetProperty(ref m_attaccanti, value); }
+		}
 
 		#endregion
 
@@ -28,13 +52,11 @@ namespace FantaAsta.ViewModels
 		{
 			m_mainModel = mainModel;
 
-			Portieri = new ObservableCollection<Giocatore>(m_mainModel.Lista.Where(g => g.Ruolo == Ruoli.P));
-			Difensori = new ObservableCollection<Giocatore>(m_mainModel.Lista.Where(g => g.Ruolo == Ruoli.D));
-			Centrocampisti = new ObservableCollection<Giocatore>(m_mainModel.Lista.Where(g => g.Ruolo == Ruoli.C));
-			Attaccanti = new ObservableCollection<Giocatore>(m_mainModel.Lista.Where(g => g.Ruolo == Ruoli.A));
+			InizializzaListe();
 
 			m_mainModel.GiocatoreAggiunto += OnGiocatoreAggiunto;
 			m_mainModel.GiocatoreRimosso += OnGiocatoreRimosso;
+			m_mainModel.RoseResettate += OnRoseResettate;
 		}
 
 		#region Private methods
@@ -47,6 +69,19 @@ namespace FantaAsta.ViewModels
 		private void OnGiocatoreRimosso(object sender, GiocatoreEventArgs e)
 		{
 			SelezionaListaDaRuolo(e.Giocatore.Ruolo).Add(e.Giocatore);
+		}
+
+		private void OnRoseResettate(object sender, System.EventArgs e)
+		{
+			InizializzaListe();
+		}
+
+		private void InizializzaListe()
+		{
+			Portieri = new ObservableCollection<Giocatore>(m_mainModel.Lista.Where(g => g.Ruolo == Ruoli.P));
+			Difensori = new ObservableCollection<Giocatore>(m_mainModel.Lista.Where(g => g.Ruolo == Ruoli.D));
+			Centrocampisti = new ObservableCollection<Giocatore>(m_mainModel.Lista.Where(g => g.Ruolo == Ruoli.C));
+			Attaccanti = new ObservableCollection<Giocatore>(m_mainModel.Lista.Where(g => g.Ruolo == Ruoli.A));
 		}
 
 		private ObservableCollection<Giocatore> SelezionaListaDaRuolo(Ruoli ruolo)

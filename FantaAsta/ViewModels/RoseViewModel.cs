@@ -87,6 +87,7 @@ namespace FantaAsta.ViewModels
 			m_lega.GiocatoreAggiunto += OnGiocatoreAggiunto;
 			m_lega.GiocatoreRimosso += OnGiocatoreRimosso;
 			m_lega.ModalitàAstaInvernale += OnModalitàAstaInvernale;
+			m_lega.RoseResettate += OnRoseResettate;
 
 			ModificaCommand = new DelegateCommand<FantaSquadraViewModel>(Modifica);
 			IndietroCommand = new DelegateCommand(NavigateToSelezione);
@@ -125,9 +126,18 @@ namespace FantaAsta.ViewModels
 
 		private void OnModalitàAstaInvernale(object sender, System.EventArgs e)
 		{
-			for (int i = 0; i < Squadre.Count; i++)
+			foreach (FantaSquadraViewModel squadraVm in Squadre)
 			{
-				Squadre[i].Budget = m_lega.FantaSquadre[i].Budget.ToString();
+				squadraVm.AggiornaBudget();
+			}
+		}
+
+		private void OnRoseResettate(object sender, System.EventArgs e)
+		{
+			foreach (FantaSquadraViewModel squadraVm in Squadre)
+			{
+				squadraVm.AggiornaBudget();
+				squadraVm.AggiornaRosa();
 			}
 		}
 
@@ -154,6 +164,8 @@ namespace FantaAsta.ViewModels
 	public class FantaSquadraViewModel : BindableBase
 	{
 		#region Private fields
+		
+		private ObservableCollection<Giocatore> m_giocatori;
 
 		private string m_budget;
 
@@ -165,7 +177,11 @@ namespace FantaAsta.ViewModels
 
 		public string Nome { get; }
 
-		public ObservableCollection<Giocatore> Giocatori { get; }
+		public ObservableCollection<Giocatore> Giocatori
+		{
+			get { return m_giocatori; }
+			set { SetProperty(ref m_giocatori, value); }
+		}
 
 		public string Budget
 		{
@@ -201,6 +217,16 @@ namespace FantaAsta.ViewModels
 				Giocatori.Remove(giocatore);
 				Budget = FantaSquadra.Budget.ToString();
 			}
+		}
+
+		public void AggiornaBudget()
+		{
+			Budget = FantaSquadra.Budget.ToString();
+		}
+
+		public void AggiornaRosa()
+		{
+			Giocatori = new ObservableCollection<Giocatore>(FantaSquadra.Giocatori);
 		}
 
 		#endregion

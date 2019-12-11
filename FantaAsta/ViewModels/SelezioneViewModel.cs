@@ -73,7 +73,7 @@ namespace FantaAsta.ViewModels
 
 		private void SvuotaRose()
 		{
-
+			m_lega.SvuotaRose();
 		}
 
 		private void ImportaLista()

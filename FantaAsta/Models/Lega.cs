@@ -37,6 +37,8 @@ namespace FantaAsta.Models
 
 		public event EventHandler<GiocatoreEventArgs> GiocatoreRimosso;
 
+		public event EventHandler RoseResettate;
+
 		public event EventHandler ModalitàAstaInvernale;
 
 		#endregion
@@ -204,6 +206,9 @@ namespace FantaAsta.Models
 			}
 		}
 
+		/// <summary>
+		/// Metodo per avviare la modalità asta invernale aggiungendo 100 fantamilioni al budget di ogni squadra
+		/// </summary>
 		public void AvviaAstaInvernale()
 		{
 			IsAstaInvernale = true;
@@ -216,6 +221,9 @@ namespace FantaAsta.Models
 			ModalitàAstaInvernale?.Invoke(this, System.EventArgs.Empty);
 		}
 
+		/// <summary>
+		/// Metodo per terminare la modalità asta invernale rimuovendo 100 fantamilioni dal budget di ogni squadra
+		/// </summary>
 		public void TerminaAstaInvernale()
 		{
 			IsAstaInvernale = false;
@@ -226,6 +234,33 @@ namespace FantaAsta.Models
 			}
 
 			ModalitàAstaInvernale?.Invoke(this, System.EventArgs.Empty);
+		}
+
+		/// <summary>
+		/// Metodo per resettare le rose
+		/// </summary>
+		public void SvuotaRose()
+		{
+			double sum;
+
+			foreach (FantaSquadra squadra in FantaSquadre)
+			{
+				sum = 0;
+
+				foreach (Giocatore giocatore in squadra.Giocatori)
+				{
+					sum += giocatore.Prezzo;
+
+					giocatore.Prezzo = 0;
+
+					Lista.Add(giocatore);
+				}
+
+				squadra.Budget += sum;
+				squadra.Giocatori.Clear();
+			}
+
+			RoseResettate?.Invoke(this, System.EventArgs.Empty);
 		}
 
 		#endregion
