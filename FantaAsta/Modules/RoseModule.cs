@@ -7,9 +7,6 @@ namespace FantaAsta.Modules
 {
 	public class RoseModule : IModule
 	{
-		public RoseModule()
-		{ }
-
 		#region Public methods
 
 		public void OnInitialized(IContainerProvider containerProvider)

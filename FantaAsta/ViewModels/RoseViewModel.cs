@@ -114,12 +114,12 @@ namespace FantaAsta.ViewModels
 
 		#region Event handlers
 
-		private void OnGiocatoreAggiunto(object sender, GiocatoreEventArgs e)
+		private void OnGiocatoreAggiunto(object sender, GiocatoreAggiuntoEventArgs e)
 		{
 			Squadre.Where(s => s.FantaSquadra.Equals(e.FantaSquadra)).Single().AggiungiGiocatore(e.Giocatore);
 		}
 
-		private void OnGiocatoreRimosso(object sender, GiocatoreEventArgs e)
+		private void OnGiocatoreRimosso(object sender, GiocatoreRimossoEventArgs e)
 		{
 			Squadre.Where(s => s.FantaSquadra.Equals(e.FantaSquadra)).Single().RimuoviGiocatore(e.Giocatore);
 		}

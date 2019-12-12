@@ -33,9 +33,9 @@ namespace FantaAsta.Models
 
 		#region Events
 
-		public event EventHandler<GiocatoreEventArgs> GiocatoreAggiunto;
+		public event EventHandler<GiocatoreAggiuntoEventArgs> GiocatoreAggiunto;
 
-		public event EventHandler<GiocatoreEventArgs> GiocatoreRimosso;
+		public event EventHandler<GiocatoreRimossoEventArgs> GiocatoreRimosso;
 
 		public event EventHandler RoseResettate;
 
@@ -152,7 +152,7 @@ namespace FantaAsta.Models
 			Lista.Remove(giocatore);
 
 			// Segnalo alla view l'operazione
-			GiocatoreAggiunto?.Invoke(this, new GiocatoreEventArgs(giocatore, squadra));
+			GiocatoreAggiunto?.Invoke(this, new GiocatoreAggiuntoEventArgs(giocatore, squadra, prezzo));
 
 			return true;
 		}
@@ -178,7 +178,7 @@ namespace FantaAsta.Models
 				Lista.Add(giocatore);
 
 				// Segnalo alla view l'operazione
-				GiocatoreRimosso?.Invoke(this, new GiocatoreEventArgs(giocatore, squadra));
+				GiocatoreRimosso?.Invoke(this, new GiocatoreRimossoEventArgs(giocatore, squadra, prezzo));
 			}
 		}
 

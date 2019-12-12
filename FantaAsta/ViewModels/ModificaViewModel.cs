@@ -143,7 +143,7 @@ namespace FantaAsta.ViewModels
 
 		#region Event handlers
 
-		private void OnGiocatoreAggiunto(object sender, GiocatoreEventArgs e)
+		private void OnGiocatoreAggiunto(object sender, GiocatoreAggiuntoEventArgs e)
 		{
 			if (e.FantaSquadra.Equals(m_squadra) && !Rosa.Contains(e.Giocatore) && Svincolati.Contains(e.Giocatore))
 			{
@@ -152,7 +152,7 @@ namespace FantaAsta.ViewModels
 			}
 		}
 
-		private void OnGiocatoreRimosso(object sender, GiocatoreEventArgs e)
+		private void OnGiocatoreRimosso(object sender, GiocatoreRimossoEventArgs e)
 		{
 			if (e.FantaSquadra.Equals(m_squadra) && Rosa.Contains(e.Giocatore) && !Svincolati.Contains(e.Giocatore))
 			{

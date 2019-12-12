@@ -34,8 +34,9 @@ namespace FantaAsta
 			moduleCatalog.AddModule<AstaModule>();
 			moduleCatalog.AddModule<RoseModule>();
 			moduleCatalog.AddModule<ListaModule>();
-			moduleCatalog.AddModule<SelezioneModule>();
+			moduleCatalog.AddModule<StoricoModule>();
 			moduleCatalog.AddModule<MainModule>();
+			moduleCatalog.AddModule<SelezioneModule>();
 		}
 
 		protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)

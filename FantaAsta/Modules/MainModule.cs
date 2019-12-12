@@ -7,9 +7,6 @@ namespace FantaAsta.Modules
 {
 	public class MainModule : IModule
 	{
-		public MainModule()
-		{ }
-
 		#region Public methods
 
 		public void OnInitialized(IContainerProvider containerProvider)

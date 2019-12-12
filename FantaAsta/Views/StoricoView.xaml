@@ -1,0 +1,23 @@
+﻿<UserControl
+	x:Class="FantaAsta.Views.StoricoView" Name="Storico"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:prism="http://prismlibrary.com/"
+	prism:ViewModelLocator.AutoWireViewModel="True">
+
+	<ScrollViewer VerticalScrollBarVisibility="Visible">
+		<ItemsControl ItemsSource="{Binding Azioni}" Background="Transparent">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<VirtualizingStackPanel/>
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+		</ItemsControl>
+	</ScrollViewer>
+
+</UserControl>

@@ -61,12 +61,12 @@ namespace FantaAsta.ViewModels
 
 		#region Private methods
 
-		private void OnGiocatoreAggiunto(object sender, GiocatoreEventArgs e)
+		private void OnGiocatoreAggiunto(object sender, GiocatoreAggiuntoEventArgs e)
 		{
 			SelezionaListaDaRuolo(e.Giocatore.Ruolo).Remove(e.Giocatore);
 		}
 
-		private void OnGiocatoreRimosso(object sender, GiocatoreEventArgs e)
+		private void OnGiocatoreRimosso(object sender, GiocatoreRimossoEventArgs e)
 		{
 			SelezionaListaDaRuolo(e.Giocatore.Ruolo).Add(e.Giocatore);
 		}
