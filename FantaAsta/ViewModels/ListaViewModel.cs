@@ -11,7 +11,7 @@ namespace FantaAsta.ViewModels
 	{
 		#region Private fields
 
-		private readonly Lega m_mainModel;
+		private readonly Lega m_lega;
 
 		private ObservableCollection<Giocatore> m_portieri;
 		private ObservableCollection<Giocatore> m_difensori;
@@ -50,13 +50,13 @@ namespace FantaAsta.ViewModels
 
 		public ListaViewModel(Lega mainModel)
 		{
-			m_mainModel = mainModel;
+			m_lega = mainModel;
 
 			InizializzaListe();
 
-			m_mainModel.GiocatoreAggiunto += OnGiocatoreAggiunto;
-			m_mainModel.GiocatoreRimosso += OnGiocatoreRimosso;
-			m_mainModel.RoseResettate += OnRoseResettate;
+			m_lega.GiocatoreAggiunto += OnGiocatoreAggiunto;
+			m_lega.GiocatoreRimosso += OnGiocatoreRimosso;
+			m_lega.RoseResettate += OnRoseResettate;
 		}
 
 		#region Private methods
@@ -78,10 +78,13 @@ namespace FantaAsta.ViewModels
 
 		private void InizializzaListe()
 		{
-			Portieri = new ObservableCollection<Giocatore>(m_mainModel.Lista.Where(g => g.Ruolo == Ruoli.P));
-			Difensori = new ObservableCollection<Giocatore>(m_mainModel.Lista.Where(g => g.Ruolo == Ruoli.D));
-			Centrocampisti = new ObservableCollection<Giocatore>(m_mainModel.Lista.Where(g => g.Ruolo == Ruoli.C));
-			Attaccanti = new ObservableCollection<Giocatore>(m_mainModel.Lista.Where(g => g.Ruolo == Ruoli.A));
+			if (m_lega.ListaPresente)
+			{
+				Portieri = new ObservableCollection<Giocatore>(m_lega.Lista.Where(g => g.Ruolo == Ruoli.P));
+				Difensori = new ObservableCollection<Giocatore>(m_lega.Lista.Where(g => g.Ruolo == Ruoli.D));
+				Centrocampisti = new ObservableCollection<Giocatore>(m_lega.Lista.Where(g => g.Ruolo == Ruoli.C));
+				Attaccanti = new ObservableCollection<Giocatore>(m_lega.Lista.Where(g => g.Ruolo == Ruoli.A));
+			}
 		}
 
 		private ObservableCollection<Giocatore> SelezionaListaDaRuolo(Ruoli ruolo)

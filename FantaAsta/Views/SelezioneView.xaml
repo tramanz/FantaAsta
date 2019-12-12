@@ -22,7 +22,7 @@
 		<UniformGrid Columns="3" Margin="0,5,0,0">
 			<Button Content="Gestisci rose" FontSize="24" Command="{Binding GestisciRoseCommand}" Width="275" Height="75" Margin="0,0,5,0"/>
 			<Button Content="Svuota rose" FontSize="24" Command="{Binding SvuotaRoseCommand}" Width="275" Height="75" Margin="5,0"/>
-			<Button Content="Importa lista" FontSize="24" Command="{Binding SvuotaRoseCommand}" Width="275" Height="75" Margin="5,0,0,0"/>
+			<Button Content="Importa lista" FontSize="24" Command="{Binding ImportaListaCommand}" Width="275" Height="75" Margin="5,0,0,0"/>
 		</UniformGrid>
 	</UniformGrid>
 

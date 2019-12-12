@@ -1,4 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Windows;
+using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Regions;
 using FantaAsta.Models;
@@ -9,6 +13,8 @@ namespace FantaAsta.ViewModels
 	public class SelezioneViewModel
 	{
 		#region Private fields
+
+		private readonly SynchronizationContext m_syncContext;
 
 		private readonly IRegionManager m_regionManager;
 
@@ -32,12 +38,16 @@ namespace FantaAsta.ViewModels
 
 		public SelezioneViewModel(IRegionManager regionManager, Lega lega)
 		{
+			m_syncContext = SynchronizationContext.Current;
+
 			m_regionManager = regionManager;
 
 			m_lega = lega;
+			m_lega.ApriFileDialog += OnApriFileDialog;
+			m_lega.ListaImportata += OnListaImportata;
 
-			AstaEstivaCommand = new DelegateCommand(AvviaAstaEstiva);
-			AstaInvernaleCommand = new DelegateCommand(AvviaAstaInvernale);
+			AstaEstivaCommand = new DelegateCommand(AvviaAstaEstiva, AbilitaAvviaAsta);
+			AstaInvernaleCommand = new DelegateCommand(AvviaAstaInvernale, AbilitaAvviaAsta);
 			GestisciRoseCommand = new DelegateCommand(GestisciRose);
 			SvuotaRoseCommand = new DelegateCommand(SvuotaRose);
 			ImportaListaCommand = new DelegateCommand(ImportaLista);
@@ -55,6 +65,32 @@ namespace FantaAsta.ViewModels
 			m_regionManager.RequestNavigate("MainRegion", nameof(RoseView), new NavigationParameters { { "Modalità", "Gestione rose" } });
 		}
 
+		#region Event handlers
+
+		private void OnApriFileDialog(object sender, System.EventArgs e)
+		{
+			OpenFileDialog fd = new OpenFileDialog
+			{
+				InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+				Filter = "CSV Files (*.csv)|*.csv"
+			};
+
+			bool? result = fd.ShowDialog();
+
+			if (result.HasValue && result.Value)
+			{
+				m_lega.ImportaLista(fd.FileName);
+			}
+		}
+
+		private void OnListaImportata(object sender, System.EventArgs e)
+		{
+			AstaEstivaCommand?.RaiseCanExecuteChanged();
+			AstaInvernaleCommand?.RaiseCanExecuteChanged();
+		}
+
+		#endregion
+
 		#region Commands
 
 		private void AvviaAstaEstiva()
@@ -65,6 +101,11 @@ namespace FantaAsta.ViewModels
 		private void AvviaAstaInvernale()
 		{
 			NavigateToMain(new NavigationParameters { { "Modalità", "Asta invernale" } });
+		}
+
+		private bool AbilitaAvviaAsta()
+		{
+			return m_lega.ListaPresente;
 		}
 
 		private void GestisciRose()
@@ -81,7 +122,23 @@ namespace FantaAsta.ViewModels
 
 		private void ImportaLista()
 		{
+			if (m_lega.FantaSquadre.Where(s => s.Giocatori.Count() > 0).Count() > 0)
+			{
+				MessageBoxResult result = MessageBoxResult.None;
+				m_syncContext.Send(new SendOrPostCallback((obj) =>
+				{
+					result = MessageBox.Show(Application.Current.MainWindow, "L'import di una nuova lista richiede di resettare le rose. Continuare?", "ATTENZIONE", MessageBoxButton.YesNo, MessageBoxImage.Question);
+				}), null);
 
+				if (result == MessageBoxResult.Yes)
+				{
+					m_lega.AvviaImportaLista();
+				}
+			}
+			else
+			{ 
+				m_lega.AvviaImportaLista();
+			}
 		}
 
 		#endregion

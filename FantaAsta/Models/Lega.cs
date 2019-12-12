@@ -27,7 +27,12 @@ namespace FantaAsta.Models
 		[DataMember(Name = "FantaSquadre")]
 		public List<FantaSquadra> FantaSquadre { get; set; }
 
+		[DataMember(Name ="PercorsoFileLista")]
+		public string PercorsoFileLista { get; set; }
+
 		public bool IsAstaInvernale { get; private set; }
+
+		public bool ListaPresente { get; private set; }
 
 		#endregion
 
@@ -41,11 +46,15 @@ namespace FantaAsta.Models
 
 		public event EventHandler ModalitàAstaInvernale;
 
+		public event EventHandler ApriFileDialog;
+
+		public event EventHandler ListaImportata;
+
 		#endregion
 
 		public Lega()
 		{
-			CaricaListe();
+			ListaPresente = CaricaLista(PercorsoFileLista);
 
 			CaricaFantaSquadre();
 		}
@@ -241,26 +250,32 @@ namespace FantaAsta.Models
 		/// </summary>
 		public void SvuotaRose()
 		{
-			double sum;
-
 			foreach (FantaSquadra squadra in FantaSquadre)
-			{
-				sum = 0;
-
+			{ 
 				foreach (Giocatore giocatore in squadra.Giocatori)
 				{
-					sum += giocatore.Prezzo;
-
 					giocatore.Prezzo = 0;
 
 					Lista.Add(giocatore);
 				}
 
-				squadra.Budget += sum;
+				squadra.Budget = 500;
 				squadra.Giocatori.Clear();
 			}
 
 			RoseResettate?.Invoke(this, System.EventArgs.Empty);
+		}
+
+		public void AvviaImportaLista()
+		{
+			SvuotaRose();
+
+			ApriFileDialog?.Invoke(this, System.EventArgs.Empty);
+		}
+
+		public bool ImportaLista(string filePath)
+		{
+			return CaricaLista(filePath);
 		}
 
 		#endregion
@@ -269,12 +284,34 @@ namespace FantaAsta.Models
 
 		/// <summary>
 		/// Metodo per caricare la lista dei giocatori
+		/// <param name="filePath">Percorso del file .csv della lista</param>
 		/// </summary>
-		private void CaricaListe()
+		private bool CaricaLista(string filePath)
 		{
+			if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+			{
+				return false;
+			}
+
+			if (string.IsNullOrEmpty(PercorsoFileLista))
+			{
+				PercorsoFileLista = Path.Combine(Constants.LIST_DATA_DIRECTORY_PATH, Path.GetFileName(filePath));
+				File.Copy(filePath, PercorsoFileLista);
+			}
+			else if (!PercorsoFileLista.Equals(filePath, StringComparison.Ordinal))
+			{
+				if (File.Exists(PercorsoFileLista))
+				{
+					File.Delete(PercorsoFileLista);
+				}
+
+				PercorsoFileLista = Path.Combine(Constants.LIST_DATA_DIRECTORY_PATH, Path.GetFileName(filePath));
+				File.Copy(filePath, PercorsoFileLista);
+			}
+
 			Lista = new List<Giocatore>();
 
-			using (var reader = new StreamReader(Constants.RAW_DATA_FILE_PATH))
+			using (var reader = new StreamReader(PercorsoFileLista))
 			{
 				while (!reader.EndOfStream)
 				{
@@ -283,6 +320,10 @@ namespace FantaAsta.Models
 					Lista.Add(new Giocatore(Convert.ToInt32(data[0]), (Ruoli)Enum.Parse(typeof(Ruoli), data[1]), data[2], data[3], Convert.ToDouble(data[4])));
 				}
 			}
+
+			ListaImportata?.Invoke(this, System.EventArgs.Empty);
+
+			return true;
 		}
 
 		/// <summary>
