@@ -207,9 +207,6 @@
     <Resource Include="Resources\Fonts\Nunito-Medium.ttf" />
     <Resource Include="Resources\Fonts\Nunito-Regular.ttf" />
     <Resource Include="Resources\Fonts\Nunito-SemiBold.ttf" />
-    <None Include="Resources\Quotazioni_Fantacalcio.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

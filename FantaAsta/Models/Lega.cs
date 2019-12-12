@@ -27,7 +27,7 @@ namespace FantaAsta.Models
 		[DataMember(Name = "FantaSquadre")]
 		public List<FantaSquadra> FantaSquadre { get; set; }
 
-		[DataMember(Name ="PercorsoFileLista")]
+		[DataMember(Name = "PercorsoFileLista")]
 		public string PercorsoFileLista { get; set; }
 
 		public bool IsAstaInvernale { get; private set; }
@@ -54,7 +54,7 @@ namespace FantaAsta.Models
 
 		public Lega()
 		{
-			ListaPresente = CaricaLista(PercorsoFileLista);
+			CaricaLista();
 
 			CaricaFantaSquadre();
 		}
@@ -222,7 +222,7 @@ namespace FantaAsta.Models
 		{
 			IsAstaInvernale = true;
 
-			foreach(FantaSquadra squadra in FantaSquadre)
+			foreach (FantaSquadra squadra in FantaSquadre)
 			{
 				squadra.Budget += 100;
 			}
@@ -251,7 +251,7 @@ namespace FantaAsta.Models
 		public void SvuotaRose()
 		{
 			foreach (FantaSquadra squadra in FantaSquadre)
-			{ 
+			{
 				foreach (Giocatore giocatore in squadra.Giocatori)
 				{
 					giocatore.Prezzo = 0;
@@ -266,6 +266,9 @@ namespace FantaAsta.Models
 			RoseResettate?.Invoke(this, System.EventArgs.Empty);
 		}
 
+		/// <summary>
+		/// Metodo per avvia l'import di una lista di giocatori
+		/// </summary>
 		public void AvviaImportaLista()
 		{
 			SvuotaRose();
@@ -273,9 +276,14 @@ namespace FantaAsta.Models
 			ApriFileDialog?.Invoke(this, System.EventArgs.Empty);
 		}
 
+		/// <summary>
+		/// Metodo per importare una lista di giocatori
+		/// </summary>
+		/// <param name="filePath">Il percorso del file .csv da cui ricavare la lista</param>
+		/// <returns>True se l'operazione è andata a buon fine, false altrimenti</returns>
 		public bool ImportaLista(string filePath)
 		{
-			return CaricaLista(filePath);
+			return CaricaListaDaFile(filePath);
 		}
 
 		#endregion
@@ -283,30 +291,65 @@ namespace FantaAsta.Models
 		#region Private methods
 
 		/// <summary>
-		/// Metodo per caricare la lista dei giocatori
-		/// <param name="filePath">Percorso del file .csv della lista</param>
+		/// Metodo per caricare la lista di giocatori
 		/// </summary>
-		private bool CaricaLista(string filePath)
+		private void CaricaLista()
+		{
+			if (File.Exists(Constants.DATA_FILE_PATH))
+			{
+				using (FileStream fs = new FileStream(Constants.DATA_FILE_PATH, FileMode.Open))
+				{
+					DataContractSerializer ser = new DataContractSerializer(typeof(Lega));
+
+					XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas());
+
+					PercorsoFileLista = ((Lega)ser.ReadObject(reader)).PercorsoFileLista;
+				}
+			}
+
+			CaricaListaDaFile(PercorsoFileLista);
+		}
+
+		/// <summary>
+		/// Metodo per caricare la lista dei giocatori da un file .csv
+		/// </summary>
+		/// <param name="filePath">Percorso del file .csv della lista</param>
+		/// <returns>True se l'operazione è andata a buon fine, false altrimenti</returns>
+		private bool CaricaListaDaFile(string filePath)
 		{
 			if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
 			{
 				return false;
 			}
 
-			if (string.IsNullOrEmpty(PercorsoFileLista))
+			if (!Directory.Exists(Constants.DATA_DIRECTORY_PATH))
 			{
-				PercorsoFileLista = Path.Combine(Constants.LIST_DATA_DIRECTORY_PATH, Path.GetFileName(filePath));
-				File.Copy(filePath, PercorsoFileLista);
+				Directory.CreateDirectory(Constants.DATA_DIRECTORY_PATH);
 			}
-			else if (!PercorsoFileLista.Equals(filePath, StringComparison.Ordinal))
-			{
-				if (File.Exists(PercorsoFileLista))
-				{
-					File.Delete(PercorsoFileLista);
-				}
 
-				PercorsoFileLista = Path.Combine(Constants.LIST_DATA_DIRECTORY_PATH, Path.GetFileName(filePath));
-				File.Copy(filePath, PercorsoFileLista);
+			string fileName = Path.GetFileName(filePath);
+
+			try
+			{
+				if (string.IsNullOrEmpty(PercorsoFileLista))
+				{
+					PercorsoFileLista = Path.Combine(Constants.DATA_DIRECTORY_PATH, fileName);
+					File.Copy(filePath, PercorsoFileLista, true);
+				}
+				else if (!Path.GetFileName(PercorsoFileLista).Equals(fileName, StringComparison.Ordinal))
+				{
+					if (File.Exists(PercorsoFileLista))
+					{
+						File.Delete(PercorsoFileLista);
+					}
+
+					PercorsoFileLista = Path.Combine(Constants.DATA_DIRECTORY_PATH, fileName);
+					File.Copy(filePath, PercorsoFileLista, true);
+				}
+			}
+			catch
+			{
+				return false;
 			}
 
 			Lista = new List<Giocatore>();
@@ -321,6 +364,8 @@ namespace FantaAsta.Models
 				}
 			}
 
+			ListaPresente = true;
+
 			ListaImportata?.Invoke(this, System.EventArgs.Empty);
 
 			return true;
@@ -333,7 +378,7 @@ namespace FantaAsta.Models
 		{
 			if (File.Exists(Constants.DATA_FILE_PATH))
 			{
-				CaricaSquadraDaFile();
+				CaricaFantaSquadreDaFile();
 			}
 			else
 			{
@@ -356,7 +401,7 @@ namespace FantaAsta.Models
 		/// <summary>
 		/// Metodo per caricare le fantasquadre dai dati salvati
 		/// </summary>
-		private void CaricaSquadraDaFile()
+		private void CaricaFantaSquadreDaFile()
 		{
 			FantaSquadre = new List<FantaSquadra>();
 

@@ -57,6 +57,7 @@ namespace FantaAsta.ViewModels
 			m_lega.GiocatoreAggiunto += OnGiocatoreAggiunto;
 			m_lega.GiocatoreRimosso += OnGiocatoreRimosso;
 			m_lega.RoseResettate += OnRoseResettate;
+			m_lega.ListaImportata += OnListaImportata;
 		}
 
 		#region Private methods
@@ -72,6 +73,11 @@ namespace FantaAsta.ViewModels
 		}
 
 		private void OnRoseResettate(object sender, System.EventArgs e)
+		{
+			InizializzaListe();
+		}
+
+		private void OnListaImportata(object sender, System.EventArgs e)
 		{
 			InizializzaListe();
 		}

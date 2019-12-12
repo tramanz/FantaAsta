@@ -87,8 +87,9 @@ namespace FantaAsta.ViewModels
 			m_lega.GiocatoreRimosso += OnGiocatoreRimosso;
 			m_lega.ModalitàAstaInvernale += OnModalitàAstaInvernale;
 			m_lega.RoseResettate += OnRoseResettate;
+			m_lega.ListaImportata += OnListaImportata;
 
-			ModificaCommand = new DelegateCommand<FantaSquadraViewModel>(Modifica);
+			ModificaCommand = new DelegateCommand<FantaSquadraViewModel>(Modifica, AbilitaModifica);
 			IndietroCommand = new DelegateCommand(NavigateToSelezione);
 		}
 
@@ -140,6 +141,11 @@ namespace FantaAsta.ViewModels
 			}
 		}
 
+		private void OnListaImportata(object sender, System.EventArgs e)
+		{
+			ModificaCommand?.RaiseCanExecuteChanged();
+		}
+
 		#endregion
 
 		#region Commands
@@ -148,6 +154,11 @@ namespace FantaAsta.ViewModels
 		{
 			FantaSquadra fantaSquadra = m_lega.FantaSquadre.Where(s => s.Equals(squadraVM.FantaSquadra)).Single();
 			m_dialogService.Show("Modifica", new DialogParameters { { "squadra", fantaSquadra } }, null);
+		}
+
+		private bool AbilitaModifica(FantaSquadraViewModel squadraVM)
+		{
+			return m_lega.ListaPresente;
 		}
 
 		private void NavigateToSelezione()

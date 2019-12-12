@@ -79,12 +79,25 @@ namespace FantaAsta.ViewModels
 
 			if (result.HasValue && result.Value)
 			{
-				m_lega.ImportaLista(fd.FileName);
+				result = m_lega.ImportaLista(fd.FileName);
+
+				if (result.HasValue && !result.Value)
+				{
+					m_syncContext.Send(new SendOrPostCallback((obj) =>
+					{
+						MessageBox.Show(Application.Current.MainWindow, "Errore durante l'import della lista", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
+					}), null);
+				}
 			}
 		}
 
 		private void OnListaImportata(object sender, System.EventArgs e)
 		{
+			m_syncContext.Send(new SendOrPostCallback((obj) =>
+			{
+				MessageBox.Show(Application.Current.MainWindow, "Lista importata con successo", "INFO", MessageBoxButton.OK, MessageBoxImage.Information);
+			}), null);
+
 			AstaEstivaCommand?.RaiseCanExecuteChanged();
 			AstaInvernaleCommand?.RaiseCanExecuteChanged();
 		}
