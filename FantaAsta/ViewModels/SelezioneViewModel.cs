@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using System.Windows;
+using Prism.Commands;
 using Prism.Regions;
 using FantaAsta.Models;
 using FantaAsta.Views;
@@ -74,6 +75,8 @@ namespace FantaAsta.ViewModels
 		private void SvuotaRose()
 		{
 			m_lega.SvuotaRose();
+
+			MessageBox.Show("Rose resettate", "OPERAZIONE COMPLETATA", MessageBoxButton.OK, MessageBoxImage.Information);
 		}
 
 		private void ImportaLista()
