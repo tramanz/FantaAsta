@@ -13,7 +13,7 @@ using FantaAsta.Views;
 
 namespace FantaAsta.ViewModels
 {
-	public class RoseViewModel : BindableBase, INavigationAware, IActiveAware
+	public class RoseViewModel : BindableBase, INavigationAware
 	{
 		#region Private fields
 
@@ -24,8 +24,6 @@ namespace FantaAsta.ViewModels
 		private readonly Lega m_lega;
 
 		private ObservableCollection<FantaSquadraViewModel> m_squadre;
-
-		private bool m_isActive;
 
 		private bool m_isStandalone;
 
@@ -45,32 +43,12 @@ namespace FantaAsta.ViewModels
 			set { SetProperty(ref m_isStandalone, value); }
 		}
 
-		#region IActiveAware
-
-		public bool IsActive
-		{
-			get { return m_isActive; }
-			set { m_isActive = value; IsStandalone = false; }
-		}
-
-		#endregion
-
 		#region Commands
 
 		public DelegateCommand IndietroCommand { get; }
 
 		public DelegateCommand<FantaSquadraViewModel> ModificaCommand { get; }
 		public DelegateCommand<FantaSquadraViewModel> EliminaCommand { get; }
-
-		#endregion
-
-		#endregion
-
-		#region Events
-
-		#region IActiveAware
-
-		public event EventHandler IsActiveChanged { add { } remove { } }
 
 		#endregion
 
@@ -103,11 +81,13 @@ namespace FantaAsta.ViewModels
 
 		public void OnNavigatedTo(NavigationContext navigationContext)
 		{
-			IsStandalone = ((string)navigationContext.Parameters["Modalità"]).Equals("Gestione rose", StringComparison.OrdinalIgnoreCase);
+			IsStandalone = true;
 		}
 
 		public void OnNavigatedFrom(NavigationContext navigationContext)
-		{ }
+		{
+			IsStandalone = false;
+		}
 
 		public bool IsNavigationTarget(NavigationContext navigationContext)
 		{

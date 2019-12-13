@@ -71,7 +71,7 @@ namespace FantaAsta.ViewModels
 
 		private void NavigateToGestioneRose()
 		{
-			m_regionManager.RequestNavigate("MainRegion", nameof(RoseView), new NavigationParameters { { "Modalità", "Gestione rose" } });
+			m_regionManager.RequestNavigate("MainRegion", nameof(RoseView));
 		}
 
 		#region Event handlers

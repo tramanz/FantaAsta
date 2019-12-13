@@ -26,14 +26,14 @@
         <Label Grid.Row="0" Grid.Column="0" Content="Svincolati" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
         <ComboBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Svincolati}" SelectedItem="{Binding SvincolatoSelezionato}" DisplayMemberPath="Nome" Width="250" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,5,5"/>
         <TextBox Grid.Row="2" Grid.Column="0" Text="{Binding PrezzoAcquisto, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringDouble}}" Width="100" Height="50" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5"/>
-        <Button Grid.Row="3" Grid.Column="0" Content="Aggiungi" Command="{Binding AggiungiCommand}" Width="100" Height="25" FontSize="12" Margin="0,5"/>
+        <Button Grid.Row="3" Grid.Column="0" Content="Aggiungi" Command="{Binding AggiungiCommand}" Width="100" Height="30" FontSize="14" Margin="0,5"/>
 
         <Label Grid.Row="0" Grid.Column="1" Content="Rosa" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
         <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Rosa}" SelectedItem="{Binding GiocatoreSelezionato}" DisplayMemberPath="Nome" Width="250" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,5,0,5"/>
         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding PrezzoVendita, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringDouble}}" Width="100" Height="50" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5"/>
-        <Button Grid.Row="3" Grid.Column="1" Content="Rimuovi" Command="{Binding RimuoviCommand}" Width="100" Height="25" FontSize="12" Margin="0,5"/>
+        <Button Grid.Row="3" Grid.Column="1" Content="Rimuovi" Command="{Binding RimuoviCommand}" Width="100" Height="30" FontSize="14" Margin="0,5"/>
         
-        <Button Grid.Row="4" Grid.ColumnSpan="2" Content="Chiudi" Command="{Binding ChiudiCommand}" Width="100" Height="25" FontSize="12" Margin="0,5,0,0"/>
+        <Button Grid.Row="4" Grid.ColumnSpan="2" Content="Chiudi" Command="{Binding ChiudiCommand}" Width="100" Height="30" FontSize="14" Margin="0,5,0,0"/>
     </Grid>
 
 </UserControl>
