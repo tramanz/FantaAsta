@@ -187,4 +187,102 @@
         </Setter>
     </Style>
 
+	<!--Stile bottoni finestra principale-->
+	<Style x:Key="ThreeButtons" TargetType="Button">
+		<Setter Property="Background" Value="Gray"/>
+		<Setter Property="BorderBrush" Value="Transparent" />
+		<Setter Property="ClipToBounds" Value="True"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="Button">
+					<Border Background="{TemplateBinding Background}" CornerRadius="6">
+						<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Style.Triggers>
+			<MultiTrigger>
+				<MultiTrigger.Conditions>
+					<Condition Property="IsMouseOver" Value="True"/>
+					<Condition Property="IsStylusOver" Value="False"/>
+				</MultiTrigger.Conditions>
+				<Setter Property="Background" Value="LightBlue"/>
+			</MultiTrigger>
+		</Style.Triggers>
+	</Style>
+
+	<!--Stile bottone chiusura finestra-->
+	<Style x:Key="ExitButton" TargetType="Button" BasedOn="{StaticResource ThreeButtons}">
+		<Setter Property="Padding" Value="1"/>
+		<Setter Property="Content">
+			<Setter.Value>
+				<Image Stretch="Uniform" Height="12" Width="12">
+					<Image.Source>
+						<DrawingImage>
+							<DrawingImage.Drawing>
+								<GeometryDrawing Brush="Black" Geometry="{StaticResource ExitIcon}"/>
+							</DrawingImage.Drawing>
+						</DrawingImage>
+					</Image.Source>
+				</Image>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!--Stile bottone ridimensionamento finestra-->
+	<Style x:Key="ResizeButton" TargetType="Button" BasedOn="{StaticResource ThreeButtons}">
+		<Setter Property="Padding" Value="1"/>
+		<Style.Triggers>
+			<DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Value="Maximized">
+				<Setter Property="Content">
+					<Setter.Value>
+						<Image Stretch="Uniform" Height="12" Width="12">
+							<Image.Source>
+								<DrawingImage>
+									<DrawingImage.Drawing>
+										<GeometryDrawing Brush="Black" Geometry="{StaticResource MaximizeIcon}"/>
+									</DrawingImage.Drawing>
+								</DrawingImage>
+							</Image.Source>
+						</Image>
+					</Setter.Value>
+				</Setter>
+			</DataTrigger>
+			<DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Value="Normal">
+				<Setter Property="Content">
+					<Setter.Value>
+						<Image Stretch="Uniform" Height="12" Width="12">
+							<Image.Source>
+								<DrawingImage>
+									<DrawingImage.Drawing>
+										<GeometryDrawing Brush="Black" Geometry="{StaticResource RestoreIcon}"/>
+									</DrawingImage.Drawing>
+								</DrawingImage>
+							</Image.Source>
+						</Image>
+					</Setter.Value>
+				</Setter>
+			</DataTrigger>
+		</Style.Triggers>
+	</Style>
+
+	<!--Stile bottone riduzione finestra-->
+	<Style x:Key="MinimizeButton" TargetType="Button" BasedOn="{StaticResource ThreeButtons}">
+		<Setter Property="Padding" Value="1"/>
+		<Setter Property="Content">
+			<Setter.Value>
+				<Image Stretch="Uniform" Height="12" Width="12">
+					<Image.Source>
+						<DrawingImage>
+							<DrawingImage.Drawing>
+								<GeometryDrawing Brush="Black" Geometry="{StaticResource MinimizeIcon}"/>
+							</DrawingImage.Drawing>
+						</DrawingImage>
+					</Image.Source>
+				</Image>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	
 </ResourceDictionary>

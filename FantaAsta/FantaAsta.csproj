@@ -135,6 +135,10 @@
     <Compile Include="Views\StoricoView.xaml.cs">
       <DependentUpon>StoricoView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Resources\Icons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Styles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
