@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Regions;
+using Prism.Services.Dialogs;
 using FantaAsta.Models;
 using FantaAsta.Views;
 
@@ -19,6 +20,8 @@ namespace FantaAsta.ViewModels
 
 		private readonly IRegionManager m_regionManager;
 
+		private readonly IDialogService m_dialogService;
+
 		private readonly Lega m_lega;
 
 		#endregion
@@ -31,17 +34,19 @@ namespace FantaAsta.ViewModels
 		public DelegateCommand AstaInvernaleCommand { get; }
 		public DelegateCommand GestisciRoseCommand { get; }
 		public DelegateCommand SvuotaRoseCommand { get; }
+		public DelegateCommand AggiungiSquadraCommand { get; }
 		public DelegateCommand ImportaListaCommand { get; }
 
 		#endregion
 
 		#endregion
 
-		public SelezioneViewModel(IRegionManager regionManager, Lega lega)
+		public SelezioneViewModel(IRegionManager regionManager, IDialogService dialogService, Lega lega)
 		{
 			m_syncContext = SynchronizationContext.Current;
 
 			m_regionManager = regionManager;
+			m_dialogService = dialogService;
 
 			m_lega = lega;
 			m_lega.ApriFileDialog += OnApriFileDialog;
@@ -51,6 +56,7 @@ namespace FantaAsta.ViewModels
 			AstaInvernaleCommand = new DelegateCommand(AvviaAstaInvernale, AbilitaAvviaAsta);
 			GestisciRoseCommand = new DelegateCommand(GestisciRose);
 			SvuotaRoseCommand = new DelegateCommand(SvuotaRose);
+			AggiungiSquadraCommand = new DelegateCommand(AggiungiSquadra);
 			ImportaListaCommand = new DelegateCommand(ImportaLista);
 		}
 
@@ -136,6 +142,29 @@ namespace FantaAsta.ViewModels
 			m_lega.SvuotaRose();
 
 			MessageBox.Show("Rose resettate", "OPERAZIONE COMPLETATA", MessageBoxButton.OK, MessageBoxImage.Information);
+		}
+
+		private void AggiungiSquadra()
+		{
+			m_dialogService.ShowDialog("Aggiungi", null, (r1) =>
+			{
+				if (r1 is AggiungiSquadraResult r2)
+				{
+					if (r2.Result == ButtonResult.Yes)
+					{
+						bool r3 = m_lega.AggiungiSquadra(r2.Nome);
+
+						if (r3)
+						{
+							MessageBox.Show("Squadra aggiunta", "OPERAZIONE COMPLETATA", MessageBoxButton.OK, MessageBoxImage.Information);
+						}
+						else
+						{
+							MessageBox.Show("Non è possibile aggiungere una squadra con lo stesso nome di una già esistente", "ERRORE", MessageBoxButton.OK, MessageBoxImage.Error);
+						}
+					}
+				}
+			});
 		}
 
 		private void ImportaLista()

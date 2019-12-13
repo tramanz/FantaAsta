@@ -2,34 +2,50 @@
 
 namespace FantaAsta.EventArgs
 {
-	public class GiocatoreAggiuntoEventArgs : System.EventArgs
+	public class FantaSquadraEventArgs : System.EventArgs
 	{
-		public Giocatore Giocatore { get; }
+		#region Properties
 
 		public FantaSquadra FantaSquadra { get; }
 
+		#endregion
+
+		public FantaSquadraEventArgs(FantaSquadra fantaSquadra)
+		{
+			FantaSquadra = fantaSquadra;
+		}
+	}
+
+	public class GiocatoreAggiuntoEventArgs : FantaSquadraEventArgs
+	{
+		#region Properties
+
+		public Giocatore Giocatore { get; }
+
 		public double PrezzoAcquisto { get; }
 
-		public GiocatoreAggiuntoEventArgs(Giocatore giocatore, FantaSquadra fantaSquadra, double prezzo)
+		#endregion
+
+		public GiocatoreAggiuntoEventArgs(Giocatore giocatore, FantaSquadra fantaSquadra, double prezzo) : base (fantaSquadra)
 		{
 			Giocatore = giocatore;
-			FantaSquadra = fantaSquadra;
 			PrezzoAcquisto = prezzo;
 		}
 	}
 
-	public class GiocatoreRimossoEventArgs : System.EventArgs
+	public class GiocatoreRimossoEventArgs : FantaSquadraEventArgs
 	{
+		#region Properties
+		
 		public Giocatore Giocatore { get; }
-
-		public FantaSquadra FantaSquadra { get; }
 
 		public double PrezzoVendita { get; }
 
-		public GiocatoreRimossoEventArgs(Giocatore giocatore, FantaSquadra fantaSquadra, double prezzo)
+		#endregion
+
+		public GiocatoreRimossoEventArgs(Giocatore giocatore, FantaSquadra fantaSquadra, double prezzo) : base(fantaSquadra)
 		{
 			Giocatore = giocatore;
-			FantaSquadra = fantaSquadra;
 			PrezzoVendita = prezzo;
 		}
 	}

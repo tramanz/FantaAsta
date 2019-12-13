@@ -40,6 +40,8 @@ namespace FantaAsta.Models
 
 		public event EventHandler<GiocatoreAggiuntoEventArgs> GiocatoreAggiunto;
 		public event EventHandler<GiocatoreRimossoEventArgs> GiocatoreRimosso;
+		public event EventHandler<FantaSquadraEventArgs> FantaSquadraAggiunta;
+		public event EventHandler<FantaSquadraEventArgs> FantaSquadraRimossa;
 		public event EventHandler RoseResettate;
 		public event EventHandler ModalitàAstaInvernale;
 		public event EventHandler ApriFileDialog;
@@ -269,6 +271,41 @@ namespace FantaAsta.Models
 			SvuotaRose();
 
 			ApriFileDialog?.Invoke(this, System.EventArgs.Empty);
+		}
+
+		/// <summary>
+		/// Metodo per aggiungere una fantasquadra alla lega
+		/// </summary>
+		/// <param name="nome">Il nome della fantasquadra</param>
+		public bool AggiungiSquadra(string nome)
+		{
+			if (FantaSquadre.Select(s => s.Nome).Contains(nome))
+				return false;
+
+			FantaSquadra squadra = new FantaSquadra(nome);
+
+			FantaSquadre.Add(squadra);
+			FantaSquadre.OrderBy(s => s.Nome);
+
+			FantaSquadraAggiunta?.Invoke(this, new FantaSquadraEventArgs(squadra));
+
+			return true;
+		}
+
+		/// <summary>
+		/// Metodo per rimuovere una fantasquadra dalla lega
+		/// </summary>
+		/// <param name="nome">Il nome della fantasquadra</param>
+		public void RimuoviSquadra(string nome)
+		{
+			FantaSquadra squadra = FantaSquadre.Where(s => s.Nome.Equals(nome)).SingleOrDefault();
+
+			if (squadra != null)
+			{
+				FantaSquadre.Remove(squadra);
+
+				FantaSquadraRimossa?.Invoke(this, new FantaSquadraEventArgs(squadra));
+			}
 		}
 
 		/// <summary>

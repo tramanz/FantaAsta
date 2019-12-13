@@ -25,6 +25,7 @@ namespace FantaAsta
 		protected override void RegisterTypes(IContainerRegistry containerRegistry)
 		{
 			containerRegistry.RegisterDialog<ModificaView, ModificaViewModel>("Modifica");
+			containerRegistry.RegisterDialog<AggiungiSquadraView, AggiungiSquadraViewModel>("Aggiungi");
 
 			containerRegistry.RegisterSingleton<Lega>();
 		}

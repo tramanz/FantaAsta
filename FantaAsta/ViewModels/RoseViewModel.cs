@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using Prism;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -23,16 +23,21 @@ namespace FantaAsta.ViewModels
 
 		private readonly Lega m_lega;
 
+		private ObservableCollection<FantaSquadraViewModel> m_squadre;
+
 		private bool m_isActive;
 
-		// Variabili per gestire la visualizzazione del tasto "Indietro"
 		private bool m_isStandalone;
 
 		#endregion
 
 		#region Properties
 
-		public List<FantaSquadraViewModel> Squadre { get; }
+		public ObservableCollection<FantaSquadraViewModel> Squadre
+		{ 
+			get { return m_squadre; }
+			private set { SetProperty(ref m_squadre, value); }
+		}
 
 		public bool IsStandalone
 		{
@@ -52,9 +57,10 @@ namespace FantaAsta.ViewModels
 
 		#region Commands
 
-		public DelegateCommand<FantaSquadraViewModel> ModificaCommand { get; private set; }
-
 		public DelegateCommand IndietroCommand { get; }
+
+		public DelegateCommand<FantaSquadraViewModel> ModificaCommand { get; }
+		public DelegateCommand<FantaSquadraViewModel> EliminaCommand { get; }
 
 		#endregion
 
@@ -76,21 +82,19 @@ namespace FantaAsta.ViewModels
 			m_dialogService = dialogService;
 
 			m_lega = lega;
-
-			Squadre = new List<FantaSquadraViewModel>();
-			foreach (FantaSquadra squadra in m_lega.FantaSquadre)
-			{
-				Squadre.Add(new FantaSquadraViewModel(squadra));
-			}
-
 			m_lega.GiocatoreAggiunto += OnGiocatoreAggiunto;
 			m_lega.GiocatoreRimosso += OnGiocatoreRimosso;
+			m_lega.FantaSquadraAggiunta += OnFantaSquadraAggiunta;
+			m_lega.FantaSquadraRimossa += OnFantaSquadraRimossa;
 			m_lega.ModalitàAstaInvernale += OnModalitàAstaInvernale;
 			m_lega.RoseResettate += OnRoseResettate;
 			m_lega.ListaImportata += OnListaImportata;
 
-			ModificaCommand = new DelegateCommand<FantaSquadraViewModel>(Modifica, AbilitaModifica);
+			Squadre = new ObservableCollection<FantaSquadraViewModel>(m_lega.FantaSquadre.Select(s => new FantaSquadraViewModel(s)));
+
 			IndietroCommand = new DelegateCommand(NavigateToSelezione);
+			ModificaCommand = new DelegateCommand<FantaSquadraViewModel>(Modifica, AbilitaModifica);
+			EliminaCommand = new DelegateCommand<FantaSquadraViewModel>(Elimina);
 		}
 
 		#region Public methods
@@ -124,6 +128,25 @@ namespace FantaAsta.ViewModels
 			Squadre.Where(s => s.FantaSquadra.Equals(e.FantaSquadra)).Single().RimuoviGiocatore(e.Giocatore);
 		}
 
+		private void OnFantaSquadraAggiunta(object sender, FantaSquadraEventArgs e)
+		{
+			Squadre.Add(new FantaSquadraViewModel(e.FantaSquadra));
+			Squadre = new ObservableCollection<FantaSquadraViewModel>(Squadre.OrderBy(s => s.Nome));
+		}
+
+		private void OnFantaSquadraRimossa(object sender, FantaSquadraEventArgs e)
+		{
+			MessageBoxResult res = MessageBox.Show("Sei sicuro di voler eliminare la fanta squadra?", "ATTENZIONE", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+			if (res == MessageBoxResult.Yes)
+			{
+				FantaSquadraViewModel squadraVM = Squadre.Where(s => s.Nome.Equals(e.FantaSquadra.Nome, StringComparison.Ordinal)).SingleOrDefault();
+				Squadre.Remove(squadraVM);
+
+				MessageBox.Show("Squadra eliminata", "OPERAZIONE COMPLETATA", MessageBoxButton.OK, MessageBoxImage.Information);
+			}
+		}
+
 		private void OnModalitàAstaInvernale(object sender, System.EventArgs e)
 		{
 			foreach (FantaSquadraViewModel squadraVm in Squadre)
@@ -150,10 +173,15 @@ namespace FantaAsta.ViewModels
 
 		#region Commands
 
+		private void Elimina(FantaSquadraViewModel squadraVM)
+		{
+			m_lega.RimuoviSquadra(squadraVM.Nome);
+		}
+
 		private void Modifica(FantaSquadraViewModel squadraVM)
 		{
 			FantaSquadra fantaSquadra = m_lega.FantaSquadre.Where(s => s.Equals(squadraVM.FantaSquadra)).Single();
-			m_dialogService.Show("Modifica", new DialogParameters { { "squadra", fantaSquadra } }, null);
+			m_dialogService.ShowDialog("Modifica", new DialogParameters { { "squadra", fantaSquadra } }, null);
 		}
 
 		private bool AbilitaModifica(FantaSquadraViewModel squadraVM)

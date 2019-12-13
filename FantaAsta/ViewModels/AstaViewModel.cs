@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Timers;
@@ -8,6 +9,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using FantaAsta.Models;
 using FantaAsta.Enums;
+using FantaAsta.EventArgs;
 
 namespace FantaAsta.ViewModels
 {
@@ -19,15 +21,13 @@ namespace FantaAsta.ViewModels
 
 		private readonly Lega m_lega;
 
-		private int m_repetitions;
-
-		private string m_ruoloSelezionato;
-
 		private Giocatore m_giocatoreCorrente;
 
 		private string m_squadraSelezionata;
-
+		private string m_ruoloSelezionato;
 		private string m_prezzo;
+
+		private int m_repetitions;
 
 		#endregion
 
@@ -35,13 +35,7 @@ namespace FantaAsta.ViewModels
 
 		public List<string> Ruoli => new List<string> { "P", "D", "C", "A" };
 
-		public List<string> Squadre => m_lega?.FantaSquadre.Select(s => s.Nome).ToList();
-
-		public string RuoloSelezionato
-		{
-			get { return m_ruoloSelezionato; }
-			set { SetProperty(ref m_ruoloSelezionato, value); EstraiGiocatoreCommand?.RaiseCanExecuteChanged(); }
-		}
+		public ObservableCollection<string> Squadre { get; }
 
 		public Giocatore GiocatoreCorrente
 		{
@@ -53,6 +47,12 @@ namespace FantaAsta.ViewModels
 		{
 			get { return m_squadraSelezionata; }
 			set { SetProperty(ref m_squadraSelezionata, value); AssegnaGiocatoreCommand?.RaiseCanExecuteChanged(); }
+		}
+
+		public string RuoloSelezionato
+		{
+			get { return m_ruoloSelezionato; }
+			set { SetProperty(ref m_ruoloSelezionato, value); EstraiGiocatoreCommand?.RaiseCanExecuteChanged(); }
 		}
 
 		public string Prezzo
@@ -73,15 +73,21 @@ namespace FantaAsta.ViewModels
 		public AstaViewModel(Lega lega)
 		{
 			m_lega = lega;
+			m_lega.FantaSquadraAggiunta += OnFantaSquadraAggiunta;
+			m_lega.FantaSquadraRimossa += OnFantaSquadraRimossa;
 
 			m_timer = new Timer { AutoReset = true, Enabled = false, Interval = 50 };
 			m_timer.Elapsed += OnTick;
+
+			Squadre = new ObservableCollection<string>(m_lega?.FantaSquadre.Select(s => s.Nome));
 
 			EstraiGiocatoreCommand = new DelegateCommand(EstraiGiocatore, AbilitaEstraiGiocatore);
 			AssegnaGiocatoreCommand = new DelegateCommand(AssegnaGiocatore, AbilitaAssegnaGiocatore);
 		}
 
 		#region Private methods
+
+		#region Event handlers
 
 		private void OnTick(object sender, ElapsedEventArgs e)
 		{
@@ -104,6 +110,19 @@ namespace FantaAsta.ViewModels
 				m_timer.Interval += 50;
 			}
 		}
+
+		private void OnFantaSquadraAggiunta(object sender, FantaSquadraEventArgs e)
+		{
+			Squadre.Add(e.FantaSquadra.Nome);
+			Squadre.OrderBy(s => s);
+		}
+
+		private void OnFantaSquadraRimossa(object sender, FantaSquadraEventArgs e)
+		{
+			Squadre.Remove(e.FantaSquadra.Nome);
+		}
+
+		#endregion
 
 		#region Commands
 

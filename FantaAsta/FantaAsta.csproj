@@ -103,6 +103,7 @@
     <Compile Include="Utilities\Constants.cs" />
     <Compile Include="Utilities\Enums.cs" />
     <Compile Include="Utilities\EventArgs.cs" />
+    <Compile Include="ViewModels\AggiungiSquadraViewModel.cs" />
     <Compile Include="ViewModels\AstaViewModel.cs" />
     <Compile Include="ViewModels\ListaViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -110,6 +111,9 @@
     <Compile Include="ViewModels\RoseViewModel.cs" />
     <Compile Include="ViewModels\SelezioneViewModel.cs" />
     <Compile Include="ViewModels\StoricoViewModel.cs" />
+    <Compile Include="Views\AggiungiSquadraView.xaml.cs">
+      <DependentUpon>AggiungiSquadraView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AstaView.xaml.cs">
       <DependentUpon>AstaView.xaml</DependentUpon>
     </Compile>
@@ -129,6 +133,10 @@
       <DependentUpon>StoricoView.xaml</DependentUpon>
     </Compile>
     <Page Include="Resources\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AggiungiSquadraView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
