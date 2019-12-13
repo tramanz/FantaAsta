@@ -7,6 +7,7 @@ using Prism.Unity;
 using FantaAsta.Models;
 using FantaAsta.Modules;
 using FantaAsta.Regions;
+using FantaAsta.Utilities;
 using FantaAsta.ViewModels;
 using FantaAsta.Views;
 
@@ -26,6 +27,8 @@ namespace FantaAsta
 		{
 			containerRegistry.RegisterDialog<ModificaView, ModificaViewModel>("Modifica");
 			containerRegistry.RegisterDialog<AggiungiSquadraView, AggiungiSquadraViewModel>("Aggiungi");
+
+			containerRegistry.RegisterDialogWindow<DialogWindow>();
 
 			containerRegistry.RegisterSingleton<Lega>();
 		}

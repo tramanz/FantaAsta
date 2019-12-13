@@ -101,6 +101,9 @@
     <Compile Include="Modules\SelezioneModule.cs" />
     <Compile Include="Regions\TabControlRegionAdapter.cs" />
     <Compile Include="Utilities\Constants.cs" />
+    <Compile Include="Utilities\DialogWindow.xaml.cs">
+      <DependentUpon>DialogWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\Enums.cs" />
     <Compile Include="Utilities\EventArgs.cs" />
     <Compile Include="ViewModels\AggiungiSquadraViewModel.cs" />
@@ -133,6 +136,10 @@
       <DependentUpon>StoricoView.xaml</DependentUpon>
     </Compile>
     <Page Include="Resources\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utilities\DialogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,0 +1,22 @@
+﻿<Window
+	x:Class="FantaAsta.Utilities.DialogWindow" Name="root"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	WindowStyle="None" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+	Background="Transparent" AllowsTransparency="True">
+
+	<Window.Style>
+		<Style TargetType="Window">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="Window">
+						<Border Background="LightGray" BorderThickness="2" BorderBrush="Black" CornerRadius="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+							<ContentPresenter Content="{Binding Content, Source={x:Reference Name=root}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+						</Border>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</Window.Style>
+
+</Window>
