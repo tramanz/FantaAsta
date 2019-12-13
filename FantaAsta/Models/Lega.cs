@@ -302,6 +302,15 @@ namespace FantaAsta.Models
 
 			if (squadra != null)
 			{
+				foreach (Giocatore giocatore in squadra.Giocatori)
+				{
+					giocatore.Prezzo = 0;
+
+					Lista.Add(giocatore);
+
+					GiocatoreRimosso?.Invoke(this, new GiocatoreRimossoEventArgs(giocatore, squadra, giocatore.Prezzo));
+				}
+
 				FantaSquadre.Remove(squadra);
 
 				FantaSquadraRimossa?.Invoke(this, new FantaSquadraEventArgs(squadra));
@@ -408,25 +417,11 @@ namespace FantaAsta.Models
 		/// </summary>
 		private void CaricaFantaSquadre()
 		{
+			FantaSquadre = new List<FantaSquadra>();
+
 			if (File.Exists(Constants.DATA_FILE_PATH))
 			{
 				CaricaFantaSquadreDaFile();
-			}
-			else
-			{
-				FantaSquadre = new List<FantaSquadra>
-				{
-					new FantaSquadra("Trama"),
-					new FantaSquadra("Busi"),
-					new FantaSquadra("Mirco"),
-					new FantaSquadra("Tommi"),
-					new FantaSquadra("Mac"),
-					new FantaSquadra("Sabbi"),
-					new FantaSquadra("Sandro"),
-					new FantaSquadra("Scudi"),
-					new FantaSquadra("Caso"),
-					new FantaSquadra("Ciucci")
-				}.OrderBy(s => s.Nome).ToList();
 			}
 		}
 
@@ -435,8 +430,6 @@ namespace FantaAsta.Models
 		/// </summary>
 		private void CaricaFantaSquadreDaFile()
 		{
-			FantaSquadre = new List<FantaSquadra>();
-
 			using (FileStream fs = new FileStream(Constants.DATA_FILE_PATH, FileMode.Open))
 			{
 				DataContractSerializer ser = new DataContractSerializer(typeof(Lega));

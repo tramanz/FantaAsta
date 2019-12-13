@@ -34,7 +34,7 @@ namespace FantaAsta.ViewModels
 		#region Properties
 
 		public ObservableCollection<FantaSquadraViewModel> Squadre
-		{ 
+		{
 			get { return m_squadre; }
 			private set { SetProperty(ref m_squadre, value); }
 		}
@@ -90,7 +90,9 @@ namespace FantaAsta.ViewModels
 			m_lega.RoseResettate += OnRoseResettate;
 			m_lega.ListaImportata += OnListaImportata;
 
-			Squadre = new ObservableCollection<FantaSquadraViewModel>(m_lega.FantaSquadre.Select(s => new FantaSquadraViewModel(s)));
+			Squadre = m_lega.FantaSquadre.Count > 0 ?
+				new ObservableCollection<FantaSquadraViewModel>(m_lega.FantaSquadre.Select(s => new FantaSquadraViewModel(s))) :
+				new ObservableCollection<FantaSquadraViewModel>();
 
 			IndietroCommand = new DelegateCommand(NavigateToSelezione);
 			ModificaCommand = new DelegateCommand<FantaSquadraViewModel>(Modifica, AbilitaModifica);
@@ -136,14 +138,11 @@ namespace FantaAsta.ViewModels
 
 		private void OnFantaSquadraRimossa(object sender, FantaSquadraEventArgs e)
 		{
-			MessageBoxResult res = MessageBox.Show("Sei sicuro di voler eliminare la fanta squadra?", "ATTENZIONE", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+			FantaSquadraViewModel squadraVM = Squadre.Where(s => s.Nome.Equals(e.FantaSquadra.Nome, StringComparison.Ordinal)).SingleOrDefault();
 
-			if (res == MessageBoxResult.Yes)
+			if (squadraVM != null)
 			{
-				FantaSquadraViewModel squadraVM = Squadre.Where(s => s.Nome.Equals(e.FantaSquadra.Nome, StringComparison.Ordinal)).SingleOrDefault();
 				Squadre.Remove(squadraVM);
-
-				MessageBox.Show("Squadra eliminata", "OPERAZIONE COMPLETATA", MessageBoxButton.OK, MessageBoxImage.Information);
 			}
 		}
 
@@ -175,7 +174,14 @@ namespace FantaAsta.ViewModels
 
 		private void Elimina(FantaSquadraViewModel squadraVM)
 		{
-			m_lega.RimuoviSquadra(squadraVM.Nome);
+			MessageBoxResult res = MessageBox.Show("Sei sicuro di voler eliminare la fanta squadra?", "ATTENZIONE", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+			if (res == MessageBoxResult.Yes)
+			{
+				m_lega.RimuoviSquadra(squadraVM.Nome);
+
+				MessageBox.Show("Squadra eliminata", "OPERAZIONE COMPLETATA", MessageBoxButton.OK, MessageBoxImage.Information);
+			}
 		}
 
 		private void Modifica(FantaSquadraViewModel squadraVM)
@@ -202,7 +208,7 @@ namespace FantaAsta.ViewModels
 	public class FantaSquadraViewModel : BindableBase
 	{
 		#region Private fields
-		
+
 		private ObservableCollection<Giocatore> m_giocatori;
 
 		private string m_budget;

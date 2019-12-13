@@ -52,29 +52,41 @@
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 						<Border BorderBrush="Black" BorderThickness="2" CornerRadius="3" Margin="5,0">
-							<StackPanel Width="250" Margin="3">
-								<Button Content="Elimina" Command="{Binding DataContext.EliminaCommand, Source={x:Reference Name=Rose}}" CommandParameter="{Binding}" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" Width="125" Height="50" Margin="0,5">
-									<Button.Style>
-										<Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-											<Style.Triggers>
-												<DataTrigger Binding="{Binding DataContext.IsStandalone, Source={x:Reference Name=Rose}}" Value="True">
-													<Setter Property="Visibility" Value="Visible"/>
-												</DataTrigger>
-												<DataTrigger Binding="{Binding DataContext.IsStandalone, Source={x:Reference Name=Rose}}" Value="False">
-													<Setter Property="Visibility" Value="Collapsed"/>
-												</DataTrigger>
-											</Style.Triggers>
-										</Style>
-									</Button.Style>
-								</Button>
-								<Button Content="Modifica" Command="{Binding DataContext.ModificaCommand, Source={x:Reference Name=Rose}}" CommandParameter="{Binding}" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" Width="125" Height="50" Margin="0,5"/>
+							<StackPanel Width="275" Margin="3">
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition/>
+										<ColumnDefinition/>
+									</Grid.ColumnDefinitions>
+
+									<Button Grid.Column="0" Content="Modifica" Command="{Binding DataContext.ModificaCommand, Source={x:Reference Name=Rose}}" CommandParameter="{Binding}" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" Width="125" Height="40" Margin="5"/>
+									<Button Grid.Column="1" Content="Elimina" Command="{Binding DataContext.EliminaCommand, Source={x:Reference Name=Rose}}" CommandParameter="{Binding}" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" Width="125" Height="40" Margin="5">
+										<Button.Style>
+											<Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+												<Style.Triggers>
+													<DataTrigger Binding="{Binding DataContext.IsStandalone, Source={x:Reference Name=Rose}}" Value="True">
+														<Setter Property="Visibility" Value="Visible"/>
+													</DataTrigger>
+													<DataTrigger Binding="{Binding DataContext.IsStandalone, Source={x:Reference Name=Rose}}" Value="False">
+														<Setter Property="Visibility" Value="Collapsed"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</Button.Style>
+									</Button>
+								</Grid>
+
 								<Label Content="{Binding Nome}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,5"/>
+								
 								<Separator Background="Black" Margin="5"/>
+								
 								<StackPanel Margin="0,5" Orientation="Horizontal" HorizontalAlignment="Center">
 									<Label Content="Budget:"/>
 									<Label Content="{Binding Budget}"/>
 								</StackPanel>
+								
 								<Separator Background="Black" Margin="5"/>
+
 								<ItemsControl ItemsSource="{Binding Giocatori}" Margin="0,5">
 									<ItemsControl.ItemsPanel>
 										<ItemsPanelTemplate>

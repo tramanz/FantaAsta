@@ -51,6 +51,8 @@ namespace FantaAsta.ViewModels
 			m_lega = lega;
 			m_lega.ApriFileDialog += OnApriFileDialog;
 			m_lega.ListaImportata += OnListaImportata;
+			m_lega.FantaSquadraAggiunta += AggiornaComandiAsta;
+			m_lega.FantaSquadraRimossa += AggiornaComandiAsta;
 
 			AstaEstivaCommand = new DelegateCommand(AvviaAstaEstiva, AbilitaAvviaAsta);
 			AstaInvernaleCommand = new DelegateCommand(AvviaAstaInvernale, AbilitaAvviaAsta);
@@ -109,6 +111,11 @@ namespace FantaAsta.ViewModels
 				MessageBox.Show(Application.Current.MainWindow, "Lista importata con successo", "INFO", MessageBoxButton.OK, MessageBoxImage.Information);
 			}), null);
 
+			AggiornaComandiAsta(sender, e);
+		}
+
+		private void AggiornaComandiAsta(object sender, System.EventArgs e)
+		{
 			AstaEstivaCommand?.RaiseCanExecuteChanged();
 			AstaInvernaleCommand?.RaiseCanExecuteChanged();
 		}
@@ -129,7 +136,7 @@ namespace FantaAsta.ViewModels
 
 		private bool AbilitaAvviaAsta()
 		{
-			return m_lega.ListaPresente;
+			return m_lega.ListaPresente && m_lega.FantaSquadre.Count > 0;
 		}
 
 		private void GestisciRose()
@@ -148,20 +155,20 @@ namespace FantaAsta.ViewModels
 		{
 			m_dialogService.ShowDialog("Aggiungi", null, (r1) =>
 			{
-				if (r1 is AggiungiSquadraResult r2)
+				if (r1 is AggiungiSquadraResult r2 && r2.Result == ButtonResult.Yes)
 				{
-					if (r2.Result == ButtonResult.Yes)
-					{
-						bool r3 = m_lega.AggiungiSquadra(r2.Nome);
+					bool r3 = m_lega.AggiungiSquadra(r2.Nome);
 
-						if (r3)
-						{
-							MessageBox.Show("Squadra aggiunta", "OPERAZIONE COMPLETATA", MessageBoxButton.OK, MessageBoxImage.Information);
-						}
-						else
-						{
-							MessageBox.Show("Non è possibile aggiungere una squadra con lo stesso nome di una già esistente", "ERRORE", MessageBoxButton.OK, MessageBoxImage.Error);
-						}
+					if (r3)
+					{
+						MessageBox.Show("Squadra aggiunta", "OPERAZIONE COMPLETATA", MessageBoxButton.OK, MessageBoxImage.Information);
+
+						AstaEstivaCommand?.RaiseCanExecuteChanged();
+						AstaInvernaleCommand?.RaiseCanExecuteChanged();
+					}
+					else
+					{
+						MessageBox.Show("Non è possibile aggiungere una squadra con lo stesso nome di una già esistente", "ERRORE", MessageBoxButton.OK, MessageBoxImage.Error);
 					}
 				}
 			});
@@ -183,7 +190,7 @@ namespace FantaAsta.ViewModels
 				}
 			}
 			else
-			{ 
+			{
 				m_lega.AvviaImportaLista();
 			}
 		}
