@@ -162,7 +162,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
-                    <Border x:Name="Border" BorderThickness="2" BorderBrush="Black" CornerRadius="8,8,0,0" MinWidth="100">
+                    <Border x:Name="Border" BorderThickness="2" BorderBrush="Black" CornerRadius="8,8,0,0" MinWidth="120">
                         <ContentPresenter x:Name="Content" ContentSource="Header" VerticalAlignment="Center" TextElement.FontSize="24" HorizontalAlignment="Center" Margin="10,2"/>
                     </Border>
                     <ControlTemplate.Triggers>

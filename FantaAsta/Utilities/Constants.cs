@@ -11,6 +11,9 @@ namespace FantaAsta.Utilities
 		public static string DATA_DIRECTORY_PATH = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "FantaLegaManager");
 		public static string DATA_FILE_PATH = Path.Combine(DATA_DIRECTORY_PATH, "FantaLegaData.xml");
 
+		public const double BUDGET_ESTIVO = 500;
+		public const double BUDGET_INVERNALE = 100;
+
 		public static Squadra ATALANTA = new Squadra("Atalanta", new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")), new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1E71B8")));
 		public static Squadra BOLOGNA = new Squadra("Bologna", new SolidColorBrush((Color)ColorConverter.ConvertFromString("#A21C26")), new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1A2F48")));
 		public static Squadra BRESCIA = new Squadra("Brescia", new SolidColorBrush((Color)ColorConverter.ConvertFromString("#004E8E")), new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF")));

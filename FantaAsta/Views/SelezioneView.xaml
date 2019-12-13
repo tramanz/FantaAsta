@@ -5,24 +5,20 @@
 	xmlns:prism="http://prismlibrary.com/"
 	prism:ViewModelLocator.AutoWireViewModel="True">
 
-	<UniformGrid Background="LightGray" Rows="5" Margin="0,40" HorizontalAlignment="Center" VerticalAlignment="Center">
-		<Border Background="LightBlue" CornerRadius="6" HorizontalAlignment="Center" VerticalAlignment="Center">
-			<TextBlock Text="FANTA LEGA MANAGER" FontFamily="{StaticResource NunitoBold}" FontSize="48" Margin="10"/>
+	<UniformGrid Background="LightGray" Rows="3" Margin="0,40" HorizontalAlignment="Center" VerticalAlignment="Center">
+		<Border Background="LightBlue" CornerRadius="6" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,15">
+			<TextBlock Text="FANTA LEGA MANAGER" FontFamily="{StaticResource NunitoBold}" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 		</Border>
-		
-		<Label Content="Seleziona modalità" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
 
-		<UniformGrid Columns="2" Margin="0,5">
+		<UniformGrid Columns="2" Margin="0,15">
 			<Button Content="Asta estiva" FontSize="24" Command="{Binding AstaEstivaCommand}" Width="275" Height="75" Margin="0,0,5,0"/>
 			<Button Content="Asta invernale" FontSize="24" Command="{Binding AstaInvernaleCommand}" Width="275" Height="75" Margin="5,0,0,0"/>
 		</UniformGrid>
 
-		<Label Content="Comandi utili" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5"/>
-
-		<UniformGrid Columns="3" Margin="0,5,0,0">
-			<Button Content="Gestisci rose" FontSize="24" Command="{Binding GestisciRoseCommand}" Width="275" Height="75" Margin="0,0,5,0"/>
-			<Button Content="Svuota rose" FontSize="24" Command="{Binding SvuotaRoseCommand}" Width="275" Height="75" Margin="5,0"/>
-			<Button Content="Importa lista" FontSize="24" Command="{Binding ImportaListaCommand}" Width="275" Height="75" Margin="5,0,0,0"/>
+		<UniformGrid Columns="3" Margin="0,15,0,0">
+			<Button Content="Gestisci rose" FontSize="24" Command="{Binding GestisciRoseCommand}" Width="275" Height="75" Margin="0,0,10,0"/>
+			<Button Content="Svuota rose" FontSize="24" Command="{Binding SvuotaRoseCommand}" Width="275" Height="75" Margin="10,0"/>
+			<Button Content="Importa lista" FontSize="24" Command="{Binding ImportaListaCommand}" Width="275" Height="75" Margin="10,0,0,0"/>
 		</UniformGrid>
 	</UniformGrid>
 

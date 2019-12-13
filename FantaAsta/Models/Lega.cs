@@ -22,32 +22,27 @@ namespace FantaAsta.Models
 
 		#region Properties
 
-		public List<Giocatore> Lista { get; private set; }
-
 		[DataMember(Name = "FantaSquadre")]
 		public List<FantaSquadra> FantaSquadre { get; set; }
 
 		[DataMember(Name = "PercorsoFileLista")]
 		public string PercorsoFileLista { get; set; }
 
-		public bool IsAstaInvernale { get; private set; }
+		public List<Giocatore> Lista { get; private set; }
 
 		public bool ListaPresente { get; private set; }
+
+		public bool IsAstaInvernale { get; private set; }
 
 		#endregion
 
 		#region Events
 
 		public event EventHandler<GiocatoreAggiuntoEventArgs> GiocatoreAggiunto;
-
 		public event EventHandler<GiocatoreRimossoEventArgs> GiocatoreRimosso;
-
 		public event EventHandler RoseResettate;
-
 		public event EventHandler ModalitàAstaInvernale;
-
 		public event EventHandler ApriFileDialog;
-
 		public event EventHandler ListaImportata;
 
 		#endregion
@@ -224,7 +219,7 @@ namespace FantaAsta.Models
 
 			foreach (FantaSquadra squadra in FantaSquadre)
 			{
-				squadra.Budget += 100;
+				squadra.Budget += Constants.BUDGET_INVERNALE;
 			}
 
 			ModalitàAstaInvernale?.Invoke(this, System.EventArgs.Empty);
@@ -239,7 +234,7 @@ namespace FantaAsta.Models
 
 			foreach (FantaSquadra squadra in FantaSquadre)
 			{
-				squadra.Budget -= 100;
+				squadra.Budget -= Constants.BUDGET_INVERNALE;
 			}
 
 			ModalitàAstaInvernale?.Invoke(this, System.EventArgs.Empty);
@@ -259,7 +254,7 @@ namespace FantaAsta.Models
 					Lista.Add(giocatore);
 				}
 
-				squadra.Budget = 500;
+				squadra.Budget = Constants.BUDGET_ESTIVO;
 				squadra.Giocatori.Clear();
 			}
 

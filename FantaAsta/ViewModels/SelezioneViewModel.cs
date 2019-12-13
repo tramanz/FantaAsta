@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Input;
 using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Regions;
@@ -79,6 +80,8 @@ namespace FantaAsta.ViewModels
 
 			if (result.HasValue && result.Value)
 			{
+				m_syncContext.Send(new SendOrPostCallback((obj) => Mouse.OverrideCursor = Cursors.Wait), null);
+
 				result = m_lega.ImportaLista(fd.FileName);
 
 				if (result.HasValue && !result.Value)
@@ -95,6 +98,8 @@ namespace FantaAsta.ViewModels
 		{
 			m_syncContext.Send(new SendOrPostCallback((obj) =>
 			{
+				Mouse.OverrideCursor = Cursors.Arrow;
+
 				MessageBox.Show(Application.Current.MainWindow, "Lista importata con successo", "INFO", MessageBoxButton.OK, MessageBoxImage.Information);
 			}), null);
 
