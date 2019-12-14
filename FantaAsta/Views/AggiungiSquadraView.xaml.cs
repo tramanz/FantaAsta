@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using FantaAsta.ViewModels;
 
 namespace FantaAsta.Views
 {
@@ -24,5 +13,23 @@ namespace FantaAsta.Views
 		{
 			InitializeComponent();
 		}
+
+		#region Private methods
+
+		private void OnDataContextChanged(object _, DependencyPropertyChangedEventArgs e)
+		{
+			if (e.NewValue != null)
+			{
+				(DataContext as AggiungiSquadraViewModel).SelectNameTextBox += OnSelectNameTextBox;
+			}
+		}
+
+		private void OnSelectNameTextBox(object sender, System.EventArgs e)
+		{
+			nomeTxtBox.Focus();
+			nomeTxtBox.SelectAll();
+		}
+
+		#endregion
 	}
 }

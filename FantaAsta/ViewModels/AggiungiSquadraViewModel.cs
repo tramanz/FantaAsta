@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Windows;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
+using FantaAsta.Models;
 
 namespace FantaAsta.ViewModels
 {
 	public class AggiungiSquadraViewModel : BindableBase, IDialogAware
 	{
 		#region Private fields
+
+		private readonly Lega m_lega;
 
 		private string m_nome;
 
@@ -26,7 +30,7 @@ namespace FantaAsta.ViewModels
 		#region Commands
 
 		public DelegateCommand AggiungiCommand { get; }
-		public DelegateCommand AnnullaCommand { get; }
+		public DelegateCommand ChiudiCommand { get; }
 
 		#endregion
 
@@ -36,12 +40,16 @@ namespace FantaAsta.ViewModels
 
 		public event Action<IDialogResult> RequestClose;
 
+		public event EventHandler SelectNameTextBox;
+
 		#endregion
 
-		public AggiungiSquadraViewModel()
+		public AggiungiSquadraViewModel(Lega lega)
 		{
+			m_lega = lega;
+
 			AggiungiCommand = new DelegateCommand(Aggiungi, AbilitaAggiungi);
-			AnnullaCommand = new DelegateCommand(Annulla);
+			ChiudiCommand = new DelegateCommand(Chiudi);
 		}
 
 		#region Public methods
@@ -65,7 +73,18 @@ namespace FantaAsta.ViewModels
 
 		private void Aggiungi()
 		{
-			RequestClose?.Invoke(new AggiungiSquadraResult(ButtonResult.Yes, Nome));
+			bool result = m_lega.AggiungiSquadra(Nome);
+
+			if (result)
+			{
+				MessageBox.Show("Squadra aggiunta", "OPERAZIONE COMPLETATA", MessageBoxButton.OK, MessageBoxImage.Information);
+			}
+			else
+			{
+				MessageBox.Show("Non è possibile aggiungere una squadra con lo stesso nome di una già esistente", "ERRORE", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+
+			SelectNameTextBox?.Invoke(this, System.EventArgs.Empty);
 		}
 
 		private bool AbilitaAggiungi()
@@ -73,27 +92,13 @@ namespace FantaAsta.ViewModels
 			return !string.IsNullOrEmpty(Nome);
 		}
 
-		private void Annulla()
+		private void Chiudi()
 		{
-			RequestClose?.Invoke(new AggiungiSquadraResult(ButtonResult.No, string.Empty));
+			RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
 		}
 
 		#endregion
 
 		#endregion
-	}
-
-	public class AggiungiSquadraResult : DialogResult
-	{
-		#region Properties
-
-		public string Nome { get; }
-
-		#endregion
-
-		public AggiungiSquadraResult(ButtonResult result, string nome) : base (result)
-		{
-			Nome = nome;
-		}
 	}
 }

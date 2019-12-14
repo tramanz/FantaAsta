@@ -153,24 +153,10 @@ namespace FantaAsta.ViewModels
 
 		private void AggiungiSquadra()
 		{
-			m_dialogService.ShowDialog("Aggiungi", null, (r1) =>
+			m_dialogService.ShowDialog("Aggiungi", null, (res) =>
 			{
-				if (r1 is AggiungiSquadraResult r2 && r2.Result == ButtonResult.Yes)
-				{
-					bool r3 = m_lega.AggiungiSquadra(r2.Nome);
-
-					if (r3)
-					{
-						MessageBox.Show("Squadra aggiunta", "OPERAZIONE COMPLETATA", MessageBoxButton.OK, MessageBoxImage.Information);
-
-						AstaEstivaCommand?.RaiseCanExecuteChanged();
-						AstaInvernaleCommand?.RaiseCanExecuteChanged();
-					}
-					else
-					{
-						MessageBox.Show("Non è possibile aggiungere una squadra con lo stesso nome di una già esistente", "ERRORE", MessageBoxButton.OK, MessageBoxImage.Error);
-					}
-				}
+				AstaEstivaCommand?.RaiseCanExecuteChanged();
+				AstaInvernaleCommand?.RaiseCanExecuteChanged();
 			});
 		}
 

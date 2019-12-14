@@ -5,22 +5,28 @@
 	xmlns:prism="http://prismlibrary.com/"
 	prism:ViewModelLocator.AutoWireViewModel="True">
 
-	<UniformGrid Background="LightGray" Rows="3" Margin="0,40" HorizontalAlignment="Center" VerticalAlignment="Center">
-		<Border Background="LightBlue" BorderBrush="Black" BorderThickness="2" CornerRadius="6" HorizontalAlignment="Center" VerticalAlignment="Center">
+	<Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+		<Border Grid.Row="0" Background="LightBlue" BorderBrush="Black" BorderThickness="2" CornerRadius="6" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,20">
 			<TextBlock Text="FANTA LEGA MANAGER" FontFamily="{StaticResource NunitoBold}" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="25,15"/>
 		</Border>
 
-		<UniformGrid Columns="2">
+		<UniformGrid Grid.Row="1" Columns="2" Margin="0,20">
 			<Button Content="Asta estiva" FontSize="24" Command="{Binding AstaEstivaCommand}" Width="275" Height="75" Margin="0,0,5,0"/>
 			<Button Content="Asta invernale" FontSize="24" Command="{Binding AstaInvernaleCommand}" Width="275" Height="75" Margin="5,0,0,0"/>
 		</UniformGrid>
 
-		<UniformGrid Rows="2" Columns="2">
+		<UniformGrid Grid.Row="2" Rows="2" Columns="2" Margin="0,20,0,0">
 			<Button Content="Gestisci rose" FontSize="24" Command="{Binding GestisciRoseCommand}" Width="275" Height="75" Margin="0,0,5,5"/>
 			<Button Content="Svuota rose" FontSize="24" Command="{Binding SvuotaRoseCommand}" Width="275" Height="75" Margin="5,0,0,5"/>
 			<Button Content="Aggiungi squadra" FontSize="24" Command="{Binding AggiungiSquadraCommand}" Width="275" Height="75" Margin="0,5,5,0"/>
 			<Button Content="Importa lista" FontSize="24" Command="{Binding ImportaListaCommand}" Width="275" Height="75" Margin="5,5,0,0"/>
 		</UniformGrid>
-	</UniformGrid>
+	</Grid>
 
 </UserControl>
