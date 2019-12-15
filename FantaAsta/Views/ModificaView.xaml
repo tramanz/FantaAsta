@@ -7,31 +7,20 @@
     prism:ViewModelLocator.AutoWireViewModel="True">
 
     <UserControl.Resources>
-        
+
         <conv:StringDoubleConverter x:Key="StringDouble"/>
 
         <ItemsPanelTemplate x:Key="PannelloLista">
             <VirtualizingStackPanel/>
         </ItemsPanelTemplate>
-        
-        <ControlTemplate x:Key="TemplateLista" TargetType="ListView">
-            <Grid Background="Transparent">
-                <ScrollViewer VerticalScrollBarVisibility="Visible">
-                    <ItemsPresenter/>
-                </ScrollViewer>
-            </Grid>
-        </ControlTemplate>
 
-        <DataTemplate x:Key="TemplateOggettoLista" DataType="ListViewItem">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Content="{Binding Ruolo}" HorizontalAlignment="Center"/>
-                <Label Grid.Column="1" Content="{Binding Nome}"/>
-            </Grid>
-        </DataTemplate>
+        <ControlTemplate x:Key="TemplateLista" TargetType="ListView">
+            <Border CornerRadius="4" BorderBrush="Black" BorderThickness="1" Background="Transparent">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsPresenter Margin="2"/>
+                </ScrollViewer>
+            </Border>
+        </ControlTemplate>
 
         <Style x:Key="StileOggettoLista" TargetType="ListViewItem">
             <Setter Property="Template">
@@ -57,11 +46,36 @@
             <Setter Property="Template" Value="{StaticResource TemplateLista}"/>
             <Setter Property="ItemsPanel" Value="{StaticResource PannelloLista}"/>
             <Setter Property="ItemContainerStyle" Value="{StaticResource StileOggettoLista}"/>
-            <Setter Property="ItemTemplate" Value="{StaticResource TemplateOggettoLista}"/>
             <Setter Property="SelectionMode" Value="Single"/>
             <Setter Property="Width" Value="350"/>
             <Setter Property="MaxHeight" Value="350"/>
             <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <Style x:Key="BottoneFreccia" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Border" Background="White" BorderBrush="Black" BorderThickness="2" CornerRadius="8">
+                            <Path x:Name="Content" Data="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" Fill="Black" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="DarkGray"/>
+                                <Setter TargetName="Content" Property="Fill" Value="DarkGray"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Gray"/>
+                                <Setter TargetName="Content" Property="Fill" Value="Gray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
         
     </UserControl.Resources>
@@ -79,23 +93,45 @@
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0" Grid.Column="0" Content="Rosa" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
-        <ListView Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Rosa}" SelectedItem="{Binding GiocatoreSelezionato}"/>
-        
-        <!--<ComboBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Rosa}" SelectedItem="{Binding GiocatoreSelezionato}" DisplayMemberPath="Nome" Width="250" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,5,0,5"/>
-        <TextBox Grid.Row="2" Grid.Column="0" Text="{Binding PrezzoVendita, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringDouble}}" Width="100" Height="50" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5"/>
-        <Button Grid.Row="3" Grid.Column="0" Content="Rimuovi" Command="{Binding RimuoviCommand}" Width="100" Height="30" FontSize="14" Margin="0,5"/>-->
+        <ListView Grid.Row="1" Grid.Column="0" Name="rosaLstView" ItemsSource="{Binding Rosa}" SelectedItem="{Binding GiocatoreSelezionato}" PreviewKeyDown="OnPreviewKeyDown">
+            <ListView.ItemTemplate>
+                <DataTemplate DataType="ListViewItem">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="group1"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="group2"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="{Binding Ruolo}" HorizontalAlignment="Center"/>
+                        <Label Grid.Column="1" Content="{Binding Nome}"/>
+                        <Label Grid.Column="2" Content="{Binding Prezzo}" HorizontalAlignment="Center"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
         <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="10,0">
-            <Button Content="⇨" FontSize="24" Command="{Binding VendiGiocatoreCommand}" Width="40" Height="25" Margin="0,0,0,5"/>
-            <Button Content="⇦" FontSize="24" Command="{Binding AcquistaGiocatoreCommand}" Width="40" Height="25" Margin="0,5,0,0"/>
+            <Button Style="{StaticResource BottoneFreccia}" Content="M 0 0 L 8 8 L 0 16 Z" Command="{Binding RimuoviCommand}" Margin="0,0,0,5"/>
+            <Button Style="{StaticResource BottoneFreccia}" Content="M 8 0 L 8 16 L 0 8 Z" Command="{Binding AggiungiCommand}" Margin="0,5,0,0"/>
         </StackPanel>
 
         <Label Grid.Row="0" Grid.Column="2" Content="Svincolati" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
-        <ListView Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Svincolati}" SelectedItem="{Binding SvincolatoSelezionato}"/>
-
-        <!--<ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Svincolati}" SelectedItem="{Binding SvincolatoSelezionato}" DisplayMemberPath="Nome" Width="250" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,5,5"/>
-        <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding PrezzoAcquisto, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringDouble}}" Width="100" Height="50" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5"/>
-        <Button Grid.Row="3" Grid.Column="2" Content="Aggiungi" Command="{Binding AggiungiCommand}" Width="100" Height="30" FontSize="14" Margin="0,5"/>-->
+        <ListView Grid.Row="1" Grid.Column="2" Name="svincolatiLstView" ItemsSource="{Binding Svincolati}" SelectedItem="{Binding SvincolatoSelezionato}" PreviewKeyDown="OnPreviewKeyDown">
+            <ListView.ItemTemplate>
+                <DataTemplate DataType="ListViewItem">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="group1"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="group2"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="{Binding Ruolo}" HorizontalAlignment="Center"/>
+                        <Label Grid.Column="1" Content="{Binding Nome}"/>
+                        <Label Grid.Column="2" Content="{Binding Quotazione}" HorizontalAlignment="Center"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
         <Button Grid.Row="2" Grid.ColumnSpan="3" Content="Chiudi" Command="{Binding ChiudiCommand}" Width="100" Height="30" FontSize="14" Margin="0,5,0,0"/>
     </Grid>

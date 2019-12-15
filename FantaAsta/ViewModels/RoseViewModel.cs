@@ -69,7 +69,7 @@ namespace FantaAsta.ViewModels
 			m_lega.ListaImportata += OnListaImportata;
 
 			Squadre = m_lega.FantaSquadre.Count > 0 ?
-				new ObservableCollection<FantaSquadraViewModel>(m_lega.FantaSquadre.Select(s => new FantaSquadraViewModel(s))) :
+				new ObservableCollection<FantaSquadraViewModel>(m_lega.FantaSquadre.Select(s => new FantaSquadraViewModel(s)).OrderBy(s => s.FantaSquadra.Nome)) :
 				new ObservableCollection<FantaSquadraViewModel>();
 
 			IndietroCommand = new DelegateCommand(NavigateToSelezione);
@@ -219,8 +219,8 @@ namespace FantaAsta.ViewModels
 		{
 			FantaSquadra = fantaSquadra;
 			Nome = FantaSquadra.Nome;
-			Giocatori = new ObservableCollection<Giocatore>(FantaSquadra.Giocatori);
-			Budget = FantaSquadra.Budget.ToString();
+			AggiornaBudget();
+			AggiornaRosa();
 		}
 
 		#region Public methods
@@ -230,7 +230,8 @@ namespace FantaAsta.ViewModels
 			if (!Giocatori.Contains(giocatore))
 			{
 				Giocatori.Add(giocatore);
-				Budget = FantaSquadra.Budget.ToString();
+				AggiornaRosa();
+				AggiornaBudget();
 			}
 		}
 
@@ -239,7 +240,7 @@ namespace FantaAsta.ViewModels
 			if (Giocatori.Contains(giocatore))
 			{
 				Giocatori.Remove(giocatore);
-				Budget = FantaSquadra.Budget.ToString();
+				AggiornaBudget();
 			}
 		}
 
@@ -250,7 +251,7 @@ namespace FantaAsta.ViewModels
 
 		public void AggiornaRosa()
 		{
-			Giocatori = new ObservableCollection<Giocatore>(FantaSquadra.Giocatori);
+			Giocatori = new ObservableCollection<Giocatore>(FantaSquadra.Giocatori.OrderBy(g => g.Ruolo).ThenBy(g => g.Prezzo));
 		}
 
 		#endregion

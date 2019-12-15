@@ -21,6 +21,8 @@ namespace FantaAsta.ViewModels
 
 		private readonly Lega m_lega;
 
+		private ObservableCollection<string> m_squadre;
+
 		private Giocatore m_giocatoreCorrente;
 
 		private string m_squadraSelezionata;
@@ -31,11 +33,15 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		#region Proprietà
+		#region Properties
 
 		public List<string> Ruoli => new List<string> { "P", "D", "C", "A" };
 
-		public ObservableCollection<string> Squadre { get; }
+		public ObservableCollection<string> Squadre
+		{
+			get { return m_squadre; }
+			set { SetProperty(ref m_squadre, value); }
+		}
 
 		public Giocatore GiocatoreCorrente
 		{
@@ -79,7 +85,7 @@ namespace FantaAsta.ViewModels
 			m_timer = new Timer { AutoReset = true, Enabled = false, Interval = 50 };
 			m_timer.Elapsed += OnTick;
 
-			Squadre = new ObservableCollection<string>(m_lega?.FantaSquadre.Select(s => s.Nome));
+			Squadre = new ObservableCollection<string>(m_lega?.FantaSquadre.Select(s => s.Nome).OrderBy(s => s));
 
 			EstraiGiocatoreCommand = new DelegateCommand(EstraiGiocatore, AbilitaEstraiGiocatore);
 			AssegnaGiocatoreCommand = new DelegateCommand(AssegnaGiocatore, AbilitaAssegnaGiocatore);
@@ -98,7 +104,7 @@ namespace FantaAsta.ViewModels
 			if (m_repetitions == 6)
 			{
 				m_timer.Stop();
-				m_timer.Interval = 75;
+				m_timer.Interval = 50;
 				m_timer.Enabled = false;
 
 				m_repetitions = 0;
@@ -114,7 +120,7 @@ namespace FantaAsta.ViewModels
 		private void OnFantaSquadraAggiunta(object sender, FantaSquadraEventArgs e)
 		{
 			Squadre.Add(e.FantaSquadra.Nome);
-			Squadre.OrderBy(s => s);
+			Squadre = new ObservableCollection<string>(Squadre.OrderBy(s => s));
 		}
 
 		private void OnFantaSquadraRimossa(object sender, FantaSquadraEventArgs e)

@@ -18,17 +18,17 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="Border" Background="White" BorderBrush="Black" BorderThickness="2" CornerRadius="8">
-                        <TextBlock x:Name="Content" Text="{TemplateBinding Content}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="{TemplateBinding FontSize}" Foreground="{TemplateBinding Foreground}"/>
+                        <ContentPresenter x:Name="Content" VerticalAlignment="Center" HorizontalAlignment="Center" TextElement.FontSize="{TemplateBinding FontSize}" TextElement.Foreground="{TemplateBinding Foreground}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
                             <Setter TargetName="Border" Property="BorderBrush" Value="DarkGray"/>
-                            <Setter TargetName="Content" Property="Foreground" Value="DarkGray"/>
+                            <Setter TargetName="Content" Property="TextElement.Foreground" Value="DarkGray"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Border" Property="BorderBrush" Value="Gray"/>
-                            <Setter TargetName="Content" Property="Foreground" Value="Gray"/>
+                            <Setter TargetName="Content" Property="TextElement.Foreground" Value="Gray"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -56,9 +56,6 @@
                             <TextBox.Template>
                                 <ControlTemplate TargetType="TextBox">
                                     <Border x:Name="PART_ContentHost" Focusable="False" Background="{TemplateBinding Background}"/>
-                                    <ControlTemplate.Triggers>
-
-                                    </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </TextBox.Template>
                         </TextBox>
@@ -98,8 +95,8 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBoxItem">
-                    <Border x:Name="Border" Background="White" CornerRadius="4">
-                        <ContentPresenter x:Name="Content" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,0,0"/>
+                    <Border x:Name="Border" Background="White" CornerRadius="4" Margin="0,1">
+                        <ContentPresenter x:Name="Content" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,1,0,1"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -240,7 +237,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Thumb">
-                    <Border x:Name="Border" Background="Black" CornerRadius="2" Width="16"/>
+                    <Border x:Name="Border" Background="Black" CornerRadius="2"/>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
@@ -270,7 +267,7 @@
                         <RepeatButton Style="{StaticResource ScrollBarPageButton}" Command="ScrollBar.PageUpCommand"/>
                     </Track.DecreaseRepeatButton>
                     <Track.Thumb>
-                        <Thumb Style="{StaticResource ScrollBarThumb}" Background="LightBlue" Margin="1,0"/>
+                        <Thumb Style="{StaticResource ScrollBarThumb}" Background="LightBlue" MinHeight="30" Margin="1"/>
                     </Track.Thumb>
                     <Track.IncreaseRepeatButton>
                         <RepeatButton Style="{StaticResource ScrollBarPageButton}" Command="ScrollBar.PageDownCommand"/>
@@ -297,7 +294,7 @@
                         <RepeatButton Style="{StaticResource ScrollBarPageButton}" Command="ScrollBar.PageLeftCommand"/>
                     </Track.DecreaseRepeatButton>
                     <Track.Thumb>
-                        <Thumb Style="{StaticResource ScrollBarThumb}" Background="LightBlue" Margin="0,1"/>
+                        <Thumb Style="{StaticResource ScrollBarThumb}" Background="LightBlue" MinWidth="30" Margin="1"/>
                     </Track.Thumb>
                     <Track.IncreaseRepeatButton>
                         <RepeatButton Style="{StaticResource ScrollBarPageButton}" Command="ScrollBar.PageRightCommand"/>
@@ -330,7 +327,7 @@
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                <ControlTemplate TargetType="ScrollViewer">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>

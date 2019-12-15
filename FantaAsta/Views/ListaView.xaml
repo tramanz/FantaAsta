@@ -10,15 +10,8 @@
         <conv:ThreeInitialsConverter x:Key="ThreeInitialsConverter"/>
     </UserControl.Resources>
     
-    <ScrollViewer VerticalScrollBarVisibility="Visible">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <UniformGrid Columns="4">
             <Border Grid.Column="0" BorderBrush="Black" BorderThickness="2" CornerRadius="3" Margin="5,0">
                 <StackPanel HorizontalAlignment="Stretch" Margin="3">
                     <Label Content="Portieri" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
@@ -130,7 +123,7 @@
                     </ItemsControl>
                 </StackPanel>
             </Border>
-        </Grid>
+        </UniformGrid>
     </ScrollViewer>
     
 </UserControl>
