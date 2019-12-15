@@ -19,5 +19,16 @@ namespace FantaAsta.Utilities
 		{
 			InitializeComponent();
 		}
+
+		#region Protected methods
+
+		protected override void OnMouseDown(MouseButtonEventArgs e)
+		{
+			base.OnMouseDown(e);
+
+			DragMove();
+		}
+
+		#endregion
 	}
 }

@@ -7,33 +7,97 @@
     prism:ViewModelLocator.AutoWireViewModel="True">
 
     <UserControl.Resources>
+        
         <conv:StringDoubleConverter x:Key="StringDouble"/>
+
+        <ItemsPanelTemplate x:Key="PannelloLista">
+            <VirtualizingStackPanel/>
+        </ItemsPanelTemplate>
+        
+        <ControlTemplate x:Key="TemplateLista" TargetType="ListView">
+            <Grid Background="Transparent">
+                <ScrollViewer VerticalScrollBarVisibility="Visible">
+                    <ItemsPresenter/>
+                </ScrollViewer>
+            </Grid>
+        </ControlTemplate>
+
+        <DataTemplate x:Key="TemplateOggettoLista" DataType="ListViewItem">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="{Binding Ruolo}" HorizontalAlignment="Center"/>
+                <Label Grid.Column="1" Content="{Binding Nome}"/>
+            </Grid>
+        </DataTemplate>
+
+        <Style x:Key="StileOggettoLista" TargetType="ListViewItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Border x:Name="Border" Background="Transparent" CornerRadius="6">
+                            <ContentPresenter TextElement.FontSize="20" Margin="4,2,0,2"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="LightGreen"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="{x:Type ListView}" TargetType="{x:Type ListView}">
+            <Setter Property="Template" Value="{StaticResource TemplateLista}"/>
+            <Setter Property="ItemsPanel" Value="{StaticResource PannelloLista}"/>
+            <Setter Property="ItemContainerStyle" Value="{StaticResource StileOggettoLista}"/>
+            <Setter Property="ItemTemplate" Value="{StaticResource TemplateOggettoLista}"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="Width" Value="350"/>
+            <Setter Property="MaxHeight" Value="350"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        
     </UserControl.Resources>
-    
+
     <Grid Margin="10" HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
-			<ColumnDefinition Width="Auto"/>
-		</Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Content="Svincolati" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
-        <ComboBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Svincolati}" SelectedItem="{Binding SvincolatoSelezionato}" DisplayMemberPath="Nome" Width="250" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,5,5"/>
-        <TextBox Grid.Row="2" Grid.Column="0" Text="{Binding PrezzoAcquisto, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringDouble}}" Width="100" Height="50" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5"/>
-        <Button Grid.Row="3" Grid.Column="0" Content="Aggiungi" Command="{Binding AggiungiCommand}" Width="100" Height="30" FontSize="14" Margin="0,5"/>
-
-        <Label Grid.Row="0" Grid.Column="1" Content="Rosa" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
-        <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Rosa}" SelectedItem="{Binding GiocatoreSelezionato}" DisplayMemberPath="Nome" Width="250" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,5,0,5"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding PrezzoVendita, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringDouble}}" Width="100" Height="50" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5"/>
-        <Button Grid.Row="3" Grid.Column="1" Content="Rimuovi" Command="{Binding RimuoviCommand}" Width="100" Height="30" FontSize="14" Margin="0,5"/>
+        <Label Grid.Row="0" Grid.Column="0" Content="Rosa" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
+        <ListView Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Rosa}" SelectedItem="{Binding GiocatoreSelezionato}"/>
         
-        <Button Grid.Row="4" Grid.ColumnSpan="2" Content="Chiudi" Command="{Binding ChiudiCommand}" Width="100" Height="30" FontSize="14" Margin="0,5,0,0"/>
+        <!--<ComboBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Rosa}" SelectedItem="{Binding GiocatoreSelezionato}" DisplayMemberPath="Nome" Width="250" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,5,0,5"/>
+        <TextBox Grid.Row="2" Grid.Column="0" Text="{Binding PrezzoVendita, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringDouble}}" Width="100" Height="50" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5"/>
+        <Button Grid.Row="3" Grid.Column="0" Content="Rimuovi" Command="{Binding RimuoviCommand}" Width="100" Height="30" FontSize="14" Margin="0,5"/>-->
+
+        <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="10,0">
+            <Button Content="⇨" FontSize="24" Command="{Binding VendiGiocatoreCommand}" Width="40" Height="25" Margin="0,0,0,5"/>
+            <Button Content="⇦" FontSize="24" Command="{Binding AcquistaGiocatoreCommand}" Width="40" Height="25" Margin="0,5,0,0"/>
+        </StackPanel>
+
+        <Label Grid.Row="0" Grid.Column="2" Content="Svincolati" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
+        <ListView Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Svincolati}" SelectedItem="{Binding SvincolatoSelezionato}"/>
+
+        <!--<ComboBox Grid.Row="1" Grid.Column="2" ItemsSource="{Binding Svincolati}" SelectedItem="{Binding SvincolatoSelezionato}" DisplayMemberPath="Nome" Width="250" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,5,5"/>
+        <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding PrezzoAcquisto, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringDouble}}" Width="100" Height="50" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5"/>
+        <Button Grid.Row="3" Grid.Column="2" Content="Aggiungi" Command="{Binding AggiungiCommand}" Width="100" Height="30" FontSize="14" Margin="0,5"/>-->
+
+        <Button Grid.Row="2" Grid.ColumnSpan="3" Content="Chiudi" Command="{Binding ChiudiCommand}" Width="100" Height="30" FontSize="14" Margin="0,5,0,0"/>
     </Grid>
 
 </UserControl>

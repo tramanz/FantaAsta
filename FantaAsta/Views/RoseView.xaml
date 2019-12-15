@@ -28,9 +28,9 @@
 				</Style>
 			</Button.Style>
 		</Button>
-		<ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto">
+		<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
 			<ScrollViewer.Style>
-				<Style TargetType="ScrollViewer">
+				<Style TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource {x:Type ScrollViewer}}">
 					<Style.Triggers>
 						<DataTrigger Binding="{Binding IsStandalone}" Value="True">
 							<Setter Property="Margin" Value="0,43,0,0"/>
