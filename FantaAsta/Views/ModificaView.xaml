@@ -111,8 +111,8 @@
         </ListView>
 
         <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="10,0">
-            <Button Style="{StaticResource BottoneFreccia}" Content="M 0 0 L 8 8 L 0 16 Z" Command="{Binding RimuoviCommand}" Margin="0,0,0,5"/>
-            <Button Style="{StaticResource BottoneFreccia}" Content="M 8 0 L 8 16 L 0 8 Z" Command="{Binding AggiungiCommand}" Margin="0,5,0,0"/>
+			<Button Style="{StaticResource IconButton}" Content="{StaticResource LeftArrowIcon}" Command="{Binding AggiungiCommand}" Height="30" Margin="0,0,0,5"/>
+			<Button Style="{StaticResource IconButton}" Content="{StaticResource RightArrowIcon}" Command="{Binding RimuoviCommand}" Height="30" Margin="0,5,0,0"/>
         </StackPanel>
 
         <Label Grid.Row="0" Grid.Column="2" Content="Svincolati" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>

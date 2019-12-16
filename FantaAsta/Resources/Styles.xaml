@@ -12,33 +12,69 @@
         <Setter Property="FontFamily" Value="{StaticResource NunitoRegular}"/>
     </Style>
 
-    <!--Default button-->
-    <Style x:Key="{x:Type Button}" TargetType="{x:Type Button}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="Border" Background="White" BorderBrush="Black" BorderThickness="2" CornerRadius="8">
-                        <ContentPresenter x:Name="Content" VerticalAlignment="Center" HorizontalAlignment="Center" TextElement.FontSize="{TemplateBinding FontSize}" TextElement.Foreground="{TemplateBinding Foreground}"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="LightBlue"/>
-                            <Setter TargetName="Border" Property="BorderBrush" Value="DarkGray"/>
-                            <Setter TargetName="Content" Property="TextElement.Foreground" Value="DarkGray"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="Gray"/>
-                            <Setter TargetName="Content" Property="TextElement.Foreground" Value="Gray"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+    <!--Default button (testo)-->
+	<Style x:Key="{x:Type Button}" TargetType="{x:Type Button}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="Button">
+					<Border x:Name="Border" Background="White" BorderBrush="Black" BorderThickness="2" CornerRadius="8">
+						<ContentPresenter x:Name="Content" VerticalAlignment="Center" HorizontalAlignment="Center" TextElement.FontSize="{TemplateBinding FontSize}" TextElement.Foreground="{TemplateBinding Foreground}"/>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+							<Setter TargetName="Border" Property="BorderBrush" Value="DarkGray"/>
+							<Setter TargetName="Content" Property="TextElement.Foreground" Value="DarkGray"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="Border" Property="BorderBrush" Value="Gray"/>
+							<Setter TargetName="Content" Property="TextElement.Foreground" Value="Gray"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
-    <!--Default combo box-->
+	<!--Default button (icona)-->
+	<Style x:Key="IconButton" TargetType="{x:Type Button}">
+		<Setter Property="OverridesDefaultStyle" Value="True"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="Button">
+					<Grid x:Name="Border" Background="Transparent">
+						<Image Stretch="Uniform" Margin="2">
+							<Image.Source>
+								<DrawingImage>
+									<DrawingImage.Drawing>
+										<GeometryDrawing Geometry="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" Brush="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}">
+											<GeometryDrawing.Pen>
+												<Pen Thickness="2" Brush="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
+											</GeometryDrawing.Pen>
+										</GeometryDrawing>
+									</DrawingImage.Drawing>
+								</DrawingImage>
+							</Image.Source>
+						</Image>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Foreground" Value="LightBlue"/>
+							<Setter Property="BorderBrush" Value ="DarkGray"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter Property="Foreground" Value="Gray"/>
+							<Setter Property="BorderBrush" Value ="Gray"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!--Default combo box-->
     <Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}">
-        <Setter Property="Template">
+		<Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
                     <Grid>
