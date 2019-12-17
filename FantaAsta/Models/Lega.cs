@@ -66,70 +66,67 @@ namespace FantaAsta.Models
 		/// <returns>Il giocatore estratto.</returns>
 		public Giocatore EstraiGiocatore(Ruoli ruolo)
 		{
-			// Ricavo dalla lista completa i giocatori del ruolo specificato e ordino per quotazione decrescente
-			List<Giocatore> listaRuolo = GeneraListaPerRuolo(Lista, ruolo).OrderByDescending(g => g.Quotazione).ToList();
+			// La probabilità di un giocatore di essere estratto (a meno di un fattore correttivo per i giocatori meno quotati, dovuto alla divisione intera) è:
+			//           1
+			// p = --------------,
+			//           (k - 1)
+			//      N * 5
+			// dove N è il numero di giocatori nella lista del ruolo specificato e k = 1, 2, ..., 5 è l'indice del gruppo in cui è presente il giocatore.
+			// I giocatori in lista vengono ordinati in modo decrescente e divisi in 5 gruppi di cardinalità K = [N/5] (ad eccezione dell'ultimo, pari a K = N - 4*[N/5]).
+			// In questo modo si rende più probabile l'estrazione di un giocatore più quotato rispetto ad uno meno quotato,
+			// mantenendo al contempo la probabilità uniforme all'interno di uno stesso gruppo.
 
-			// Se non sono rimasti giocatori del ruolo speciicato, ritorno null
-			if (Lista.Count == 0)
-			{
+			// Ricavo dalla lista i giocatori del ruolo specificato e ordino per quotazione decrescente
+			List<Giocatore> listaRuolo = GeneraListaPerRuolo(Lista, ruolo).OrderByDescending(g => g.Quotazione).ThenBy(g=> g.Nome).ToList();
+
+			// Ricavo il numero N di giocatori totali e il numero K di giocatori per intervallo
+			int N = listaRuolo.Count;
+			int K = (int)Math.Floor((double)(N / 5));
+
+			// Se non sono presenti giocatori del ruolo specificato, ritorno null
+			if (N == 0)
 				return null;
-			}
 
 			// Se in lista sono rimasti meno di 5 giocatori del ruolo specificato, ritorno un giocatore con probabilità uniforme
-			if (listaRuolo.Count < 5)
-			{
-				return listaRuolo[m_random.Next(0, listaRuolo.Count - 1)];
-			}
+			if (N < 5)
+				return listaRuolo[m_random.Next(0, N - 1)];
 
-			// Ricavo il numero di giocatori totali e il numero di giocatori per intervallo
-			int numTot = listaRuolo.Count;
-			int numPerInt = (int)Math.Floor((double)(numTot / 5));
-
-			// Costruisco la lista degli indici per dividere i giocatori del ruolo specificato in 5 intervalli
-			List<Tuple<int, int>> listaIndInt = new List<Tuple<int, int>>
+			// Costruisco la lista degli intervalli
+			List<Intervallo> estrazioni = new List<Intervallo>
 			{
-				new Tuple<int, int>(0, numPerInt - 1),
-				new Tuple<int, int>(numPerInt,  2 * numPerInt - 1),
-				new Tuple<int, int>(2 * numPerInt, 3 * numPerInt - 1),
-				new Tuple<int, int>(3 * numPerInt, 4 * numPerInt - 1),
-				new Tuple<int, int>(4 * numPerInt, numTot - 1)
+				new Intervallo(0, K - 1),
+				new Intervallo(K,  2 * K - 1),
+				new Intervallo(2 * K, 3 * K - 1),
+				new Intervallo(3 * K, 4 * K - 1),
+				new Intervallo(4 * K, N - 1)
 			};
 
-			// Costruisco la struttura per memorizzare il numero di volte che un intervallo viene estratto
-			List<Tuple<Tuple<int, int>, int>> listaOccInt = new List<Tuple<Tuple<int, int>, int>>
+			// Continuo ad estrarre un indice finché la condizione d'uscita non è soddisfatta
+			bool flag = true;
+			int n; int k = 0;
+			while (flag)
 			{
-				new Tuple<Tuple<int, int>, int>(listaIndInt[0], 0),
-				new Tuple<Tuple<int, int>, int>(listaIndInt[1], 0),
-				new Tuple<Tuple<int, int>, int>(listaIndInt[2], 0),
-				new Tuple<Tuple<int, int>, int>(listaIndInt[3], 0),
-				new Tuple<Tuple<int, int>, int>(listaIndInt[4], 0)
-			};
+				// Estraggo un indice dalla lista
+				n = m_random.Next(0, N - 1);
 
-			// Continuo ad estrarre un indice, corrispondente ad un intervallo, finché:
-			// - il primo intervallo non capita una volta, oppure
-			// - il secondo non capita due volte, oppure
-			// - il terzo non capita tre volte, oppure
-			// - il quarto non capita quattro volte, oppure
-			// - il quinto non capita cinque volte
-			int random; int indInt = 0;
-			while (listaOccInt[0].Item2 < 1 && listaOccInt[1].Item2 < 2 && listaOccInt[2].Item2 < 3 && listaOccInt[3].Item2 < 4 && listaOccInt[4].Item2 < 5)
-			{
-				// Estraggo un indice da quelli della lista completa
-				random = m_random.Next(0, numTot - 1);
+				// Ricavo l'indice dell'intervallo in cui ricade l'indice estratto
+				k = estrazioni.IndexOf(estrazioni.Find(i => n >= i.Inf && n <= i.Sup));
 
-				// Ricavo l'intervallo in cui ricade l'indice e aggiorno le sue occorrenze
-				indInt = listaIndInt.IndexOf(listaIndInt.Find(i => random >= i.Item1 && random <= i.Item2));
-				listaOccInt[indInt] = new Tuple<Tuple<int, int>, int>(listaIndInt[indInt], listaOccInt[indInt].Item2 + 1);
+				// Aggiorno il numero di volte che l'intervallo è stato estratto
+				estrazioni[k].Estrazioni++;
+
+				// Aggiorno la condizione d'uscita
+				flag = estrazioni[k].Estrazioni < k + 1;
 			}
 
 			// Ricavo l'intervallo estratto
-			Tuple<int, int> intSel = listaIndInt[indInt];
+			List<Giocatore> intervallo = listaRuolo.GetRange(estrazioni[k].Inf, estrazioni[k].Dim);
 
-			// Ricavo i giocatori nell'intervallo estratto dalla lista
-			List<Giocatore> listaRuoloInt = listaRuolo.GetRange(intSel.Item1, intSel.Item2 - intSel.Item1 + 1);
+			// Estraggo con probabilità uniforme un indice dall'intervallo estratto
+			k = m_random.Next(0, estrazioni[k].Dim - 1);
 
-			// Ritorno un giocatore dall'intervallo con probabilità uniforme
-			return listaRuoloInt[m_random.Next(0, listaRuoloInt.Count - 1)];
+			// Ritorno il giocatore corrispondente all'indice estratto
+			return intervallo[k];
 		}
 
 		/// <summary>
@@ -452,5 +449,31 @@ namespace FantaAsta.Models
 		}
 
 		#endregion
+
+		/// <summary>
+		/// Classe di supporto per identificare un intervallo numerico e il numero di volte che viene estratto
+		/// </summary>
+		private class Intervallo
+		{
+			#region Properties
+
+			public int Inf { get; }
+
+			public int Sup { get; }
+
+			public int Dim { get; }
+
+			public int Estrazioni { get; set; }
+
+			#endregion
+
+			public Intervallo(int inf, int sup)
+			{
+				Inf = inf;
+				Sup = sup;
+				Dim = sup - inf + 1;
+				Estrazioni = 0;
+			}
+		}
 	}
 }
