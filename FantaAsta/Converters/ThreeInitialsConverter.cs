@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Data;
+using FantaAsta.Utilities;
 
 namespace FantaAsta.Converters
 {
-	class ThreeInitialsConverter : IValueConverter
+	public class ThreeInitialsConverter : IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
@@ -13,7 +15,14 @@ namespace FantaAsta.Converters
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return null;
+			string nome = string.Empty;
+
+			if (value is string str)
+			{
+				nome = Constants.SERIE_A.Select(s => s.Nome).ToList().Find(n => n.StartsWith(str, StringComparison.OrdinalIgnoreCase));
+			}
+
+			return !string.IsNullOrEmpty(nome) ? nome : string.Empty;
 		}
 	}
 }
