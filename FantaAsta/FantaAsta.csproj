@@ -104,7 +104,7 @@
     <Compile Include="Modules\SelezioneModule.cs" />
     <Compile Include="Regions\TabControlRegionAdapter.cs" />
     <Compile Include="Utilities\Constants.cs" />
-    <Compile Include="Utilities\DialogWindow.xaml.cs">
+    <Compile Include="Resources\DialogWindow.xaml.cs">
       <DependentUpon>DialogWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utilities\Enums.cs" />
@@ -150,7 +150,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utilities\DialogWindow.xaml">
+    <Page Include="Resources\DialogWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

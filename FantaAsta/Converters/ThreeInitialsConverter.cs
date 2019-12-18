@@ -2,27 +2,22 @@
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
+using FantaAsta.Models;
 using FantaAsta.Utilities;
 
 namespace FantaAsta.Converters
 {
+	[ValueConversion(typeof(Squadra), typeof(string))]
 	public class ThreeInitialsConverter : IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return value is string str ? str.Substring(0, 3).ToUpper() : string.Empty;
+			return value is Squadra squadra ? squadra.Nome.Substring(0, 3).ToUpper() : string.Empty;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			string nome = string.Empty;
-
-			if (value is string str)
-			{
-				nome = Constants.SERIE_A.Select(s => s.Nome).ToList().Find(n => n.StartsWith(str, StringComparison.OrdinalIgnoreCase));
-			}
-
-			return !string.IsNullOrEmpty(nome) ? nome : string.Empty;
+			return value is string str ? Constants.SERIE_A.Where(s => s.Nome.StartsWith(str, StringComparison.OrdinalIgnoreCase)).FirstOrDefault() : null;
 		}
 	}
 }
