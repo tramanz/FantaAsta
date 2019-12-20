@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using Prism.Services.Dialogs;
 
-namespace FantaAsta.Resources
+namespace FantaAsta.Utilities.Dialogs
 {
 	/// <summary>
 	/// Interaction logic for DialogWindow.xaml

@@ -1,6 +1,6 @@
 ﻿using Prism.Commands;
 
-namespace FantaAsta.Utilities
+namespace FantaAsta.Utilities.Dialogs
 {
 	public class DialogButton
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using FantaAsta.Models;
-using FantaAsta.Utilities;
+using FantaAsta.Utilities.Dialogs;
 using Prism.Services.Dialogs;
 
 namespace FantaAsta.ViewModels

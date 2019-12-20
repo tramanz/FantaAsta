@@ -6,7 +6,7 @@ using Prism.Services.Dialogs;
 using FantaAsta.Models;
 using FantaAsta.Enums;
 using FantaAsta.EventArgs;
-using FantaAsta.Utilities;
+using FantaAsta.Utilities.Dialogs;
 
 namespace FantaAsta.ViewModels
 {

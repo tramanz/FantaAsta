@@ -4,7 +4,7 @@ using Prism.Commands;
 using Prism.Services.Dialogs;
 using FantaAsta.Enums;
 using FantaAsta.Models;
-using FantaAsta.Utilities;
+using FantaAsta.Utilities.Dialogs;
 
 namespace FantaAsta.ViewModels
 {
