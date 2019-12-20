@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Windows;
 using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using FantaAsta.Models;
 
 namespace FantaAsta.ViewModels
 {
-	public class AggiungiSquadraViewModel : BindableBase, IDialogAware
+	public class AggiungiSquadraViewModel : DialogAwareViewModel
 	{
 		#region Private fields
-
-		private readonly Lega m_lega;
 
 		private string m_nome;
 
@@ -19,57 +16,32 @@ namespace FantaAsta.ViewModels
 
 		#region Properties
 
+		public override string Title => "Aggiungi squadra";
+
 		public string Nome
 		{
 			get { return m_nome; }
 			set { SetProperty(ref m_nome, value); AggiungiCommand?.RaiseCanExecuteChanged(); }
 		}
 
-		public string Title => "Aggiungi squadra";
-
-		#region Commands
-
 		public DelegateCommand AggiungiCommand { get; }
 		public DelegateCommand ChiudiCommand { get; }
 
 		#endregion
 
-		#endregion
-
 		#region Events
-
-		public event Action<IDialogResult> RequestClose;
 
 		public event EventHandler SelectNameTextBox;
 
 		#endregion
 
-		public AggiungiSquadraViewModel(Lega lega)
+		public AggiungiSquadraViewModel(Lega lega) : base (lega)
 		{
-			m_lega = lega;
-
 			AggiungiCommand = new DelegateCommand(Aggiungi, AbilitaAggiungi);
 			ChiudiCommand = new DelegateCommand(Chiudi);
 		}
 
-		#region Public methods
-
-		public bool CanCloseDialog()
-		{
-			return true;
-		}
-
-		public void OnDialogClosed()
-		{ }
-
-		public void OnDialogOpened(IDialogParameters parameters)
-		{ }
-
-		#endregion
-
 		#region Private methods
-
-		#region Commands
 
 		private void Aggiungi()
 		{
@@ -94,10 +66,8 @@ namespace FantaAsta.ViewModels
 
 		private void Chiudi()
 		{
-			RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
+			RaiseRequestClose(new DialogResult(ButtonResult.OK));
 		}
-
-		#endregion
 
 		#endregion
 	}

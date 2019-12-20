@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using FantaAsta.Models;
 using FantaAsta.EventArgs;
 
 namespace FantaAsta.ViewModels
 {
-	public class ModificaViewModel : BindableBase, IDialogAware
+	public class ModificaViewModel : DialogAwareViewModel
 	{
 		#region Private fields
 
 		private readonly IDialogService m_dialogService;
-
-		private readonly Lega m_lega;
 
 		private string m_title;
 
@@ -31,6 +27,12 @@ namespace FantaAsta.ViewModels
 		#endregion
 
 		#region Properties
+
+		public override string Title
+		{
+			get { return m_title; }
+			set { SetProperty(ref m_title, value); }
+		}
 
 		public ObservableCollection<Giocatore> Svincolati
 		{
@@ -54,41 +56,15 @@ namespace FantaAsta.ViewModels
 			set { SetProperty(ref m_svincolatoSelezionato, value); AggiungiCommand?.RaiseCanExecuteChanged(); }
 		}
 
-		#region IDialogAware
-
-		public string Title
-		{
-			get { return m_title; }
-			set { SetProperty(ref m_title, value); }
-		}
-
-		#endregion
-
-		#region Commands
-
 		public DelegateCommand AggiungiCommand { get; }
 		public DelegateCommand RimuoviCommand { get; }
 		public DelegateCommand ChiudiCommand { get; }
 
 		#endregion
 
-		#endregion
-
-		#region Events
-
-		#region IDialogAware
-
-		public event Action<IDialogResult> RequestClose;
-
-		#endregion
-
-		#endregion
-
-		public ModificaViewModel(IDialogService dialogService, Lega lega)
+		public ModificaViewModel(IDialogService dialogService, Lega lega) : base(lega)
 		{
 			m_dialogService = dialogService;
-
-			m_lega = lega;
 
 			AggiungiCommand = new DelegateCommand(Aggiungi, AbilitaAggiungi);
 			RimuoviCommand = new DelegateCommand(Rimuovi, AbilitaRimuovi);
@@ -97,20 +73,13 @@ namespace FantaAsta.ViewModels
 
 		#region Public methods
 
-		#region IDialogAware
-
-		public bool CanCloseDialog()
-		{
-			return true;
-		}
-
-		public void OnDialogClosed()
+		public override void OnDialogClosed()
 		{
 			m_lega.GiocatoreAggiunto -= OnGiocatoreAggiunto;
 			m_lega.GiocatoreRimosso -= OnGiocatoreRimosso;
 		}
 
-		public void OnDialogOpened(IDialogParameters parameters)
+		public override void OnDialogOpened(IDialogParameters parameters)
 		{
 			m_squadra = parameters.GetValue<FantaSquadra>("squadra");
 
@@ -122,8 +91,6 @@ namespace FantaAsta.ViewModels
 			m_lega.GiocatoreAggiunto += OnGiocatoreAggiunto;
 			m_lega.GiocatoreRimosso += OnGiocatoreRimosso;
 		}
-
-		#endregion
 
 		#endregion
 
@@ -164,10 +131,10 @@ namespace FantaAsta.ViewModels
 			else
 			{
 				m_dialogService.ShowDialog("Prezzo", new DialogParameters
-				{ 
+				{
 					{ "Movimento", "acquisto" },
 					{ "FantaSquadra", m_squadra},
-					{ "Giocatore", SvincolatoSelezionato } 
+					{ "Giocatore", SvincolatoSelezionato }
 				}, null);
 			}
 		}
@@ -199,7 +166,7 @@ namespace FantaAsta.ViewModels
 
 		private void Chiudi()
 		{
-			RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
+			RaiseRequestClose(new DialogResult(ButtonResult.OK));
 		}
 
 		#endregion

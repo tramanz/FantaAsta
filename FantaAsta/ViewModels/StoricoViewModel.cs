@@ -1,28 +1,19 @@
 ﻿using System.Collections.Generic;
-using Prism.Mvvm;
 using FantaAsta.EventArgs;
 using FantaAsta.Models;
 
 namespace FantaAsta.ViewModels
 {
-	public class StoricoViewModel : BindableBase
+	public class StoricoViewModel : BaseViewModel
 	{
-		#region Private fields
-
-		private readonly Lega m_lega;
-
-		#endregion
-
 		#region Properties
 
 		public List<string> Azioni { get; }
 
 		#endregion
 
-		public StoricoViewModel(Lega lega)
+		public StoricoViewModel(Lega lega) : base(lega)
 		{
-			m_lega = lega;
-
 			Azioni = new List<string>();
 
 			m_lega.GiocatoreAggiunto += OnGiocatoreAggiunto;

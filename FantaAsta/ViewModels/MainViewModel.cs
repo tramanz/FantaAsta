@@ -6,38 +6,22 @@ using FantaAsta.Models;
 
 namespace FantaAsta.ViewModels
 {
-	public class MainViewModel : INavigationAware
+	public class MainViewModel : NavigationAwareViewModel
 	{
-		#region Private fields
-
-		private readonly IRegionManager m_regionManager;
-
-		private readonly Lega m_lega;
-
-		#endregion
-
 		#region Properties
-
-		#region Commands
 
 		public DelegateCommand IndietroCommand { get; }
 
 		#endregion
 
-		#endregion
-
-		public MainViewModel(IRegionManager regionManager, Lega lega)
+		public MainViewModel(IRegionManager regionManager, Lega lega) : base(regionManager, lega)
 		{
-			m_regionManager = regionManager;
-
-			m_lega = lega;
-
 			IndietroCommand = new DelegateCommand(NavigateToSelezione);
 		}
 
 		#region Public methods
 
-		public void OnNavigatedTo(NavigationContext navigationContext)
+		public override void OnNavigatedTo(NavigationContext navigationContext)
 		{
 			string parameter = navigationContext.Parameters["Modalità"] as string;
 
@@ -47,17 +31,12 @@ namespace FantaAsta.ViewModels
 			}
 		}
 
-		public void OnNavigatedFrom(NavigationContext navigationContext)
+		public override void OnNavigatedFrom(NavigationContext navigationContext)
 		{
 			if (m_lega.IsAstaInvernale)
 			{
 				m_lega.TerminaAstaInvernale();
 			}
-		}
-
-		public bool IsNavigationTarget(NavigationContext navigationContext)
-		{
-			return true;
 		}
 
 		#endregion

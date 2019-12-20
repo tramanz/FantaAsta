@@ -109,6 +109,10 @@
     </Compile>
     <Compile Include="Utilities\Enums.cs" />
     <Compile Include="Utilities\EventArgs.cs" />
+    <Compile Include="ViewModels\Base\ActiveAwareViewModel.cs" />
+    <Compile Include="ViewModels\Base\BaseViewModel.cs" />
+    <Compile Include="ViewModels\Base\DialogAwareViewModel.cs" />
+    <Compile Include="ViewModels\Base\NavigationAwareViewModel.cs" />
     <Compile Include="ViewModels\PrezzoViewModel.cs" />
     <Compile Include="ViewModels\AggiungiSquadraViewModel.cs" />
     <Compile Include="ViewModels\AstaViewModel.cs" />
@@ -229,6 +233,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="ViewModels\ViewModels.cd" />
     <Resource Include="Resources\Fonts\Nunito-Black.ttf" />
     <Resource Include="Resources\Fonts\Nunito-Bold.ttf" />
     <Resource Include="Resources\Fonts\Nunito-ExtraBold.ttf" />

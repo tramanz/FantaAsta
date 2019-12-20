@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using Prism;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -13,15 +12,11 @@ using FantaAsta.Views;
 
 namespace FantaAsta.ViewModels
 {
-	public class RoseViewModel : BindableBase, INavigationAware
+	public class RoseViewModel : NavigationAwareViewModel
 	{
 		#region Private fields
 
-		private readonly IRegionManager m_regionManager;
-
 		private readonly IDialogService m_dialogService;
-
-		private readonly Lega m_lega;
 
 		private ObservableCollection<FantaSquadraViewModel> m_squadre;
 
@@ -54,12 +49,10 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public RoseViewModel(IRegionManager regionManager, IDialogService dialogService, Lega lega)
+		public RoseViewModel(IRegionManager regionManager, IDialogService dialogService, Lega lega) : base(regionManager, lega)
 		{
-			m_regionManager = regionManager;
 			m_dialogService = dialogService;
 
-			m_lega = lega;
 			m_lega.GiocatoreAggiunto += OnGiocatoreAggiunto;
 			m_lega.GiocatoreRimosso += OnGiocatoreRimosso;
 			m_lega.FantaSquadraAggiunta += OnFantaSquadraAggiunta;
@@ -79,19 +72,14 @@ namespace FantaAsta.ViewModels
 
 		#region Public methods
 
-		public void OnNavigatedTo(NavigationContext navigationContext)
+		public override void OnNavigatedTo(NavigationContext navigationContext)
 		{
 			IsStandalone = true;
 		}
 
-		public void OnNavigatedFrom(NavigationContext navigationContext)
+		public override void OnNavigatedFrom(NavigationContext navigationContext)
 		{
 			IsStandalone = false;
-		}
-
-		public bool IsNavigationTarget(NavigationContext navigationContext)
-		{
-			return true;
 		}
 
 		#endregion

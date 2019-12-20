@@ -12,17 +12,11 @@ using FantaAsta.Views;
 
 namespace FantaAsta.ViewModels
 {
-	public class SelezioneViewModel
+	public class SelezioneViewModel : NavigationAwareViewModel
 	{
 		#region Private fields
 
-		private readonly SynchronizationContext m_syncContext;
-
-		private readonly IRegionManager m_regionManager;
-
 		private readonly IDialogService m_dialogService;
-
-		private readonly Lega m_lega;
 
 		#endregion
 
@@ -41,14 +35,10 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public SelezioneViewModel(IRegionManager regionManager, IDialogService dialogService, Lega lega)
+		public SelezioneViewModel(IRegionManager regionManager, IDialogService dialogService, Lega lega) : base(regionManager, lega)
 		{
-			m_syncContext = SynchronizationContext.Current;
-
-			m_regionManager = regionManager;
 			m_dialogService = dialogService;
 
-			m_lega = lega;
 			m_lega.ApriFileDialog += OnApriFileDialog;
 			m_lega.ListaImportata += OnListaImportata;
 			m_lega.FantaSquadraAggiunta += AggiornaComandiAsta;

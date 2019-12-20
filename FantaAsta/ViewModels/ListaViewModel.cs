@@ -1,17 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
-using Prism.Mvvm;
 using FantaAsta.Enums;
 using FantaAsta.Models;
 using FantaAsta.EventArgs;
 
 namespace FantaAsta.ViewModels
 {
-	public class ListaViewModel : BindableBase
+	public class ListaViewModel : BaseViewModel
 	{
 		#region Private fields
-
-		private readonly Lega m_lega;
 
 		private ObservableCollection<Giocatore> m_portieri;
 		private ObservableCollection<Giocatore> m_difensori;
@@ -22,24 +19,21 @@ namespace FantaAsta.ViewModels
 
 		#region Public fields
 
-		public ObservableCollection<Giocatore> Portieri 
+		public ObservableCollection<Giocatore> Portieri
 		{
 			get { return m_portieri; }
 			private set { SetProperty(ref m_portieri, value); }
 		}
-
 		public ObservableCollection<Giocatore> Difensori
 		{
 			get { return m_difensori; }
 			private set { SetProperty(ref m_difensori, value); }
 		}
-
 		public ObservableCollection<Giocatore> Centrocampisti
 		{
 			get { return m_centrocampisti; }
 			private set { SetProperty(ref m_centrocampisti, value); }
 		}
-
 		public ObservableCollection<Giocatore> Attaccanti
 		{
 			get { return m_attaccanti; }
@@ -48,10 +42,8 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public ListaViewModel(Lega mainModel)
+		public ListaViewModel(Lega lega) : base(lega)
 		{
-			m_lega = mainModel;
-
 			InizializzaListe();
 
 			m_lega.GiocatoreAggiunto += OnGiocatoreAggiunto;

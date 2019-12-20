@@ -6,20 +6,17 @@ using System.Linq;
 using System.Timers;
 using System.Windows;
 using Prism.Commands;
-using Prism.Mvvm;
 using FantaAsta.Models;
 using FantaAsta.Enums;
 using FantaAsta.EventArgs;
 
 namespace FantaAsta.ViewModels
 {
-	public class AstaViewModel : BindableBase, IDisposable
+	public class AstaViewModel : BaseViewModel, IDisposable
 	{
 		#region Private fields
 
 		private readonly Timer m_timer;
-
-		private readonly Lega m_lega;
 
 		private ObservableCollection<string> m_squadre;
 
@@ -67,18 +64,13 @@ namespace FantaAsta.ViewModels
 			set { SetProperty(ref m_prezzo, value); AssegnaGiocatoreCommand?.RaiseCanExecuteChanged(); }
 		}
 
-		#region Commands
-
 		public DelegateCommand EstraiGiocatoreCommand { get; }
 		public DelegateCommand AssegnaGiocatoreCommand { get; }
 
 		#endregion
 
-		#endregion
-
-		public AstaViewModel(Lega lega)
+		public AstaViewModel(Lega lega) : base(lega)
 		{
-			m_lega = lega;
 			m_lega.FantaSquadraAggiunta += OnFantaSquadraAggiunta;
 			m_lega.FantaSquadraRimossa += OnFantaSquadraRimossa;
 

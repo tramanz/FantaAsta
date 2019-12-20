@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Windows;
 using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using FantaAsta.Models;
 
 namespace FantaAsta.ViewModels
 {
-	public class PrezzoViewModel : BindableBase, IDialogAware
+	public class PrezzoViewModel : DialogAwareViewModel
 	{
 		#region Private fields
-
-		private readonly Lega m_lega;
 
 		private FantaSquadra m_squadra;
 
@@ -25,7 +22,7 @@ namespace FantaAsta.ViewModels
 
 		#region Properties
 
-		public string Title => "Inserisci prezzo";
+		public override string Title => "Inserisci prezzo";
 
 		public string Movimento
 		{
@@ -39,26 +36,19 @@ namespace FantaAsta.ViewModels
 			set { SetProperty(ref m_prezzo, value); ConfermaCommand?.RaiseCanExecuteChanged(); }
 		}
 
-		#region Commands
-
 		public DelegateCommand ConfermaCommand { get; }
 		public DelegateCommand AnnullaCommand { get; }
 
 		#endregion
 
-		#endregion
-
 		#region Events
-
-		public event Action<IDialogResult> RequestClose;
 
 		public event EventHandler SelectNameTextBox;
 
 		#endregion
 
-		public PrezzoViewModel(Lega lega)
+		public PrezzoViewModel(Lega lega) : base(lega)
 		{
-			m_lega = lega;
 
 			ConfermaCommand = new DelegateCommand(Conferma, AbilitaConferma);
 			AnnullaCommand = new DelegateCommand(Chiudi);
@@ -66,15 +56,7 @@ namespace FantaAsta.ViewModels
 
 		#region Public methods
 
-		public bool CanCloseDialog()
-		{
-			return true;
-		}
-
-		public void OnDialogClosed()
-		{ }
-
-		public void OnDialogOpened(IDialogParameters parameters)
+		public override void OnDialogOpened(IDialogParameters parameters)
 		{
 			m_giocatore = parameters.GetValue<Giocatore>("Giocatore");
 			m_squadra = parameters.GetValue<FantaSquadra>("FantaSquadra");
@@ -85,8 +67,6 @@ namespace FantaAsta.ViewModels
 
 		#region Private methods
 
-		#region Commands
-
 		private void Conferma()
 		{
 			if (double.IsNaN(Prezzo))
@@ -96,7 +76,7 @@ namespace FantaAsta.ViewModels
 				SelectNameTextBox?.Invoke(this, System.EventArgs.Empty);
 			}
 			else
-			{ 
+			{
 				if (Movimento.Remove(0, 23).Equals("acquisto", StringComparison.OrdinalIgnoreCase))
 				{
 					AcquistaGiocatore();
@@ -109,7 +89,6 @@ namespace FantaAsta.ViewModels
 				Chiudi();
 			}
 		}
-
 		private bool AbilitaConferma()
 		{
 			return !double.IsNaN(Prezzo);
@@ -117,7 +96,7 @@ namespace FantaAsta.ViewModels
 
 		private void Chiudi()
 		{
-			RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
+			RaiseRequestClose(new DialogResult(ButtonResult.OK));
 		}
 
 		private void AcquistaGiocatore()
@@ -157,8 +136,5 @@ namespace FantaAsta.ViewModels
 		}
 
 		#endregion
-
-		#endregion
 	}
-
 }
