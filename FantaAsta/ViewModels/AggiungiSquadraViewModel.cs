@@ -11,6 +11,8 @@ namespace FantaAsta.ViewModels
 	{
 		#region Private fields
 
+		private readonly IDialogService m_dialogService;
+
 		private string m_nome;
 
 		#endregion
@@ -31,8 +33,10 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public AggiungiSquadraViewModel(Lega lega) : base(lega)
-		{ }
+		public AggiungiSquadraViewModel(IDialogService dialogService, Lega lega) : base(lega)
+		{
+			m_dialogService = dialogService;
+		}
 
 		#region Protected methods
 

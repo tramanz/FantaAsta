@@ -6,6 +6,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
+using FantaAsta.Enums;
 using FantaAsta.EventArgs;
 using FantaAsta.Models;
 using FantaAsta.Views;
@@ -155,7 +156,12 @@ namespace FantaAsta.ViewModels
 		private void Modifica(FantaSquadraViewModel squadraVM)
 		{
 			FantaSquadra fantaSquadra = m_lega.FantaSquadre.Where(s => s.Equals(squadraVM.FantaSquadra)).Single();
-			m_dialogService.ShowDialog("Modifica", new DialogParameters { { "squadra", fantaSquadra } }, null);
+					
+			m_dialogService.ShowDialog("Modifica", new DialogParameters 
+			{
+				{ "Type", DialogType.Popup },
+				{ "squadra", fantaSquadra } 
+			}, null);
 		}
 
 		private bool AbilitaModifica(FantaSquadraViewModel squadraVM)

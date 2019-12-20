@@ -138,6 +138,7 @@ namespace FantaAsta.ViewModels
 			{
 				m_dialogService.ShowDialog("Prezzo", new DialogParameters
 				{
+					{ "Type", DialogType.Popup },
 					{ "Movimento", Movimenti.Acquisto },
 					{ "FantaSquadra", m_squadra},
 					{ "Giocatore", SvincolatoSelezionato }

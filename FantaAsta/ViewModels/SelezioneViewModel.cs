@@ -7,6 +7,7 @@ using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Regions;
 using Prism.Services.Dialogs;
+using FantaAsta.Enums;
 using FantaAsta.Models;
 using FantaAsta.Views;
 
@@ -143,7 +144,7 @@ namespace FantaAsta.ViewModels
 
 		private void AggiungiSquadra()
 		{
-			m_dialogService.ShowDialog("Aggiungi", null, (res) =>
+			m_dialogService.ShowDialog("Aggiungi", new DialogParameters { { "Type", DialogType.Popup }}, (res) =>
 			{
 				AstaEstivaCommand?.RaiseCanExecuteChanged();
 				AstaInvernaleCommand?.RaiseCanExecuteChanged();
