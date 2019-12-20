@@ -107,6 +107,7 @@
     <Compile Include="Resources\DialogWindow.xaml.cs">
       <DependentUpon>DialogWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\DialogButton.cs" />
     <Compile Include="Utilities\Enums.cs" />
     <Compile Include="Utilities\EventArgs.cs" />
     <Compile Include="ViewModels\Base\ActiveAwareViewModel.cs" />

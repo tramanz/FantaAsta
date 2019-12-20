@@ -7,4 +7,10 @@
 		C,
 		A
 	}
+
+	public enum Movimenti
+	{
+		Acquisto,
+		Vendita
+	}
 }

@@ -4,7 +4,9 @@ using System.Windows;
 using Prism.Commands;
 using Prism.Services.Dialogs;
 using FantaAsta.Models;
+using FantaAsta.Enums;
 using FantaAsta.EventArgs;
+using FantaAsta.Utilities;
 
 namespace FantaAsta.ViewModels
 {
@@ -13,8 +15,6 @@ namespace FantaAsta.ViewModels
 		#region Private fields
 
 		private readonly IDialogService m_dialogService;
-
-		private string m_title;
 
 		private FantaSquadra m_squadra;
 
@@ -27,12 +27,6 @@ namespace FantaAsta.ViewModels
 		#endregion
 
 		#region Properties
-
-		public override string Title
-		{
-			get { return m_title; }
-			set { SetProperty(ref m_title, value); }
-		}
 
 		public ObservableCollection<Giocatore> Svincolati
 		{
@@ -58,7 +52,6 @@ namespace FantaAsta.ViewModels
 
 		public DelegateCommand AggiungiCommand { get; }
 		public DelegateCommand RimuoviCommand { get; }
-		public DelegateCommand ChiudiCommand { get; }
 
 		#endregion
 
@@ -68,7 +61,6 @@ namespace FantaAsta.ViewModels
 
 			AggiungiCommand = new DelegateCommand(Aggiungi, AbilitaAggiungi);
 			RimuoviCommand = new DelegateCommand(Rimuovi, AbilitaRimuovi);
-			ChiudiCommand = new DelegateCommand(Chiudi);
 		}
 
 		#region Public methods
@@ -83,13 +75,27 @@ namespace FantaAsta.ViewModels
 		{
 			m_squadra = parameters.GetValue<FantaSquadra>("squadra");
 
-			Title = $"Modifica la rosa di {m_squadra.Nome}";
-
 			Rosa = new ObservableCollection<Giocatore>(m_squadra.Giocatori.OrderBy(g => g.Ruolo).ThenBy(g => g.Nome));
 			Svincolati = new ObservableCollection<Giocatore>(m_lega.Lista.OrderBy(g => g.Nome));
 
 			m_lega.GiocatoreAggiunto += OnGiocatoreAggiunto;
 			m_lega.GiocatoreRimosso += OnGiocatoreRimosso;
+
+			base.OnDialogOpened(parameters);
+		}
+
+		#endregion
+
+		#region Protected methods
+
+		protected override void InizializzaTitolo()
+		{
+			Title = $"Modifica la rosa di {m_squadra.Nome}";
+		}
+
+		protected override void InizializzaBottoni()
+		{
+			Buttons.Add(new DialogButton("Chiudi", new DelegateCommand(Chiudi)));
 		}
 
 		#endregion
@@ -132,7 +138,7 @@ namespace FantaAsta.ViewModels
 			{
 				m_dialogService.ShowDialog("Prezzo", new DialogParameters
 				{
-					{ "Movimento", "acquisto" },
+					{ "Movimento", Movimenti.Acquisto },
 					{ "FantaSquadra", m_squadra},
 					{ "Giocatore", SvincolatoSelezionato }
 				}, null);
@@ -153,7 +159,7 @@ namespace FantaAsta.ViewModels
 			{
 				m_dialogService.ShowDialog("Prezzo", new DialogParameters
 				{
-					{ "Movimento", "vendita" },
+					{ "Movimento", Movimenti.Vendita },
 					{ "FantaSquadra", m_squadra},
 					{ "Giocatore", GiocatoreSelezionato }
 				}, null);

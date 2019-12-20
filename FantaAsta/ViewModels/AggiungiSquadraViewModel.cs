@@ -3,6 +3,7 @@ using System.Windows;
 using Prism.Commands;
 using Prism.Services.Dialogs;
 using FantaAsta.Models;
+using FantaAsta.Utilities;
 
 namespace FantaAsta.ViewModels
 {
@@ -16,16 +17,11 @@ namespace FantaAsta.ViewModels
 
 		#region Properties
 
-		public override string Title => "Aggiungi squadra";
-
 		public string Nome
 		{
 			get { return m_nome; }
-			set { SetProperty(ref m_nome, value); AggiungiCommand?.RaiseCanExecuteChanged(); }
+			set { SetProperty(ref m_nome, value); Buttons[0]?.Command.RaiseCanExecuteChanged(); }
 		}
-
-		public DelegateCommand AggiungiCommand { get; }
-		public DelegateCommand ChiudiCommand { get; }
 
 		#endregion
 
@@ -35,11 +31,23 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public AggiungiSquadraViewModel(Lega lega) : base (lega)
+		public AggiungiSquadraViewModel(Lega lega) : base(lega)
+		{ }
+
+		#region Protected methods
+
+		protected override void InizializzaTitolo()
 		{
-			AggiungiCommand = new DelegateCommand(Aggiungi, AbilitaAggiungi);
-			ChiudiCommand = new DelegateCommand(Chiudi);
+			Title = "Inserisci il nome della squadra";
 		}
+
+		protected override void InizializzaBottoni()
+		{
+			Buttons.Add(new DialogButton("Aggiungi", new DelegateCommand(Aggiungi, AbilitaAggiungi)));
+			Buttons.Add(new DialogButton("Chiudi", new DelegateCommand(Chiudi)));
+		}
+
+		#endregion
 
 		#region Private methods
 
@@ -58,7 +66,6 @@ namespace FantaAsta.ViewModels
 
 			SelectNameTextBox?.Invoke(this, System.EventArgs.Empty);
 		}
-
 		private bool AbilitaAggiungi()
 		{
 			return !string.IsNullOrEmpty(Nome);

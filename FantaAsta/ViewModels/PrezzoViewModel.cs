@@ -2,7 +2,9 @@
 using System.Windows;
 using Prism.Commands;
 using Prism.Services.Dialogs;
+using FantaAsta.Enums;
 using FantaAsta.Models;
+using FantaAsta.Utilities;
 
 namespace FantaAsta.ViewModels
 {
@@ -14,30 +16,19 @@ namespace FantaAsta.ViewModels
 
 		private Giocatore m_giocatore;
 
-		private double m_prezzo;
+		private Movimenti m_movimento;
 
-		private string m_movimento;
+		private double m_prezzo;
 
 		#endregion
 
 		#region Properties
 
-		public override string Title => "Inserisci prezzo";
-
-		public string Movimento
-		{
-			get { return m_movimento; }
-			set { SetProperty(ref m_movimento, value); }
-		}
-
 		public double Prezzo
 		{
 			get { return m_prezzo; }
-			set { SetProperty(ref m_prezzo, value); ConfermaCommand?.RaiseCanExecuteChanged(); }
+			set { SetProperty(ref m_prezzo, value); Buttons[0]?.Command.RaiseCanExecuteChanged(); }
 		}
-
-		public DelegateCommand ConfermaCommand { get; }
-		public DelegateCommand AnnullaCommand { get; }
 
 		#endregion
 
@@ -48,11 +39,7 @@ namespace FantaAsta.ViewModels
 		#endregion
 
 		public PrezzoViewModel(Lega lega) : base(lega)
-		{
-
-			ConfermaCommand = new DelegateCommand(Conferma, AbilitaConferma);
-			AnnullaCommand = new DelegateCommand(Chiudi);
-		}
+		{ }
 
 		#region Public methods
 
@@ -60,7 +47,24 @@ namespace FantaAsta.ViewModels
 		{
 			m_giocatore = parameters.GetValue<Giocatore>("Giocatore");
 			m_squadra = parameters.GetValue<FantaSquadra>("FantaSquadra");
-			Movimento = $"Inserisci il prezzo di {parameters.GetValue<string>("Movimento")}";
+			m_movimento = parameters.GetValue<Movimenti>("Movimento");
+
+			base.OnDialogOpened(parameters);
+		}
+
+		#endregion
+
+		#region Protected methods
+
+		protected override void InizializzaTitolo()
+		{
+			Title = $"Inserisci il prezzo di {m_movimento.ToString().ToLower()}";
+		}
+
+		protected override void InizializzaBottoni()
+		{
+			Buttons.Add(new DialogButton("Conferma", new DelegateCommand(Conferma, AbilitaConferma)));
+			Buttons.Add(new DialogButton("Annulla", new DelegateCommand(Annulla)));
 		}
 
 		#endregion
@@ -77,16 +81,16 @@ namespace FantaAsta.ViewModels
 			}
 			else
 			{
-				if (Movimento.Remove(0, 23).Equals("acquisto", StringComparison.OrdinalIgnoreCase))
+				if (m_movimento == Movimenti.Acquisto)
 				{
 					AcquistaGiocatore();
 				}
-				else if (Movimento.Remove(0, 23).Equals("vendita", StringComparison.OrdinalIgnoreCase))
+				else if (m_movimento == Movimenti.Vendita)
 				{
 					VendiGiocatore();
 				}
 
-				Chiudi();
+				Annulla();
 			}
 		}
 		private bool AbilitaConferma()
@@ -94,7 +98,7 @@ namespace FantaAsta.ViewModels
 			return !double.IsNaN(Prezzo);
 		}
 
-		private void Chiudi()
+		private void Annulla()
 		{
 			RaiseRequestClose(new DialogResult(ButtonResult.OK));
 		}

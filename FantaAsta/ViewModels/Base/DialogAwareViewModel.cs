@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using FantaAsta.Models;
+using FantaAsta.Utilities;
 using Prism.Services.Dialogs;
 
 namespace FantaAsta.ViewModels
@@ -9,9 +11,27 @@ namespace FantaAsta.ViewModels
 	/// </summary>
 	public abstract class DialogAwareViewModel : BaseViewModel, IDialogAware
 	{
+		#region Private fields
+
+		private string m_title;
+
+		private ObservableCollection<DialogButton> m_buttons;
+
+		#endregion
+
 		#region Properties 
 
-		public virtual string Title { get; set; }
+		public string Title 
+		{ 
+			get { return m_title; }
+			protected set { SetProperty(ref m_title, value); }
+		}
+
+		public ObservableCollection<DialogButton> Buttons
+		{
+			get { return m_buttons; }
+			protected set { SetProperty(ref m_buttons, value); }
+		}
 
 		#endregion
 
@@ -22,7 +42,9 @@ namespace FantaAsta.ViewModels
 		#endregion
 
 		protected DialogAwareViewModel(Lega lega) : base(lega)
-		{ }
+		{
+			Buttons = new ObservableCollection<DialogButton>();
+		}
 
 		#region Public methods
 
@@ -33,11 +55,18 @@ namespace FantaAsta.ViewModels
 		{ }
 
 		public virtual void OnDialogOpened(IDialogParameters parameters)
-		{ }
+		{
+			InizializzaTitolo();
+			InizializzaBottoni();
+		}
 
 		#endregion
 
 		#region Protected methods
+
+		protected abstract void InizializzaTitolo();
+
+		protected abstract void InizializzaBottoni();
 
 		protected void RaiseRequestClose(IDialogResult result)
 		{
