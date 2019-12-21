@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Windows;
 using Prism.Commands;
 using Prism.Services.Dialogs;
+using FantaAsta.Enums;
 using FantaAsta.Models;
 using FantaAsta.Utilities.Dialogs;
 
@@ -61,11 +61,11 @@ namespace FantaAsta.ViewModels
 
 			if (result)
 			{
-				MessageBox.Show("Squadra aggiunta", "OPERAZIONE COMPLETATA", MessageBoxButton.OK, MessageBoxImage.Information);
+				m_dialogService.ShowMessage("Squadra aggiunta", MessageType.Notification);
 			}
 			else
 			{
-				MessageBox.Show("Non è possibile aggiungere una squadra con lo stesso nome di una già esistente", "ERRORE", MessageBoxButton.OK, MessageBoxImage.Error);
+				m_dialogService.ShowMessage("Non è possibile aggiungere una squadra con lo stesso nome di una già esistente", MessageType.Error);
 			}
 
 			SelectNameTextBox?.Invoke(this, System.EventArgs.Empty);

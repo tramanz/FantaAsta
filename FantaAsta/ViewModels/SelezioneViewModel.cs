@@ -10,6 +10,7 @@ using Prism.Services.Dialogs;
 using FantaAsta.Enums;
 using FantaAsta.Models;
 using FantaAsta.Views;
+using FantaAsta.Utilities.Dialogs;
 
 namespace FantaAsta.ViewModels
 {
@@ -87,6 +88,7 @@ namespace FantaAsta.ViewModels
 				{
 					m_syncContext.Send(new SendOrPostCallback((obj) =>
 					{
+						m_dialogService.ShowMessage("Errore durante l'import della lista", MessageType.Error);
 						MessageBox.Show(Application.Current.MainWindow, "Errore durante l'import della lista", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
 					}), null);
 				}
@@ -99,7 +101,7 @@ namespace FantaAsta.ViewModels
 			{
 				Mouse.OverrideCursor = Cursors.Arrow;
 
-				MessageBox.Show(Application.Current.MainWindow, "Lista importata con successo", "INFO", MessageBoxButton.OK, MessageBoxImage.Information);
+				m_dialogService.ShowMessage("Lista importata con successo", MessageType.Notification);
 			}), null);
 
 			AggiornaComandiAsta(sender, e);
@@ -139,29 +141,29 @@ namespace FantaAsta.ViewModels
 		{
 			m_lega.SvuotaRose();
 
-			MessageBox.Show("Rose resettate", "OPERAZIONE COMPLETATA", MessageBoxButton.OK, MessageBoxImage.Information);
+			m_dialogService.ShowMessage("Rose resettate", MessageType.Notification);
 		}
 
 		private void AggiungiSquadra()
 		{
-			m_dialogService.ShowDialog("Aggiungi", new DialogParameters { { "Type", DialogType.Popup }}, (res) =>
-			{
-				AstaEstivaCommand?.RaiseCanExecuteChanged();
-				AstaInvernaleCommand?.RaiseCanExecuteChanged();
-			});
+			m_dialogService.ShowDialog("Aggiungi", new DialogParameters { { "Type", DialogType.Popup } }, (res) =>
+			 {
+				 AstaEstivaCommand?.RaiseCanExecuteChanged();
+				 AstaInvernaleCommand?.RaiseCanExecuteChanged();
+			 });
 		}
 
 		private void ImportaLista()
 		{
 			if (m_lega.FantaSquadre.Where(s => s.Giocatori.Count() > 0).Count() > 0)
 			{
-				MessageBoxResult result = MessageBoxResult.None;
+				ButtonResult result = ButtonResult.None;
 				m_syncContext.Send(new SendOrPostCallback((obj) =>
 				{
-					result = MessageBox.Show(Application.Current.MainWindow, "L'import di una nuova lista richiede di resettare le rose. Continuare?", "ATTENZIONE", MessageBoxButton.YesNo, MessageBoxImage.Question);
+					result = m_dialogService.ShowMessage("L'import di una nuova lista richiede di resettare le rose. Continuare?", MessageType.Warning);
 				}), null);
 
-				if (result == MessageBoxResult.Yes)
+				if (result == ButtonResult.Yes)
 				{
 					m_lega.AvviaImportaLista();
 				}

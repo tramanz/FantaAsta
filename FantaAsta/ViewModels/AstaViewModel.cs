@@ -6,15 +6,19 @@ using System.Linq;
 using System.Timers;
 using System.Windows;
 using Prism.Commands;
+using Prism.Services.Dialogs;
 using FantaAsta.Models;
 using FantaAsta.Enums;
 using FantaAsta.EventArgs;
+using FantaAsta.Utilities.Dialogs;
 
 namespace FantaAsta.ViewModels
 {
 	public class AstaViewModel : BaseViewModel, IDisposable
 	{
 		#region Private fields
+
+		private readonly IDialogService m_dialogService;
 
 		private readonly Timer m_timer;
 
@@ -69,8 +73,10 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public AstaViewModel(Lega lega) : base(lega)
+		public AstaViewModel(IDialogService dialogService, Lega lega) : base(lega)
 		{
+			m_dialogService = dialogService;
+
 			m_lega.FantaSquadraAggiunta += OnFantaSquadraAggiunta;
 			m_lega.FantaSquadraRimossa += OnFantaSquadraRimossa;
 
@@ -140,15 +146,15 @@ namespace FantaAsta.ViewModels
 		{
 			if (!double.TryParse(Prezzo, NumberStyles.AllowDecimalPoint, null, out double prezzo))
 			{
-				MessageBox.Show("Inserire un numero", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
+				m_dialogService.ShowMessage("Inserire un numero", MessageType.Error);
 			}
 			else if (m_lega.FantaSquadre.Select(s => s.Giocatori).Where(g => g.Contains(GiocatoreCorrente)).Count() > 0)
 			{
-				MessageBox.Show("Il giocatore selezionato è già assegnato ad una squadra", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
+				m_dialogService.ShowMessage("Il giocatore selezionato è già assegnato ad una squadra", MessageType.Error);
 			}
 			else if (prezzo < GiocatoreCorrente.Quotazione)
 			{
-				MessageBox.Show("Il prezzo di acquisto non può essere inferiore alla quotazione del giocatore", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
+				m_dialogService.ShowMessage("Il prezzo di acquisto non può essere inferiore alla quotazione del giocatore", MessageType.Error);
 			}
 			else
 			{
@@ -157,10 +163,9 @@ namespace FantaAsta.ViewModels
 				bool result = m_lega.AggiungiGiocatore(squadra, GiocatoreCorrente, Convert.ToDouble(Prezzo));
 
 				string msg = result ? "Giocatore aggiunto" : "Il giocatore non può essere aggiunto";
-				string capt = result ? "OPERAZIONE COMPLETATA" : "OPERAZIONE FALLITA";
-				MessageBoxImage img = result ? MessageBoxImage.Information : MessageBoxImage.Error;
+				MessageType type = result ? MessageType.Notification : MessageType.Error;
 
-				MessageBox.Show(msg, capt, MessageBoxButton.OK, img);
+				m_dialogService.ShowMessage(msg, type);
 			}
 		}
 		private bool AbilitaAssegnaGiocatore()

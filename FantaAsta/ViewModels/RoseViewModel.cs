@@ -10,6 +10,7 @@ using FantaAsta.Enums;
 using FantaAsta.EventArgs;
 using FantaAsta.Models;
 using FantaAsta.Views;
+using FantaAsta.Utilities.Dialogs;
 
 namespace FantaAsta.ViewModels
 {
@@ -143,13 +144,13 @@ namespace FantaAsta.ViewModels
 
 		private void Elimina(FantaSquadraViewModel squadraVM)
 		{
-			MessageBoxResult res = MessageBox.Show("Sei sicuro di voler eliminare la fanta squadra?", "ATTENZIONE", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+			ButtonResult res = m_dialogService.ShowMessage("Sei sicuro di voler eliminare la fanta squadra?", MessageType.Warning);
 
-			if (res == MessageBoxResult.Yes)
+			if (res == ButtonResult.Yes)
 			{
 				m_lega.RimuoviSquadra(squadraVM.Nome);
 
-				MessageBox.Show("Squadra eliminata", "OPERAZIONE COMPLETATA", MessageBoxButton.OK, MessageBoxImage.Information);
+				m_dialogService.ShowMessage("Squadra eliminata", MessageType.Notification);
 			}
 		}
 

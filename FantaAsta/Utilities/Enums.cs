@@ -6,7 +6,7 @@
 		Popup
 	}
 
-	public enum MessageIcon
+	public enum MessageType
 	{
 		Error,
 		Notification,

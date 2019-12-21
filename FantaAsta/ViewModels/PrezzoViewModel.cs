@@ -12,6 +12,8 @@ namespace FantaAsta.ViewModels
 	{
 		#region Private fields
 
+		private readonly IDialogService m_dialogService;
+
 		private FantaSquadra m_squadra;
 
 		private Giocatore m_giocatore;
@@ -38,8 +40,10 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public PrezzoViewModel(Lega lega) : base(lega)
-		{ }
+		public PrezzoViewModel(IDialogService dialogService, Lega lega) : base(lega)
+		{
+			m_dialogService = dialogService;
+		}
 
 		#region Public methods
 
@@ -75,7 +79,7 @@ namespace FantaAsta.ViewModels
 		{
 			if (double.IsNaN(Prezzo))
 			{
-				MessageBox.Show("Inserire un prezzo", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
+				m_dialogService.ShowMessage("Inserire un prezzo", MessageType.Warning);
 
 				SelectNameTextBox?.Invoke(this, System.EventArgs.Empty);
 			}
@@ -107,7 +111,7 @@ namespace FantaAsta.ViewModels
 		{
 			if (Prezzo < m_giocatore.Quotazione)
 			{
-				MessageBox.Show("Il prezzo di acquisto non può essere inferiore alla quotazione del giocatore.", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
+				m_dialogService.ShowMessage("Il prezzo di acquisto non può essere inferiore alla quotazione del giocatore.", MessageType.Warning);
 
 				SelectNameTextBox?.Invoke(this, System.EventArgs.Empty);
 			}
@@ -116,10 +120,9 @@ namespace FantaAsta.ViewModels
 				bool result = m_lega.AggiungiGiocatore(m_squadra, m_giocatore, Prezzo);
 
 				string msg = result ? "Giocatore aggiunto" : "Il giocatore non può essere aggiunto";
-				string capt = result ? "OPERAZIONE COMPLETATA" : "OPERAZIONE FALLITA";
-				MessageBoxImage img = result ? MessageBoxImage.Information : MessageBoxImage.Error;
+				MessageType type = result ? MessageType.Notification : MessageType.Error;
 
-				MessageBox.Show(msg, capt, MessageBoxButton.OK, img);
+				m_dialogService.ShowMessage(msg, type);
 			}
 		}
 
@@ -127,7 +130,7 @@ namespace FantaAsta.ViewModels
 		{
 			if (Prezzo <= 0)
 			{
-				MessageBox.Show("Il prezzo di vendita non può essere minore o uguale a 0.", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
+				m_dialogService.ShowMessage("Il prezzo di vendita non può essere minore o uguale a 0.", MessageType.Error);
 
 				SelectNameTextBox?.Invoke(this, System.EventArgs.Empty);
 			}
@@ -135,7 +138,7 @@ namespace FantaAsta.ViewModels
 			{
 				m_lega.RimuoviGiocatore(m_squadra, m_giocatore, Prezzo);
 
-				MessageBox.Show("Giocatore rimosso", "OPERAZIONE COMPLETATA", MessageBoxButton.OK, MessageBoxImage.Information);
+				m_dialogService.ShowMessage("Giocatore rimosso", MessageType.Notification);
 			}
 		}
 

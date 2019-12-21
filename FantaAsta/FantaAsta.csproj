@@ -108,6 +108,11 @@
       <DependentUpon>DialogWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utilities\Dialogs\DialogButton.cs" />
+    <Compile Include="Utilities\Dialogs\IDialogServiceExtensions.cs" />
+    <Compile Include="Utilities\Dialogs\MessageView.xaml.cs">
+      <DependentUpon>MessageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Dialogs\MessageViewModel.cs" />
     <Compile Include="Utilities\Enums.cs" />
     <Compile Include="Utilities\EventArgs.cs" />
     <Compile Include="ViewModels\Base\ActiveAwareViewModel.cs" />
@@ -156,6 +161,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utilities\Dialogs\DialogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utilities\Dialogs\MessageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -132,7 +132,7 @@ namespace FantaAsta.ViewModels
 		{
 			if (m_lega.FantaSquadre.Select(s => s.Giocatori).Where(g => g.Contains(SvincolatoSelezionato)).Count() > 0)
 			{
-				MessageBox.Show("Il giocatore selezionato è già assegnato ad una fantasquadra.", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
+				m_dialogService.ShowMessage("Il giocatore selezionato è già assegnato ad una fantasquadra.", MessageType.Warning);
 			}
 			else
 			{
@@ -154,7 +154,7 @@ namespace FantaAsta.ViewModels
 		{
 			if (!m_squadra.Giocatori.Contains(GiocatoreSelezionato))
 			{
-				MessageBox.Show("Il giocatore selezionato non è presente nella rosa della fantasquadra.", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
+				m_dialogService.ShowMessage("Il giocatore selezionato non è presente nella rosa della fantasquadra.", MessageType.Warning);
 			}
 			else
 			{

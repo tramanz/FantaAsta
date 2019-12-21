@@ -25,6 +25,7 @@ namespace FantaAsta
 
 		protected override void RegisterTypes(IContainerRegistry containerRegistry)
 		{
+			containerRegistry.RegisterDialog<MessageView, MessageViewModel>("Message");
 			containerRegistry.RegisterDialog<ModificaView, ModificaViewModel>("Modifica");
 			containerRegistry.RegisterDialog<PrezzoView, PrezzoViewModel>("Prezzo");
 			containerRegistry.RegisterDialog<AggiungiSquadraView, AggiungiSquadraViewModel>("Aggiungi");
