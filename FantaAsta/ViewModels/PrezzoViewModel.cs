@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Prism.Commands;
 using Prism.Services.Dialogs;
 using FantaAsta.Enums;
@@ -19,16 +20,22 @@ namespace FantaAsta.ViewModels
 
 		private Movimenti m_movimento;
 
+		private string m_prezzoString;
 		private double m_prezzo;
 
 		#endregion
 
 		#region Properties
 
-		public double Prezzo
+		public string Prezzo
 		{
-			get { return m_prezzo; }
-			set { SetProperty(ref m_prezzo, value); Buttons[0]?.Command.RaiseCanExecuteChanged(); }
+			get { return m_prezzoString; }
+			set
+			{
+				SetProperty(ref m_prezzoString, value);
+				m_prezzo = double.TryParse(m_prezzoString, NumberStyles.AllowDecimalPoint, null, out double number) ? number : double.NaN;
+				Buttons[0]?.Command.RaiseCanExecuteChanged();
+			}
 		}
 
 		#endregion
@@ -53,6 +60,8 @@ namespace FantaAsta.ViewModels
 			m_movimento = parameters.GetValue<Movimenti>("Movimento");
 
 			base.OnDialogOpened(parameters);
+
+			Prezzo = m_giocatore.Quotazione.ToString();
 		}
 
 		#endregion
@@ -76,7 +85,7 @@ namespace FantaAsta.ViewModels
 
 		private void Conferma()
 		{
-			if (double.IsNaN(Prezzo))
+			if (double.IsNaN(m_prezzo))
 			{
 				m_dialogService.ShowMessage("Inserire un prezzo", MessageType.Warning);
 
@@ -98,7 +107,7 @@ namespace FantaAsta.ViewModels
 		}
 		private bool AbilitaConferma()
 		{
-			return !double.IsNaN(Prezzo);
+			return !double.IsNaN(m_prezzo);
 		}
 
 		private void Annulla()
@@ -108,7 +117,7 @@ namespace FantaAsta.ViewModels
 
 		private void AcquistaGiocatore()
 		{
-			if (Prezzo < m_giocatore.Quotazione)
+			if (m_prezzo < m_giocatore.Quotazione)
 			{
 				m_dialogService.ShowMessage("Il prezzo di acquisto non può essere inferiore alla quotazione del giocatore.", MessageType.Warning);
 
@@ -116,7 +125,7 @@ namespace FantaAsta.ViewModels
 			}
 			else
 			{
-				bool result = m_lega.AggiungiGiocatore(m_squadra, m_giocatore, Prezzo);
+				bool result = m_lega.AggiungiGiocatore(m_squadra, m_giocatore, m_prezzo);
 
 				string msg = result ? "Giocatore aggiunto" : "Il giocatore non può essere aggiunto";
 				MessageType type = result ? MessageType.Notification : MessageType.Error;
@@ -127,7 +136,7 @@ namespace FantaAsta.ViewModels
 
 		private void VendiGiocatore()
 		{
-			if (Prezzo <= 0)
+			if (m_prezzo <= 0)
 			{
 				m_dialogService.ShowMessage("Il prezzo di vendita non può essere minore o uguale a 0.", MessageType.Error);
 
@@ -135,7 +144,7 @@ namespace FantaAsta.ViewModels
 			}
 			else
 			{
-				m_lega.RimuoviGiocatore(m_squadra, m_giocatore, Prezzo);
+				m_lega.RimuoviGiocatore(m_squadra, m_giocatore, m_prezzo);
 
 				m_dialogService.ShowMessage("Giocatore rimosso", MessageType.Notification);
 			}

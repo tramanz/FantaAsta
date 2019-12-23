@@ -146,7 +146,7 @@ namespace FantaAsta.Models
 			int maximum = giocatore.Ruolo == Ruoli.P ? 3 : giocatore.Ruolo == Ruoli.D ? 8 : giocatore.Ruolo == Ruoli.C ? 8 : 6;
 
 			// Se la fantasquadra non ha abbastanza soldi o non ha spazio in rosa, l'operazione non si può effettuare
-			if (squadra.Budget - prezzo <= 0 || GeneraListaPerRuolo(squadra.Giocatori, giocatore.Ruolo).Count() == maximum)
+			if (squadra.Budget - prezzo < 0 || GeneraListaPerRuolo(squadra.Giocatori, giocatore.Ruolo).Count() == maximum)
 				return false;
 
 			// Memorizzo il prezzo d'acquisto del giocatore
