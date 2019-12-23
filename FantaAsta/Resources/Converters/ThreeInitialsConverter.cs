@@ -5,7 +5,7 @@ using System.Windows.Data;
 using FantaAsta.Models;
 using FantaAsta.Utilities;
 
-namespace FantaAsta.Converters
+namespace FantaAsta.Resources.Converters
 {
 	[ValueConversion(typeof(Squadra), typeof(string))]
 	public class ThreeInitialsConverter : IValueConverter

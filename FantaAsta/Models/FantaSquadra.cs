@@ -19,6 +19,8 @@ namespace FantaAsta.Models
 		[DataMember(Name = "Budget")]
 		public double Budget { get; set; }
 
+		public double ValoreMedio { get; set; }
+
 		#endregion
 
 		public FantaSquadra(string nome)
@@ -36,6 +38,7 @@ namespace FantaAsta.Models
 			{
 				Giocatori.Add(giocatore);
 				Budget -= giocatore.Prezzo;
+				AggiornaValore();
 			}
 		}
 
@@ -45,6 +48,7 @@ namespace FantaAsta.Models
 			{
 				Giocatori.Remove(giocatore);
 				Budget += prezzo;
+				AggiornaValore();
 			}
 		}
 
@@ -58,6 +62,27 @@ namespace FantaAsta.Models
 		public override int GetHashCode()
 		{
 			return base.GetHashCode();
+		}
+
+		#endregion
+
+		#region Private methods
+
+		[OnDeserialized()]
+		private void AggiornaValoreInDeserializzazione(StreamingContext streamingContext)
+		{
+			AggiornaValore();
+		}
+
+		private void AggiornaValore()
+		{
+			double sum = 0;
+			foreach (Giocatore giocatore in Giocatori)
+			{
+				sum += giocatore.Quotazione;
+			}
+
+			ValoreMedio = sum / Giocatori.Count;
 		}
 
 		#endregion

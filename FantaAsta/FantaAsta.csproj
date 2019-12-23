@@ -90,8 +90,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Converters\StringDoubleConverter.cs" />
-    <Compile Include="Converters\ThreeInitialsConverter.cs" />
+    <Compile Include="Resources\Converters\StringDoubleConverter.cs" />
+    <Compile Include="Resources\Converters\ThreeInitialsConverter.cs" />
     <Compile Include="Models\Lega.cs" />
     <Compile Include="Models\Giocatore.cs" />
     <Compile Include="Models\FantaSquadra.cs" />
@@ -102,7 +102,10 @@
     <Compile Include="Modules\MainModule.cs" />
     <Compile Include="Modules\RoseModule.cs" />
     <Compile Include="Modules\SelezioneModule.cs" />
-    <Compile Include="Regions\TabControlRegionAdapter.cs" />
+    <Compile Include="Utilities\Regions\TabControlRegionAdapter.cs" />
+    <Compile Include="Resources\Controls\StarsControl.xaml.cs">
+      <DependentUpon>StarsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\Constants.cs" />
     <Compile Include="Utilities\Dialogs\DialogWindow.xaml.cs">
       <DependentUpon>DialogWindow.xaml</DependentUpon>
@@ -152,6 +155,10 @@
     <Compile Include="Views\StoricoView.xaml.cs">
       <DependentUpon>StoricoView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Resources\Controls\StarsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Icons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

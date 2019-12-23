@@ -10,7 +10,8 @@ namespace FantaAsta.Models
 	{
 		#region Properties
 
-		public int ID { get; }
+		[DataMember(Name = "ID")] 
+		public int ID { get; set; }
 
 		[DataMember(Name = "Ruolo")]
 		public Ruoli Ruolo { get; set; }
@@ -38,5 +39,22 @@ namespace FantaAsta.Models
 			Squadra = Constants.SERIE_A.Find(s => s.Nome.Equals(squadra, StringComparison.OrdinalIgnoreCase));
 			Quotazione = quotazione;
 		}
+
+		#region Public methods
+
+		public override bool Equals(object obj)
+		{
+			if (!(obj is Giocatore giocatore))
+				return false;
+
+			return ID == giocatore.ID;
+		}
+
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
+
+		#endregion
 	}
 }

@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Prism.Regions;
 
-namespace FantaAsta.Regions
+namespace FantaAsta.Utilities.Regions
 {
 	public class TabControlRegionAdapter : RegionAdapterBase<TabControl>
 	{

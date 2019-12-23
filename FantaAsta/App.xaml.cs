@@ -6,7 +6,7 @@ using Prism.Regions;
 using Prism.Unity;
 using FantaAsta.Models;
 using FantaAsta.Modules;
-using FantaAsta.Regions;
+using FantaAsta.Utilities.Regions;
 using FantaAsta.Utilities.Dialogs;
 using FantaAsta.ViewModels;
 using FantaAsta.Views;

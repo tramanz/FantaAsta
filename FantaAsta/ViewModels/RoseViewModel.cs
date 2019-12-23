@@ -23,6 +23,8 @@ namespace FantaAsta.ViewModels
 
 		private bool m_isStandalone;
 
+		private double m_media;
+
 		#endregion
 
 		#region Properties
@@ -38,6 +40,13 @@ namespace FantaAsta.ViewModels
 			get { return m_isStandalone; }
 			set { SetProperty(ref m_isStandalone, value); }
 		}
+
+		public double Media
+		{
+			get { return m_media; }
+			set { SetProperty(ref m_media, value); }
+		}
+
 
 		#region Commands
 
@@ -62,6 +71,7 @@ namespace FantaAsta.ViewModels
 			m_lega.RoseResettate += OnRoseResettate;
 			m_lega.ListaImportata += OnListaImportata;
 
+			Media = m_lega.QuotazioneMedia;
 			Squadre = m_lega.FantaSquadre.Count > 0 ?
 				new ObservableCollection<FantaSquadraViewModel>(m_lega.FantaSquadre.Select(s => new FantaSquadraViewModel(s)).OrderBy(s => s.FantaSquadra.Nome)) :
 				new ObservableCollection<FantaSquadraViewModel>();
@@ -129,12 +139,15 @@ namespace FantaAsta.ViewModels
 			{
 				squadraVm.AggiornaBudget();
 				squadraVm.AggiornaRosa();
+				squadraVm.AggiornaValore();
 			}
 		}
 
 		private void OnListaImportata(object sender, System.EventArgs e)
 		{
 			ModificaCommand?.RaiseCanExecuteChanged();
+
+			Media = m_lega.QuotazioneMedia;
 		}
 
 		#endregion
@@ -186,6 +199,8 @@ namespace FantaAsta.ViewModels
 
 		private string m_budget;
 
+		private double m_valore;
+
 		#endregion
 
 		#region Public fields
@@ -206,6 +221,12 @@ namespace FantaAsta.ViewModels
 			set { SetProperty(ref m_budget, value); }
 		}
 
+		public double Valore
+		{
+			get { return m_valore; }
+			set { SetProperty(ref m_valore, value); }
+		}
+
 		#endregion
 
 		public FantaSquadraViewModel(FantaSquadra fantaSquadra)
@@ -214,6 +235,7 @@ namespace FantaAsta.ViewModels
 			Nome = FantaSquadra.Nome;
 			AggiornaBudget();
 			AggiornaRosa();
+			AggiornaValore();
 		}
 
 		#region Public methods
@@ -225,6 +247,7 @@ namespace FantaAsta.ViewModels
 				Giocatori.Add(giocatore);
 				AggiornaRosa();
 				AggiornaBudget();
+				AggiornaValore();
 			}
 		}
 
@@ -234,6 +257,7 @@ namespace FantaAsta.ViewModels
 			{
 				Giocatori.Remove(giocatore);
 				AggiornaBudget();
+				AggiornaValore();
 			}
 		}
 
@@ -244,7 +268,12 @@ namespace FantaAsta.ViewModels
 
 		public void AggiornaRosa()
 		{
-			Giocatori = new ObservableCollection<Giocatore>(FantaSquadra.Giocatori.OrderBy(g => g.Ruolo).ThenBy(g => g.Prezzo));
+			Giocatori = new ObservableCollection<Giocatore>(FantaSquadra.Giocatori.OrderBy(g => g.Ruolo).ThenByDescending(g => g.Prezzo));
+		}
+
+		public void AggiornaValore()
+		{
+			Valore = FantaSquadra.ValoreMedio;
 		}
 
 		#endregion

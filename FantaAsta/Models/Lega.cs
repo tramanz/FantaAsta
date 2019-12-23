@@ -36,6 +36,8 @@ namespace FantaAsta.Models
 
 		public bool IsAstaInvernale { get; private set; }
 
+		public double QuotazioneMedia { get; private set; }
+
 		#endregion
 
 		#region Events
@@ -261,6 +263,7 @@ namespace FantaAsta.Models
 					}
 				}
 
+				squadra.ValoreMedio = 0;
 				squadra.Budget = Constants.BUDGET_ESTIVO;
 				squadra.Giocatori.Clear();
 			}
@@ -327,7 +330,7 @@ namespace FantaAsta.Models
 		/// <returns>True se l'operazione è andata a buon fine, false altrimenti</returns>
 		public bool ImportaLista(string filePath)
 		{
-			return CaricaListaDaFile(filePath);
+			return CaricaListaDaFile(filePath, false);
 		}
 
 		#endregion
@@ -351,15 +354,16 @@ namespace FantaAsta.Models
 				}
 			}
 
-			CaricaListaDaFile(PercorsoFileLista);
+			CaricaListaDaFile(PercorsoFileLista, true);
 		}
 
 		/// <summary>
 		/// Metodo per caricare la lista dei giocatori da un file .csv
 		/// </summary>
 		/// <param name="filePath">Percorso del file .csv della lista</param>
+		/// <param name="isLoadingAtStart">Indica se il caricamento è partito da un richiesta automatica all'avvio oppure dall'utentemo</param>
 		/// <returns>True se l'operazione è andata a buon fine, false altrimenti</returns>
-		private bool CaricaListaDaFile(string filePath)
+		private bool CaricaListaDaFile(string filePath, bool isLoadingAtStart)
 		{
 			Lista = new List<Giocatore>();
 			Svincolati = new List<Giocatore>();
@@ -374,19 +378,17 @@ namespace FantaAsta.Models
 				return false;
 			}
 
-			string fileName = Path.GetFileName(filePath);
-
-			try
+			if (!isLoadingAtStart)
 			{
-				PercorsoFileLista = Path.Combine(Constants.DATA_DIRECTORY_PATH, fileName);
-				if (!File.Exists(PercorsoFileLista))
+				try
 				{
+					PercorsoFileLista = Path.Combine(Constants.DATA_DIRECTORY_PATH, $"Quotazioni ({DateTime.Now.Day}_{DateTime.Now.Month}_{DateTime.Now.Year}).csv");
 					File.Copy(filePath, PercorsoFileLista, true);
 				}
-			}
-			catch
-			{
-				return false;
+				catch
+				{
+					return false;
+				}
 			}
 
 			using (var reader = new StreamReader(PercorsoFileLista))
@@ -404,6 +406,8 @@ namespace FantaAsta.Models
 			}
 
 			ListaPresente = true;
+
+			AggiornaQuotazioneMedia();
 
 			AggiornaStatoGiocatoriInRosa();
 
@@ -461,6 +465,25 @@ namespace FantaAsta.Models
 						}
 					}
 				}
+
+				RoseResettate?.Invoke(this, System.EventArgs.Empty);
+			}
+		}
+
+		/// <summary>
+		/// Metodo per calcolare la quotazione media di tutti i giocatori in lista
+		/// </summary>
+		private void AggiornaQuotazioneMedia()
+		{
+			if (Lista != null)
+			{
+				double sum = 0;
+				foreach (Giocatore giocatore in Lista)
+				{
+					sum += giocatore.Quotazione;
+				}
+
+				QuotazioneMedia = sum / Lista.Count;
 			}
 		}
 
