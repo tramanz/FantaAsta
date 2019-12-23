@@ -27,6 +27,8 @@ namespace FantaAsta.Models
 		[DataMember(Name = "Prezzo")]
 		public double Prezzo { get; set; }
 
+		public bool InLista { get; set; } = true;
+
 		#endregion
 		public Giocatore(int id, Ruoli ruolo, string nome, string squadra, double quotazione)
 		{

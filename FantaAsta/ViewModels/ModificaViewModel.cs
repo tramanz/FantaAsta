@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 using Prism.Commands;
 using Prism.Services.Dialogs;
 using FantaAsta.Models;
@@ -119,8 +118,7 @@ namespace FantaAsta.ViewModels
 			if (e.FantaSquadra.Equals(m_squadra) && Rosa.Contains(e.Giocatore) && !Svincolati.Contains(e.Giocatore))
 			{
 				Rosa.Remove(e.Giocatore);
-				Svincolati.Add(e.Giocatore);
-				Svincolati = new ObservableCollection<Giocatore>(Svincolati.OrderBy(g => g.Nome));
+				Svincolati = new ObservableCollection<Giocatore>(m_lega.Svincolati.OrderBy(g => g.Nome));
 			}
 		}
 

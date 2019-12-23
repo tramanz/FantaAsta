@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows;
 using Prism.Commands;
 using Prism.Services.Dialogs;
 using FantaAsta.Enums;

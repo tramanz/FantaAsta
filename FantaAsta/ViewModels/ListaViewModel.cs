@@ -61,9 +61,11 @@ namespace FantaAsta.ViewModels
 
 		private void OnGiocatoreRimosso(object sender, GiocatoreRimossoEventArgs e)
 		{
-			ObservableCollection<Giocatore> lista = SelezionaListaDaRuolo(e.Giocatore.Ruolo);
-			lista.Add(e.Giocatore);
-			lista = new ObservableCollection<Giocatore>(lista.OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
+			if (e.Giocatore.InLista)
+			{
+				ObservableCollection<Giocatore> lista = SelezionaListaDaRuolo(e.Giocatore.Ruolo);
+				lista = new ObservableCollection<Giocatore>(m_lega.Svincolati.OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
+			}
 		}
 
 		private void OnRoseResettate(object sender, System.EventArgs e)
@@ -80,10 +82,10 @@ namespace FantaAsta.ViewModels
 		{
 			if (m_lega.ListaPresente)
 			{
-				Portieri = new ObservableCollection<Giocatore>(m_lega.Lista.Where(g => g.Ruolo == Ruoli.P).OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
-				Difensori = new ObservableCollection<Giocatore>(m_lega.Lista.Where(g => g.Ruolo == Ruoli.D).OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
-				Centrocampisti = new ObservableCollection<Giocatore>(m_lega.Lista.Where(g => g.Ruolo == Ruoli.C).OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
-				Attaccanti = new ObservableCollection<Giocatore>(m_lega.Lista.Where(g => g.Ruolo == Ruoli.A).OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
+				Portieri = new ObservableCollection<Giocatore>(m_lega.Svincolati.Where(g => g.Ruolo == Ruoli.P).OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
+				Difensori = new ObservableCollection<Giocatore>(m_lega.Svincolati.Where(g => g.Ruolo == Ruoli.D).OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
+				Centrocampisti = new ObservableCollection<Giocatore>(m_lega.Svincolati.Where(g => g.Ruolo == Ruoli.C).OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
+				Attaccanti = new ObservableCollection<Giocatore>(m_lega.Svincolati.Where(g => g.Ruolo == Ruoli.A).OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
 			}
 		}
 

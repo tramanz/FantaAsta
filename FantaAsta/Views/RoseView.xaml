@@ -111,13 +111,28 @@
 											<Grid HorizontalAlignment="Stretch">
 												<Grid.ColumnDefinitions>
 													<ColumnDefinition Width="auto"/>
-													<ColumnDefinition Width="*"/>
 													<ColumnDefinition Width="auto"/>
-												</Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="auto"/>
+                                                </Grid.ColumnDefinitions>
 												<Label Grid.Column="0" Content="{Binding Ruolo}" HorizontalAlignment="Center"/>
 												<Label Grid.Column="1" Content="{Binding Nome}"/>
-												<Label Grid.Column="2" Content="{Binding Prezzo}" HorizontalAlignment="Center"/>
-											</Grid>
+                                                <Label Grid.Column="2" Content="*" HorizontalAlignment="Left">
+                                                    <Label.Style>
+                                                        <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding InLista}" Value="True">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding InLista}" Value="False">
+                                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Label.Style>
+                                                </Label>
+                                                <Label Grid.Column="3" Content="{Binding Prezzo}" HorizontalAlignment="Center"/>
+                                            </Grid>
 										</DataTemplate>
 									</ItemsControl.ItemTemplate>
 								</ItemsControl>

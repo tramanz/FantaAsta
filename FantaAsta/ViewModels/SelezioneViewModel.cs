@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
-using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
 using Prism.Commands;
@@ -80,29 +79,22 @@ namespace FantaAsta.ViewModels
 
 			if (result.HasValue && result.Value)
 			{
-				m_syncContext.Send(new SendOrPostCallback((obj) => Mouse.OverrideCursor = Cursors.Wait), null);
+				Mouse.OverrideCursor = Cursors.Wait;
 
 				result = m_lega.ImportaLista(fd.FileName);
 
 				if (result.HasValue && !result.Value)
 				{
-					m_syncContext.Send(new SendOrPostCallback((obj) =>
-					{
-						m_dialogService.ShowMessage("Errore durante l'import della lista", MessageType.Error);
-						MessageBox.Show(Application.Current.MainWindow, "Errore durante l'import della lista", "ATTENZIONE", MessageBoxButton.OK, MessageBoxImage.Error);
-					}), null);
+					m_dialogService.ShowMessage("Errore durante l'import della lista", MessageType.Error);
 				}
 			}
 		}
 
 		private void OnListaImportata(object sender, System.EventArgs e)
 		{
-			m_syncContext.Send(new SendOrPostCallback((obj) =>
-			{
-				Mouse.OverrideCursor = Cursors.Arrow;
+			Mouse.OverrideCursor = Cursors.Arrow;
 
-				m_dialogService.ShowMessage("Lista importata con successo", MessageType.Notification);
-			}), null);
+			m_dialogService.ShowMessage("Lista importata con successo", MessageType.Notification);
 
 			AggiornaComandiAsta(sender, e);
 		}
@@ -155,23 +147,7 @@ namespace FantaAsta.ViewModels
 
 		private void ImportaLista()
 		{
-			if (m_lega.FantaSquadre.Where(s => s.Giocatori.Count() > 0).Count() > 0)
-			{
-				ButtonResult result = ButtonResult.None;
-				m_syncContext.Send(new SendOrPostCallback((obj) =>
-				{
-					result = m_dialogService.ShowMessage("L'import di una nuova lista richiede di resettare le rose. Continuare?", MessageType.Warning);
-				}), null);
-
-				if (result == ButtonResult.Yes)
-				{
-					m_lega.AvviaImportaLista();
-				}
-			}
-			else
-			{
-				m_lega.AvviaImportaLista();
-			}
+			m_lega.AvviaImportaLista();
 		}
 
 		#endregion

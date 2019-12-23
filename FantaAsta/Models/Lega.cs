@@ -30,6 +30,8 @@ namespace FantaAsta.Models
 
 		public List<Giocatore> Lista { get; private set; }
 
+		public List<Giocatore> Svincolati { get; private set; }
+
 		public bool ListaPresente { get; private set; }
 
 		public bool IsAstaInvernale { get; private set; }
@@ -77,7 +79,7 @@ namespace FantaAsta.Models
 			// mantenendo al contempo la probabilità uniforme all'interno di uno stesso gruppo.
 
 			// Ricavo dalla lista i giocatori del ruolo specificato e ordino per quotazione decrescente
-			List<Giocatore> listaRuolo = GeneraListaPerRuolo(Lista, ruolo).OrderByDescending(g => g.Quotazione).ThenBy(g=> g.Nome).ToList();
+			List<Giocatore> listaRuolo = GeneraListaPerRuolo(Svincolati, ruolo).OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome).ToList();
 
 			// Ricavo il numero N di giocatori totali e il numero K di giocatori per intervallo
 			int N = listaRuolo.Count;
@@ -151,8 +153,8 @@ namespace FantaAsta.Models
 			// Aggiungo il giocatore alla fantasquadra
 			squadra.AggiungiGiocatore(giocatore);
 
-			// Rimuovo il giocatore dalla lista
-			Lista.Remove(giocatore);
+			// Rimuovo il giocatore dalla lista degli svincolati
+			Svincolati.Remove(giocatore);
 
 			// Segnalo alla view l'operazione
 			GiocatoreAggiunto?.Invoke(this, new GiocatoreAggiuntoEventArgs(giocatore, squadra, prezzo));
@@ -177,8 +179,11 @@ namespace FantaAsta.Models
 				// Azzero il prezzo d'acquisto del giocatore
 				giocatore.Prezzo = 0;
 
-				// Riaggiungo il giocatore alla lista
-				Lista.Add(giocatore);
+				// Riaggiungo il giocatore alla lista degli svincolati se è nella lista completa
+				if (giocatore.InLista)
+				{
+					Svincolati.Add(giocatore);
+				}
 
 				// Segnalo alla view l'operazione
 				GiocatoreRimosso?.Invoke(this, new GiocatoreRimossoEventArgs(giocatore, squadra, prezzo));
@@ -250,7 +255,10 @@ namespace FantaAsta.Models
 				{
 					giocatore.Prezzo = 0;
 
-					Lista.Add(giocatore);
+					if (Lista.Contains(giocatore))
+					{
+						Svincolati.Add(giocatore);
+					}
 				}
 
 				squadra.Budget = Constants.BUDGET_ESTIVO;
@@ -265,8 +273,6 @@ namespace FantaAsta.Models
 		/// </summary>
 		public void AvviaImportaLista()
 		{
-			SvuotaRose();
-
 			ApriFileDialog?.Invoke(this, System.EventArgs.Empty);
 		}
 
@@ -355,33 +361,26 @@ namespace FantaAsta.Models
 		/// <returns>True se l'operazione è andata a buon fine, false altrimenti</returns>
 		private bool CaricaListaDaFile(string filePath)
 		{
-			if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
-			{
-				return false;
-			}
+			Lista = new List<Giocatore>();
+			Svincolati = new List<Giocatore>();
 
 			if (!Directory.Exists(Constants.DATA_DIRECTORY_PATH))
 			{
 				Directory.CreateDirectory(Constants.DATA_DIRECTORY_PATH);
 			}
 
+			if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+			{
+				return false;
+			}
+
 			string fileName = Path.GetFileName(filePath);
 
 			try
 			{
-				if (string.IsNullOrEmpty(PercorsoFileLista))
+				PercorsoFileLista = Path.Combine(Constants.DATA_DIRECTORY_PATH, fileName);
+				if (!File.Exists(PercorsoFileLista))
 				{
-					PercorsoFileLista = Path.Combine(Constants.DATA_DIRECTORY_PATH, fileName);
-					File.Copy(filePath, PercorsoFileLista, true);
-				}
-				else if (!Path.GetFileName(PercorsoFileLista).Equals(fileName, StringComparison.Ordinal))
-				{
-					if (File.Exists(PercorsoFileLista))
-					{
-						File.Delete(PercorsoFileLista);
-					}
-
-					PercorsoFileLista = Path.Combine(Constants.DATA_DIRECTORY_PATH, fileName);
 					File.Copy(filePath, PercorsoFileLista, true);
 				}
 			}
@@ -390,19 +389,23 @@ namespace FantaAsta.Models
 				return false;
 			}
 
-			Lista = new List<Giocatore>();
-
 			using (var reader = new StreamReader(PercorsoFileLista))
 			{
+				Giocatore giocatore;
 				while (!reader.EndOfStream)
 				{
 					string[] data = reader.ReadLine().Split(';');
 
-					Lista.Add(new Giocatore(Convert.ToInt32(data[0]), (Ruoli)Enum.Parse(typeof(Ruoli), data[1]), data[2], data[3], Convert.ToDouble(data[4])));
+					giocatore = new Giocatore(Convert.ToInt32(data[0]), (Ruoli)Enum.Parse(typeof(Ruoli), data[1]), data[2], data[3], Convert.ToDouble(data[4]));
+
+					Lista.Add(giocatore);
+					Svincolati.Add(giocatore);
 				}
 			}
 
 			ListaPresente = true;
+
+			AggiornaStatoGiocatoriInRosa();
 
 			ListaImportata?.Invoke(this, System.EventArgs.Empty);
 
@@ -434,6 +437,30 @@ namespace FantaAsta.Models
 				XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas());
 
 				FantaSquadre = new List<FantaSquadra>(((Lega)ser.ReadObject(reader)).FantaSquadre);
+			}
+
+			AggiornaStatoGiocatoriInRosa();
+		}
+
+		/// <summary>
+		/// Metodo che controlla se i giocatori nelle rose sono presenti in lista e aggiorna la lista degli svincolati
+		/// </summary>
+		private void AggiornaStatoGiocatoriInRosa()
+		{
+			if (FantaSquadre != null)
+			{
+				foreach (FantaSquadra squadra in FantaSquadre)
+				{
+					foreach (Giocatore giocatore in squadra.Giocatori)
+					{
+						giocatore.InLista = Lista.Contains(giocatore);
+
+						if (Svincolati.Contains(giocatore))
+						{
+							Svincolati.Remove(giocatore);
+						}
+					}
+				}
 			}
 		}
 

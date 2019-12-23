@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -164,7 +163,6 @@ namespace FantaAsta.ViewModels
 				{ "squadra", fantaSquadra } 
 			}, null);
 		}
-
 		private bool AbilitaModifica(FantaSquadraViewModel squadraVM)
 		{
 			return m_lega.ListaPresente;
