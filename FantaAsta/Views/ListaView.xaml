@@ -8,8 +8,28 @@
 
     <UserControl.Resources>
         <conv:ThreeInitialsConverter x:Key="ThreeInitialsConverter"/>
+
+        <DataTemplate x:Key="TemplateOggettoLista">
+            <Grid HorizontalAlignment="Stretch" Margin="0,2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="6*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="{Binding Nome}" FontSize="20" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Border  Grid.Column="1" DataContext="{Binding Squadra}" Background="{Binding Colore1}" BorderBrush="{Binding Colore2}" BorderThickness="1" CornerRadius="2" HorizontalAlignment="Stretch">
+                    <Label FontSize="20" Content="{Binding Nome, Converter={StaticResource ThreeInitialsConverter}}" Foreground="{Binding Colore2}" HorizontalAlignment="Center"/>
+                </Border>
+                <Label Grid.Column="2" FontSize="20" Content="{Binding Quotazione}" HorizontalAlignment="Center"/>
+            </Grid>
+        </DataTemplate>
+
+        <ItemsPanelTemplate x:Key="TemplateContenitoreLista">
+            <StackPanel/>
+        </ItemsPanelTemplate>
     </UserControl.Resources>
-    
+
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -18,60 +38,20 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
+
             <Border Grid.Column="0" BorderBrush="Black" BorderThickness="2" CornerRadius="3" Margin="5,0">
                 <StackPanel HorizontalAlignment="Stretch" Margin="3">
                     <Label Content="Portieri" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
                     <Separator Background="Black" Margin="5"/>
-                    <ItemsControl ItemsSource="{Binding Portieri}" Margin="0,0,0,5">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid HorizontalAlignment="Stretch">
-                                    <Grid.ColumnDefinitions>
-										<ColumnDefinition Width="Auto" SharedSizeGroup="colRuolo"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto" SharedSizeGroup="colSquad"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" FontSize="20" Content="{Binding Quotazione}" HorizontalAlignment="Center"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Nome}" FontSize="20" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
-                                    <Label Grid.Column="2" FontSize="20" Content="{Binding Squadra, Converter={StaticResource ThreeInitialsConverter}}" HorizontalAlignment="Center"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding Portieri}" ItemsPanel="{StaticResource TemplateContenitoreLista}" ItemTemplate="{StaticResource TemplateOggettoLista}" Margin="0,0,0,5"/>
                 </StackPanel>
             </Border>
-            
+
             <Border Grid.Column="1" BorderBrush="Black" BorderThickness="2" CornerRadius="3" Margin="5,0">
                 <StackPanel HorizontalAlignment="Stretch" Margin="3">
                     <Label Content="Difensori" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
                     <Separator Background="Black" Margin="5"/>
-                    <ItemsControl ItemsSource="{Binding Difensori}" Margin="0,0,0,5">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid HorizontalAlignment="Stretch">
-                                    <Grid.ColumnDefinitions>
-										<ColumnDefinition Width="Auto" SharedSizeGroup="colRuolo"/>
-                                        <ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="Auto" SharedSizeGroup="colSquad"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" FontSize="20" Content="{Binding Quotazione}" HorizontalAlignment="Center"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Nome}" FontSize="20" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
-                                    <Label Grid.Column="2" FontSize="20" Content="{Binding Squadra, Converter={StaticResource ThreeInitialsConverter}}" HorizontalAlignment="Center"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding Difensori}" ItemsPanel="{StaticResource TemplateContenitoreLista}" ItemTemplate="{StaticResource TemplateOggettoLista}" Margin="0,0,0,5"/>
                 </StackPanel>
             </Border>
 
@@ -79,27 +59,7 @@
                 <StackPanel HorizontalAlignment="Stretch" Margin="3">
                     <Label Content="Centrocampisti" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
                     <Separator Background="Black" Margin="5"/>
-                    <ItemsControl ItemsSource="{Binding Centrocampisti}" Margin="0,0,0,5">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid HorizontalAlignment="Stretch">
-                                    <Grid.ColumnDefinitions>
-										<ColumnDefinition Width="Auto" SharedSizeGroup="colRuolo"/>
-                                        <ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="Auto" SharedSizeGroup="colSquad"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" FontSize="20" Content="{Binding Quotazione}" HorizontalAlignment="Center"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Nome}" FontSize="20" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
-                                    <Label Grid.Column="2" FontSize="20" Content="{Binding Squadra, Converter={StaticResource ThreeInitialsConverter}}" HorizontalAlignment="Center"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding Centrocampisti}" ItemsPanel="{StaticResource TemplateContenitoreLista}" ItemTemplate="{StaticResource TemplateOggettoLista}" Margin="0,0,0,5"/>
                 </StackPanel>
             </Border>
 
@@ -107,30 +67,11 @@
                 <StackPanel HorizontalAlignment="Stretch" Margin="3">
                     <Label Content="Attaccanti" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
                     <Separator Background="Black" Margin="5"/>
-                    <ItemsControl ItemsSource="{Binding Attaccanti}" Margin="0,0,0,5">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid HorizontalAlignment="Stretch">
-                                    <Grid.ColumnDefinitions>
-										<ColumnDefinition Width="Auto" SharedSizeGroup="colRuolo"/>
-										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="Auto" SharedSizeGroup="colSquad"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="0" FontSize="20" Content="{Binding Quotazione}" HorizontalAlignment="Center"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Nome}" FontSize="20" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
-                                    <Label Grid.Column="2" FontSize="20" Content="{Binding Squadra, Converter={StaticResource ThreeInitialsConverter}}" HorizontalAlignment="Center"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding Attaccanti}" ItemsPanel="{StaticResource TemplateContenitoreLista}" ItemTemplate="{StaticResource TemplateOggettoLista}" Margin="0,0,0,5"/>
+
                 </StackPanel>
             </Border>
         </Grid>
     </ScrollViewer>
-    
+
 </UserControl>

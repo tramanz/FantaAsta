@@ -74,7 +74,7 @@ namespace FantaAsta.ViewModels
 		{
 			m_squadra = parameters.GetValue<FantaSquadra>("squadra");
 
-			Rosa = new ObservableCollection<Giocatore>(m_squadra.Giocatori.OrderBy(g => g.Ruolo).ThenBy(g => g.Nome));
+			Rosa = new ObservableCollection<Giocatore>(m_squadra.Giocatori.OrderBy(g => g.Ruolo).ThenByDescending(g => g.Prezzo).ThenBy(g => g.Nome));
 			Svincolati = new ObservableCollection<Giocatore>(m_lega.Svincolati.OrderBy(g => g.Nome));
 
 			m_lega.GiocatoreAggiunto += OnGiocatoreAggiunto;
@@ -108,7 +108,7 @@ namespace FantaAsta.ViewModels
 			if (e.FantaSquadra.Equals(m_squadra) && !Rosa.Contains(e.Giocatore) && Svincolati.Contains(e.Giocatore))
 			{
 				Rosa.Add(e.Giocatore);
-				Rosa = new ObservableCollection<Giocatore>(Rosa.OrderBy(g => g.Ruolo).ThenBy(g => g.Nome));
+				Rosa = new ObservableCollection<Giocatore>(Rosa.OrderBy(g => g.Ruolo).ThenByDescending(g => g.Prezzo).ThenBy(g => g.Nome));
 				Svincolati.Remove(e.Giocatore);
 			}
 		}

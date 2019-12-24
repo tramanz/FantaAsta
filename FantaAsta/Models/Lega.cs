@@ -210,7 +210,7 @@ namespace FantaAsta.Models
 			DataContractSerializer dcs = new DataContractSerializer(typeof(Lega));
 
 			using (FileStream fs = new FileStream(Constants.DATA_FILE_PATH, FileMode.OpenOrCreate))
-			using (XmlDictionaryWriter xdw = XmlDictionaryWriter.CreateTextWriter(fs, Encoding.UTF8))
+			using (XmlWriter xdw = XmlWriter.Create(fs))
 			{
 				dcs.WriteObject(xdw, this);
 			}
@@ -348,7 +348,7 @@ namespace FantaAsta.Models
 				{
 					DataContractSerializer ser = new DataContractSerializer(typeof(Lega));
 
-					XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas());
+					XmlReader reader = XmlReader.Create(fs);
 
 					PercorsoFileLista = ((Lega)ser.ReadObject(reader)).PercorsoFileLista;
 				}
@@ -483,7 +483,7 @@ namespace FantaAsta.Models
 					sum += giocatore.Quotazione;
 				}
 
-				QuotazioneMedia = sum / Lista.Count;
+				QuotazioneMedia = sum / Lista.Count + 2;
 			}
 		}
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -51,6 +52,7 @@ namespace FantaAsta.ViewModels
 		#region Commands
 
 		public DelegateCommand IndietroCommand { get; }
+		public DelegateCommand SalvaCommand { get; }
 
 		public DelegateCommand<FantaSquadraViewModel> ModificaCommand { get; }
 		public DelegateCommand<FantaSquadraViewModel> EliminaCommand { get; }
@@ -76,6 +78,7 @@ namespace FantaAsta.ViewModels
 				new ObservableCollection<FantaSquadraViewModel>(m_lega.FantaSquadre.Select(s => new FantaSquadraViewModel(s)).OrderBy(s => s.FantaSquadra.Nome)) :
 				new ObservableCollection<FantaSquadraViewModel>();
 
+			SalvaCommand = new DelegateCommand(Salva);
 			IndietroCommand = new DelegateCommand(NavigateToSelezione);
 			ModificaCommand = new DelegateCommand<FantaSquadraViewModel>(Modifica, AbilitaModifica);
 			EliminaCommand = new DelegateCommand<FantaSquadraViewModel>(Elimina);
@@ -184,6 +187,15 @@ namespace FantaAsta.ViewModels
 		private void NavigateToSelezione()
 		{
 			m_regionManager.RequestNavigate("MainRegion", nameof(SelezioneView));
+		}
+
+		private void Salva()
+		{
+			Mouse.OverrideCursor = Cursors.Wait;
+
+			m_lega.SalvaSquadre();
+
+			Mouse.OverrideCursor = Cursors.Arrow;
 		}
 
 		#endregion

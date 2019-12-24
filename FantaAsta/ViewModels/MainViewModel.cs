@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Input;
 using Prism.Commands;
 using Prism.Regions;
 using FantaAsta.Views;
@@ -11,12 +12,14 @@ namespace FantaAsta.ViewModels
 		#region Properties
 
 		public DelegateCommand IndietroCommand { get; }
+		public DelegateCommand SalvaCommand { get; }
 
 		#endregion
 
 		public MainViewModel(IRegionManager regionManager, Lega lega) : base(regionManager, lega)
 		{
 			IndietroCommand = new DelegateCommand(NavigateToSelezione);
+			SalvaCommand = new DelegateCommand(Salva);
 		}
 
 		#region Public methods
@@ -46,6 +49,15 @@ namespace FantaAsta.ViewModels
 		private void NavigateToSelezione()
 		{
 			m_regionManager.RequestNavigate("MainRegion", nameof(SelezioneView));
+		}
+
+		private void Salva()
+		{
+			Mouse.OverrideCursor = Cursors.Wait;
+
+			m_lega.SalvaSquadre();
+
+			Mouse.OverrideCursor = Cursors.Arrow;
 		}
 
 		#endregion

@@ -38,26 +38,25 @@
 
 	<!--Default button (icona)-->
 	<Style x:Key="IconButton" TargetType="{x:Type Button}">
-		<Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
 		<Setter Property="Template">
 			<Setter.Value>
-				<ControlTemplate TargetType="Button">
-					<Grid x:Name="Border" Background="Transparent">
-						<Image Stretch="Uniform" Margin="2">
-							<Image.Source>
-								<DrawingImage>
-									<DrawingImage.Drawing>
-										<GeometryDrawing Geometry="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" Brush="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}">
-											<GeometryDrawing.Pen>
-												<Pen Thickness="2" Brush="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
-											</GeometryDrawing.Pen>
-										</GeometryDrawing>
-									</DrawingImage.Drawing>
-								</DrawingImage>
-							</Image.Source>
-						</Image>
-					</Grid>
-					<ControlTemplate.Triggers>
+                <ControlTemplate TargetType="Button">
+                    <Image Stretch="Uniform" Margin="2">
+                        <Image.Source>
+                            <DrawingImage>
+                                <DrawingImage.Drawing>
+                                    <GeometryDrawing Geometry="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" Brush="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <GeometryDrawing.Pen>
+                                            <Pen Thickness="2" Brush="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                        </GeometryDrawing.Pen>
+                                    </GeometryDrawing>
+                                </DrawingImage.Drawing>
+                            </DrawingImage>
+                        </Image.Source>
+                    </Image>
+                    <ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
 							<Setter Property="Foreground" Value="LightBlue"/>
 							<Setter Property="BorderBrush" Value ="DarkGray"/>

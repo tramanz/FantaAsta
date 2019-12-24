@@ -1,9 +1,9 @@
-﻿using FantaAsta.Enums;
-using System;
-using System.Runtime.InteropServices;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interop;
+using Prism.Services.Dialogs;
+using FantaAsta.Enums;
+using FantaAsta.Models;
+using FantaAsta.Utilities.Dialogs;
 
 namespace FantaAsta.Views
 {
@@ -12,9 +12,19 @@ namespace FantaAsta.Views
 	/// </summary>
 	public partial class Shell : Window
 	{
-		public Shell()
+		#region Private fields
+
+		private readonly Lega m_lega;
+		private readonly IDialogService m_dialogService;
+
+		#endregion
+
+		public Shell(IDialogService dialogService, Lega lega)
 		{
 			InitializeComponent();
+
+			m_lega = lega;
+			m_dialogService = dialogService;
 
 			CommandBindings.Add(new CommandBinding(SystemCommands.CloseWindowCommand, CloseWindow, CanCloseWindow));
 			CommandBindings.Add(new CommandBinding(SystemCommands.MaximizeWindowCommand, MaximizeWindow, CanMaximizeWindow));
@@ -25,6 +35,18 @@ namespace FantaAsta.Views
 
 		private void CloseWindow(object target, ExecutedRoutedEventArgs e)
 		{
+			if (m_lega.IsAstaInvernale)
+			{
+				m_lega.TerminaAstaInvernale();
+			}
+
+			ButtonResult result = m_dialogService.ShowMessage("Vuoi salvare le modifiche prima di chiudere?", MessageType.Warning);
+
+			if (result == ButtonResult.Yes)
+			{
+				m_lega.SalvaSquadre();
+			}
+
 			SystemCommands.CloseWindow(this);
 		}
 		private void CanCloseWindow(object sender, CanExecuteRoutedEventArgs e)

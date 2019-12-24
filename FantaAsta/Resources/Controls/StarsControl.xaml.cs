@@ -10,8 +10,15 @@ namespace FantaAsta.Resources.Controls
 	/// </summary>
 	public partial class StarsControl : UserControl
 	{
+		#region Constants
+
 		private const int STAR_DIM = 20;
+
 		private static Thickness STAR_MARGIN = new Thickness(2);
+
+		#endregion
+
+		#region Properties
 
 		private static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(double), typeof(StarsControl), new PropertyMetadata(0D, (s, e) =>
 		{
@@ -35,12 +42,16 @@ namespace FantaAsta.Resources.Controls
 			set { SetValue(MeanProperty, value); }
 		}
 
+		#endregion
+
 		public StarsControl()
 		{
 			InitializeComponent();
 
 			DrawStars();
 		}
+
+		#region Private methods
 
 		private void DrawStars()
 		{
@@ -118,5 +129,7 @@ namespace FantaAsta.Resources.Controls
 				paintedStars++;
 			}
 		}
+
+		#endregion
 	}
 }

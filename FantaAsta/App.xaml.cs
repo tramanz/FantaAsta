@@ -51,19 +51,5 @@ namespace FantaAsta
 
 			regionAdapterMappings.RegisterMapping(typeof(TabControl), Container.Resolve<TabControlRegionAdapter>());
 		}
-
-		protected override void OnExit(ExitEventArgs e)
-		{
-			Lega lega = Container.Resolve<Lega>();
-
-			if (lega.IsAstaInvernale)
-			{
-				lega.TerminaAstaInvernale();
-			}
-
-			lega.SalvaSquadre();
-
-			base.OnExit(e);
-		}
 	}
 }
