@@ -16,9 +16,9 @@ namespace FantaAsta.ViewModels
 
 		protected BaseViewModel(Lega lega)
 		{
-			m_lega = lega;
-
 			m_syncContext = SynchronizationContext.Current;
+
+			m_lega = lega;
 		}
 	}
 }

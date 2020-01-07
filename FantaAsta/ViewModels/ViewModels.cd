@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="FantaAsta.ViewModels.AggiungiSquadraViewModel" Collapsed="true">
-    <Position X="6" Y="4.75" Width="1.5" />
+    <Position X="11.5" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAQAAAAAAQAAACAAAgAIAAAAAQAAAAEAAQA=</HashCode>
       <FileName>ViewModels\AggiungiSquadraViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FantaAsta.ViewModels.AstaViewModel" Collapsed="true">
-    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Position X="0.5" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gAABFAKQAWAAAgAAAkAAIAAAAAAICAABBEAACgEoAAQ=</HashCode>
       <FileName>ViewModels\AstaViewModel.cs</FileName>
@@ -16,42 +16,42 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="FantaAsta.ViewModels.BaseViewModel" Collapsed="true">
-    <Position X="2.25" Y="2" Width="1.5" />
+    <Position X="2.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAEAAAAAAAA=</HashCode>
       <FileName>ViewModels\Base\BaseViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FantaAsta.ViewModels.MainViewModel" Collapsed="true">
-    <Position X="0.5" Y="4.75" Width="1.5" />
+    <Position X="6" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAACAAAAAAwAEAAAAAQAAAAAAAAAEAA=</HashCode>
       <FileName>ViewModels\MainViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FantaAsta.ViewModels.ListaViewModel" Collapsed="true">
-    <Position X="2.25" Y="0.5" Width="1.5" />
+    <Position X="2.25" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AEAAEAAAAAAAAAACABAAASIAgAAAAIAIAAAACAAQAEA=</HashCode>
       <FileName>ViewModels\ListaViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FantaAsta.ViewModels.ModificaViewModel" Collapsed="true">
-    <Position X="9.5" Y="4.75" Width="1.5" />
+    <Position X="15" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAgAAAAAAAQAQAASAUEAACIQEABICAQBAQAAAAoIAQA=</HashCode>
       <FileName>ViewModels\ModificaViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FantaAsta.ViewModels.PrezzoViewModel" Collapsed="true">
-    <Position X="7.75" Y="4.75" Width="1.5" />
+    <Position X="13.25" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAJAFAgAQQAgAAAAEAAAAAAAgAIIAAAAAAAAAAIAQA=</HashCode>
       <FileName>ViewModels\PrezzoViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FantaAsta.ViewModels.RoseViewModel" Collapsed="true">
-    <Position X="4" Y="4.75" Width="1.5" />
+    <Position X="9.5" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gAgAEAIQAEAEAAACCEAAgA4AEAAIAAQIABACAAAAEEQ=</HashCode>
       <FileName>ViewModels\RoseViewModel.cs</FileName>
@@ -61,43 +61,51 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="FantaAsta.ViewModels.FantaSquadraViewModel" Collapsed="true">
-    <Position X="4" Y="6" Width="1.5" />
+    <Position X="9.5" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAABAAAEABAAgAAAAABAAAEgAAAAAAAAAAAgAkAwAI=</HashCode>
       <FileName>ViewModels\RoseViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FantaAsta.ViewModels.SelezioneViewModel" Collapsed="true">
-    <Position X="2.25" Y="4.75" Width="1.5" />
+    <Position X="7.75" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>IAIBEAoAQAAAAgABAAAAAAIAAAAKAgACAABAAAABAUA=</HashCode>
       <FileName>ViewModels\SelezioneViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FantaAsta.ViewModels.StoricoViewModel" Collapsed="true">
-    <Position X="4" Y="0.5" Width="1.5" />
+    <Position X="4" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gAAAEAIAAAAAAAACAAAAAAMAAAAAAAAAAAEAAAAAAAA=</HashCode>
       <FileName>ViewModels\StoricoViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FantaAsta.ViewModels.BaseDialogViewModel" Collapsed="true">
-    <Position X="7.75" Y="3.25" Width="1.5" />
+    <Position X="13.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAEAAAAAAAA=</HashCode>
       <FileName>ViewModels\Base\BaseDialogViewModel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="FantaAsta.ViewModels.BaseNavigationViewModel" Collapsed="true">
-    <Position X="2.25" Y="3.25" Width="1.5" />
+    <Position X="7.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Base\BaseNavigationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FantaAsta.Utilities.Navigation.NavigationAwareViewModel" Collapsed="true">
+    <Position X="7.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAQAAAAAAAAAAQAAAAAAAQAAAAAQAAAAAA=</HashCode>
-      <FileName>ViewModels\Base\BaseNavigationViewModel.cs</FileName>
+      <FileName>Utilities\Navigation\NavigationAwareViewModel.cs</FileName>
+      <NewMemberFileName>Utilities\Dialogs\DialogAwareViewModel.cs</NewMemberFileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="FantaAsta.Utilities.Dialogs.DialogAwareViewModel" Collapsed="true">
-    <Position X="7.75" Y="2" Width="1.5" />
+    <Position X="13.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAEAAAAAAQgAEBAAAQABAAAAAAAAAAAAAAAAAgIAQI=</HashCode>
       <FileName>Utilities\Dialogs\DialogAwareViewModel.cs</FileName>

@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
-using FantaAsta.Models;
 
 namespace FantaAsta.Utilities.Dialogs
 {

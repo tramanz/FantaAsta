@@ -1,32 +1,25 @@
-﻿using Prism.Regions;
+﻿using System.Threading;
+using Prism.Regions;
 using FantaAsta.Models;
+using FantaAsta.Utilities.Navigation;
 
 namespace FantaAsta.ViewModels
 {
-	public abstract class BaseNavigationViewModel : BaseViewModel, INavigationAware
+	public abstract class BaseNavigationViewModel : NavigationAwareViewModel
 	{
 		#region Protected fields
-		
-		protected readonly IRegionManager m_regionManager;
+
+		protected readonly SynchronizationContext m_syncContext;
+
+		protected readonly Lega m_lega;
 
 		#endregion
 
-		protected BaseNavigationViewModel(IRegionManager regionManager, Lega lega) : base(lega)
+		protected BaseNavigationViewModel(IRegionManager regionManager, Lega lega) : base(regionManager)
 		{
-			m_regionManager = regionManager;
+			m_syncContext = SynchronizationContext.Current;
+
+			m_lega = lega;
 		}
-
-		#region Public methods
-
-		public virtual bool IsNavigationTarget(NavigationContext navigationContext)
-		{ return true; }
-
-		public virtual void OnNavigatedFrom(NavigationContext navigationContext)
-		{ }
-
-		public virtual void OnNavigatedTo(NavigationContext navigationContext)
-		{ }
-
-		#endregion
 	}
 }

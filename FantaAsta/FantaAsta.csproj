@@ -108,6 +108,7 @@
     <Compile Include="Modules\MainModule.cs" />
     <Compile Include="Modules\RoseModule.cs" />
     <Compile Include="Modules\SelezioneModule.cs" />
+    <Compile Include="Utilities\Navigation\NavigationAwareViewModel.cs" />
     <Compile Include="Utilities\Regions\TabControlRegionAdapter.cs" />
     <Compile Include="Resources\Controls\StarsControl.xaml.cs">
       <DependentUpon>StarsControl.xaml</DependentUpon>
