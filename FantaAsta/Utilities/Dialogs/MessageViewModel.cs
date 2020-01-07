@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 using Prism.Commands;
 using Prism.Services.Dialogs;
 using FantaAsta.Enums;
-using FantaAsta.Models;
-using FantaAsta.ViewModels;
 
 namespace FantaAsta.Utilities.Dialogs
 {
@@ -36,11 +33,6 @@ namespace FantaAsta.Utilities.Dialogs
 		}
 
 		#endregion
-
-		public MessageViewModel(Lega lega) : base(lega)
-		{
-
-		}
 
 		#region Public methods
 

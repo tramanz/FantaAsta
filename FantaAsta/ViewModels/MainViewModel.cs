@@ -7,7 +7,7 @@ using FantaAsta.Models;
 
 namespace FantaAsta.ViewModels
 {
-	public class MainViewModel : NavigationAwareViewModel
+	public class MainViewModel : BaseNavigationViewModel
 	{
 		#region Properties
 

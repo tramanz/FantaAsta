@@ -14,7 +14,7 @@ using FantaAsta.Utilities.Dialogs;
 
 namespace FantaAsta.ViewModels
 {
-	public class RoseViewModel : NavigationAwareViewModel
+	public class RoseViewModel : BaseNavigationViewModel
 	{
 		#region Private fields
 

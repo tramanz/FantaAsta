@@ -13,7 +13,7 @@ using FantaAsta.Utilities.Dialogs;
 
 namespace FantaAsta.ViewModels
 {
-	public class SelezioneViewModel : NavigationAwareViewModel
+	public class SelezioneViewModel : BaseNavigationViewModel
 	{
 		#region Private fields
 

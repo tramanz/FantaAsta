@@ -124,10 +124,10 @@
     <Compile Include="Utilities\Dialogs\MessageViewModel.cs" />
     <Compile Include="Utilities\Enums.cs" />
     <Compile Include="Utilities\EventArgs.cs" />
-    <Compile Include="ViewModels\Base\ActiveAwareViewModel.cs" />
+    <Compile Include="ViewModels\Base\BaseNavigationViewModel.cs" />
+    <Compile Include="ViewModels\Base\BaseDialogViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
-    <Compile Include="ViewModels\Base\DialogAwareViewModel.cs" />
-    <Compile Include="ViewModels\Base\NavigationAwareViewModel.cs" />
+    <Compile Include="Utilities\Dialogs\DialogAwareViewModel.cs" />
     <Compile Include="ViewModels\PrezzoViewModel.cs" />
     <Compile Include="ViewModels\AggiungiSquadraViewModel.cs" />
     <Compile Include="ViewModels\AstaViewModel.cs" />

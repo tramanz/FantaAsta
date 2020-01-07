@@ -7,7 +7,7 @@ using FantaAsta.Utilities.Dialogs;
 
 namespace FantaAsta.ViewModels
 {
-	public class AggiungiSquadraViewModel : DialogAwareViewModel
+	public class AggiungiSquadraViewModel : BaseDialogViewModel
 	{
 		#region Private fields
 

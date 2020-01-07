@@ -3,18 +3,15 @@ using FantaAsta.Models;
 
 namespace FantaAsta.ViewModels
 {
-	/// <summary>
-	/// Implementa un view model di base la cui view corrispondente è associata ad una regione che prevede la navigazione tra le view
-	/// </summary>
-	public abstract class NavigationAwareViewModel : BaseViewModel, INavigationAware
+	public abstract class BaseNavigationViewModel : BaseViewModel, INavigationAware
 	{
 		#region Protected fields
-
+		
 		protected readonly IRegionManager m_regionManager;
 
 		#endregion
 
-		protected NavigationAwareViewModel(IRegionManager regionManager, Lega lega) : base (lega)
+		protected BaseNavigationViewModel(IRegionManager regionManager, Lega lega) : base(lega)
 		{
 			m_regionManager = regionManager;
 		}

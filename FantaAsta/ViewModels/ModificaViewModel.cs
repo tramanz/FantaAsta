@@ -9,7 +9,7 @@ using FantaAsta.Utilities.Dialogs;
 
 namespace FantaAsta.ViewModels
 {
-	public class ModificaViewModel : DialogAwareViewModel
+	public class ModificaViewModel : BaseDialogViewModel
 	{
 		#region Private fields
 

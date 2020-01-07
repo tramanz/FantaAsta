@@ -8,7 +8,7 @@ using FantaAsta.Utilities.Dialogs;
 
 namespace FantaAsta.ViewModels
 {
-	public class PrezzoViewModel : DialogAwareViewModel
+	public class PrezzoViewModel : BaseDialogViewModel
 	{
 		#region Private fields
 

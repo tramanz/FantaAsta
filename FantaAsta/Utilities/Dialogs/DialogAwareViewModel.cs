@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using FantaAsta.Models;
-using FantaAsta.Utilities.Dialogs;
 
-namespace FantaAsta.ViewModels
+namespace FantaAsta.Utilities.Dialogs
 {
 	/// <summary>
 	/// Implementa un view model di base la cui view corrispondente è associato ad una finestra di dialogo
 	/// </summary>
-	public abstract class DialogAwareViewModel : BaseViewModel, IDialogAware
+	public abstract class DialogAwareViewModel : BindableBase, IDialogAware
 	{
 		#region Private fields
 
@@ -41,7 +41,7 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		protected DialogAwareViewModel(Lega lega) : base(lega)
+		protected DialogAwareViewModel()
 		{
 			Buttons = new ObservableCollection<DialogButton>();
 		}
