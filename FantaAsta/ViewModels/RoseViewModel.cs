@@ -69,7 +69,7 @@ namespace FantaAsta.ViewModels
 			m_lega.GiocatoreRimosso += OnGiocatoreRimosso;
 			m_lega.FantaSquadraAggiunta += OnFantaSquadraAggiunta;
 			m_lega.FantaSquadraRimossa += OnFantaSquadraRimossa;
-			m_lega.ModalitàAstaInvernale += OnModalitàAstaInvernale;
+			m_lega.ModalitàAstaCambiata += OnModalitàAstaCambiata;
 			m_lega.RoseResettate += OnRoseResettate;
 			m_lega.ListaImportata += OnListaImportata;
 
@@ -128,7 +128,7 @@ namespace FantaAsta.ViewModels
 			}
 		}
 
-		private void OnModalitàAstaInvernale(object sender, System.EventArgs e)
+		private void OnModalitàAstaCambiata(object sender, System.EventArgs e)
 		{
 			foreach (FantaSquadraViewModel squadraVm in Squadre)
 			{

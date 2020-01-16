@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Xml;
 using FantaAsta.Enums;
 using FantaAsta.EventArgs;
@@ -34,7 +33,7 @@ namespace FantaAsta.Models
 
 		public bool ListaPresente { get; private set; }
 
-		public bool IsAstaInvernale { get; private set; }
+		public bool ModalitaAstaInvernaleAttiva { get; private set; }
 
 		public double QuotazioneMedia { get; private set; }
 
@@ -47,7 +46,7 @@ namespace FantaAsta.Models
 		public event EventHandler<FantaSquadraEventArgs> FantaSquadraAggiunta;
 		public event EventHandler<FantaSquadraEventArgs> FantaSquadraRimossa;
 		public event EventHandler RoseResettate;
-		public event EventHandler ModalitàAstaInvernale;
+		public event EventHandler ModalitàAstaCambiata;
 		public event EventHandler ApriFileDialog;
 		public event EventHandler ListaImportata;
 
@@ -210,33 +209,27 @@ namespace FantaAsta.Models
 		}
 
 		/// <summary>
-		/// Metodo per avviare la modalità asta invernale aggiungendo 100 fantamilioni al budget di ogni squadra
+		/// Metodo per cambiare la modalità d'asta
 		/// </summary>
-		public void AvviaAstaInvernale()
+		public void CambiaModalitaAsta()
 		{
-			IsAstaInvernale = true;
-
-			foreach (FantaSquadra squadra in FantaSquadre)
-			{
-				squadra.Budget += Constants.BUDGET_INVERNALE;
-			}
-
-			ModalitàAstaInvernale?.Invoke(this, System.EventArgs.Empty);
+			AggiornaModalitaAsta(!ModalitaAstaInvernaleAttiva);
 		}
 
 		/// <summary>
-		/// Metodo per terminare la modalità asta invernale rimuovendo 100 fantamilioni dal budget di ogni squadra
+		/// Metodo per disattivare la modalità asta invernale
 		/// </summary>
-		public void TerminaAstaInvernale()
+		public void DisattivaModalitaAstaInvernale()
 		{
-			IsAstaInvernale = false;
+			AggiornaModalitaAsta(false);
+		}
 
-			foreach (FantaSquadra squadra in FantaSquadre)
-			{
-				squadra.Budget -= Constants.BUDGET_INVERNALE;
-			}
-
-			ModalitàAstaInvernale?.Invoke(this, System.EventArgs.Empty);
+		/// <summary>
+		/// Metodo per attivare la modalità asta invernale
+		/// </summary>
+		public void AttivaModalitaAstaInvernale()
+		{
+			AggiornaModalitaAsta(true);
 		}
 
 		/// <summary>
@@ -477,6 +470,32 @@ namespace FantaAsta.Models
 				}
 
 				QuotazioneMedia = sum / Lista.Count + 2;
+			}
+		}
+
+		/// <summary>
+		/// Metodo per aggiornare la modalità d'asta corrente secondo il parametro passato in ingresso
+		/// </summary>
+		/// <param name="attivaAstaInvernale">Indica se attivare (true) o disattivare (false) la modalità d'asta invernale</param>
+		private void AggiornaModalitaAsta(bool attivaAstaInvernale)
+		{
+			if (ModalitaAstaInvernaleAttiva != attivaAstaInvernale)
+			{
+				ModalitaAstaInvernaleAttiva = attivaAstaInvernale;
+
+				foreach (FantaSquadra squadra in FantaSquadre)
+				{
+					if (attivaAstaInvernale)
+					{
+						squadra.Budget += Constants.BUDGET_INVERNALE;
+					}
+					else
+					{
+						squadra.Budget -= Constants.BUDGET_INVERNALE;
+					}
+				}
+
+				ModalitàAstaCambiata?.Invoke(this, System.EventArgs.Empty);
 			}
 		}
 

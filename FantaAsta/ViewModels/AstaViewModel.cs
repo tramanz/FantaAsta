@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Timers;
-using System.Windows;
 using Prism.Commands;
 using Prism.Services.Dialogs;
 using FantaAsta.Models;
@@ -29,6 +28,8 @@ namespace FantaAsta.ViewModels
 		private string m_squadraSelezionata;
 		private string m_ruoloSelezionato;
 		private string m_prezzo;
+
+		private bool m_modalitaAstaInvernaleAttiva;
 
 		private int m_repetitions;
 
@@ -68,8 +69,19 @@ namespace FantaAsta.ViewModels
 			set { SetProperty(ref m_prezzo, value); AssegnaGiocatoreCommand?.RaiseCanExecuteChanged(); }
 		}
 
+		public bool ModalitaAstaInvernaleAttiva
+		{
+			get { return m_modalitaAstaInvernaleAttiva; }
+			set { SetProperty(ref m_modalitaAstaInvernaleAttiva, value); }
+		}
+
+		#region Commands
+
 		public DelegateCommand EstraiGiocatoreCommand { get; }
 		public DelegateCommand AssegnaGiocatoreCommand { get; }
+		public DelegateCommand CambiaModalitaAstaCommand { get; }
+
+		#endregion
 
 		#endregion
 
@@ -79,6 +91,7 @@ namespace FantaAsta.ViewModels
 
 			m_lega.FantaSquadraAggiunta += OnFantaSquadraAggiunta;
 			m_lega.FantaSquadraRimossa += OnFantaSquadraRimossa;
+			m_lega.ModalitàAstaCambiata += OnModalitaAstaCambiata;
 
 			m_timer = new Timer { AutoReset = true, Enabled = false, Interval = 50 };
 			m_timer.Elapsed += OnTick;
@@ -87,6 +100,7 @@ namespace FantaAsta.ViewModels
 
 			EstraiGiocatoreCommand = new DelegateCommand(EstraiGiocatore, AbilitaEstraiGiocatore);
 			AssegnaGiocatoreCommand = new DelegateCommand(AssegnaGiocatore, AbilitaAssegnaGiocatore);
+			CambiaModalitaAstaCommand = new DelegateCommand(CambiaModalitaAsta);
 		}
 
 		#region Private methods
@@ -124,6 +138,11 @@ namespace FantaAsta.ViewModels
 		private void OnFantaSquadraRimossa(object sender, FantaSquadraEventArgs e)
 		{
 			Squadre.Remove(e.FantaSquadra.Nome);
+		}
+
+		private void OnModalitaAstaCambiata(object sender, System.EventArgs e)
+		{
+			ModalitaAstaInvernaleAttiva = m_lega.ModalitaAstaInvernaleAttiva;
 		}
 
 		#endregion
@@ -171,6 +190,11 @@ namespace FantaAsta.ViewModels
 		private bool AbilitaAssegnaGiocatore()
 		{
 			return GiocatoreCorrente != null && !string.IsNullOrEmpty(SquadraSelezionata) && !string.IsNullOrEmpty(Prezzo);
+		}
+
+		private void CambiaModalitaAsta()
+		{
+			m_lega.CambiaModalitaAsta();
 		}
 
 		#endregion

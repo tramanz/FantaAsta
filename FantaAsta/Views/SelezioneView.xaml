@@ -6,20 +6,17 @@
 	prism:ViewModelLocator.AutoWireViewModel="True">
 
 	<Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
 		<Border Grid.Row="0" Background="LightBlue" BorderBrush="Black" BorderThickness="2" CornerRadius="6" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,20">
 			<TextBlock Text="FANTA LEGA MANAGER" FontFamily="{StaticResource NunitoBold}" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="25,15"/>
 		</Border>
 
-		<UniformGrid Grid.Row="1" Columns="2" Margin="0,20">
-			<Button Content="Asta estiva" FontSize="24" Command="{Binding AstaEstivaCommand}" Width="275" Height="75" Margin="0,0,5,0"/>
-			<Button Content="Asta invernale" FontSize="24" Command="{Binding AstaInvernaleCommand}" Width="275" Height="75" Margin="5,0,0,0"/>
-		</UniformGrid>
+		<Button Grid.Row="1" Content="Avvia asta" FontSize="24" Command="{Binding AvviaAstaCommand}" Width="275" Height="75" Margin="0,20"/>
 
 		<UniformGrid Grid.Row="2" Rows="2" Columns="2" Margin="0,20,0,0">
 			<Button Content="Gestisci rose" FontSize="24" Command="{Binding GestisciRoseCommand}" Width="275" Height="75" Margin="0,0,5,5"/>

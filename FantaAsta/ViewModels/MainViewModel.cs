@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Prism.Commands;
 using Prism.Regions;
 using FantaAsta.Views;
@@ -21,28 +20,6 @@ namespace FantaAsta.ViewModels
 			IndietroCommand = new DelegateCommand(NavigateToSelezione);
 			SalvaCommand = new DelegateCommand(Salva);
 		}
-
-		#region Public methods
-
-		public override void OnNavigatedTo(NavigationContext navigationContext)
-		{
-			string parameter = navigationContext.Parameters["Modalità"] as string;
-
-			if (parameter.Equals("Asta invernale", StringComparison.OrdinalIgnoreCase))
-			{
-				m_lega.AvviaAstaInvernale();
-			}
-		}
-
-		public override void OnNavigatedFrom(NavigationContext navigationContext)
-		{
-			if (m_lega.IsAstaInvernale)
-			{
-				m_lega.TerminaAstaInvernale();
-			}
-		}
-
-		#endregion
 
 		#region Private methods
 

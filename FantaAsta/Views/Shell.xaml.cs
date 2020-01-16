@@ -35,10 +35,7 @@ namespace FantaAsta.Views
 
 		private void CloseWindow(object target, ExecutedRoutedEventArgs e)
 		{
-			if (m_lega.IsAstaInvernale)
-			{
-				m_lega.TerminaAstaInvernale();
-			}
+			m_lega.DisattivaModalitaAstaInvernale();
 
 			ButtonResult result = m_dialogService.ShowMessage("Vuoi salvare le modifiche prima di chiudere?", MessageType.Warning);
 
@@ -90,11 +87,18 @@ namespace FantaAsta.Views
 		{
 			switch (WindowState)
 			{
-				case WindowState.Maximized:
-					WindowState = WindowState.Normal;
-					break;
 				case WindowState.Normal:
-					WindowState = WindowState.Maximized;
+					{
+						WindowState = WindowState.Maximized;
+						break;
+					}
+				case WindowState.Maximized:
+					{
+						WindowState = WindowState.Normal;
+						break;
+					}
+				case WindowState.Minimized:
+				default:
 					break;
 			}
 		}

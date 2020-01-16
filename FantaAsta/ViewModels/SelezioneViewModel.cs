@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Threading;
 using System.Windows.Input;
 using Microsoft.Win32;
 using Prism.Commands;
@@ -25,8 +23,7 @@ namespace FantaAsta.ViewModels
 
 		#region Commands
 
-		public DelegateCommand AstaEstivaCommand { get; }
-		public DelegateCommand AstaInvernaleCommand { get; }
+		public DelegateCommand AvviaAstaCommand { get; }
 		public DelegateCommand GestisciRoseCommand { get; }
 		public DelegateCommand SvuotaRoseCommand { get; }
 		public DelegateCommand AggiungiSquadraCommand { get; }
@@ -42,11 +39,10 @@ namespace FantaAsta.ViewModels
 
 			m_lega.ApriFileDialog += OnApriFileDialog;
 			m_lega.ListaImportata += OnListaImportata;
-			m_lega.FantaSquadraAggiunta += AggiornaComandiAsta;
-			m_lega.FantaSquadraRimossa += AggiornaComandiAsta;
+			m_lega.FantaSquadraAggiunta += AggiornaComandoAvviaAsta;
+			m_lega.FantaSquadraRimossa += AggiornaComandoAvviaAsta;
 
-			AstaEstivaCommand = new DelegateCommand(AvviaAstaEstiva, AbilitaAvviaAsta);
-			AstaInvernaleCommand = new DelegateCommand(AvviaAstaInvernale, AbilitaAvviaAsta);
+			AvviaAstaCommand = new DelegateCommand(AvviaAsta, AbilitaAvviaAsta);
 			GestisciRoseCommand = new DelegateCommand(GestisciRose);
 			SvuotaRoseCommand = new DelegateCommand(SvuotaRose);
 			AggiungiSquadraCommand = new DelegateCommand(AggiungiSquadra);
@@ -55,9 +51,9 @@ namespace FantaAsta.ViewModels
 
 		#region Private methods
 
-		private void NavigateToMain(NavigationParameters parameters)
+		private void NavigateToMain()
 		{
-			m_regionManager.RequestNavigate("MainRegion", nameof(MainView), parameters);
+			m_regionManager.RequestNavigate("MainRegion", nameof(MainView));
 		}
 
 		private void NavigateToGestioneRose()
@@ -96,29 +92,22 @@ namespace FantaAsta.ViewModels
 
 			m_dialogService.ShowMessage("Lista importata con successo", MessageType.Notification);
 
-			AggiornaComandiAsta(sender, e);
+			AggiornaComandoAvviaAsta(null, null);
 		}
 
-		private void AggiornaComandiAsta(object sender, System.EventArgs e)
+		private void AggiornaComandoAvviaAsta(object sender, System.EventArgs e)
 		{
-			AstaEstivaCommand?.RaiseCanExecuteChanged();
-			AstaInvernaleCommand?.RaiseCanExecuteChanged();
+			AvviaAstaCommand?.RaiseCanExecuteChanged();
 		}
 
 		#endregion
 
 		#region Commands
 
-		private void AvviaAstaEstiva()
+		private void AvviaAsta()
 		{
-			NavigateToMain(new NavigationParameters { { "Modalità", "Asta estiva" } });
+			NavigateToMain();
 		}
-
-		private void AvviaAstaInvernale()
-		{
-			NavigateToMain(new NavigationParameters { { "Modalità", "Asta invernale" } });
-		}
-
 		private bool AbilitaAvviaAsta()
 		{
 			return m_lega.ListaPresente && m_lega.FantaSquadre.Count > 0;
@@ -138,11 +127,7 @@ namespace FantaAsta.ViewModels
 
 		private void AggiungiSquadra()
 		{
-			m_dialogService.ShowDialog("Aggiungi", new DialogParameters { { "Type", DialogType.Popup } }, (res) =>
-			 {
-				 AstaEstivaCommand?.RaiseCanExecuteChanged();
-				 AstaInvernaleCommand?.RaiseCanExecuteChanged();
-			 });
+			m_dialogService.ShowDialog("Aggiungi", new DialogParameters { { "Type", DialogType.Popup } }, (res) => AggiornaComandoAvviaAsta(null, null));
 		}
 
 		private void ImportaLista()
