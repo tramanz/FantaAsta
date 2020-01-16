@@ -21,11 +21,11 @@ namespace FantaAsta.Models
 
 		#endregion
 
-		public Squadra(string nome, SolidColorBrush colore1, SolidColorBrush colore2)
+		public Squadra(string nome, string hexColor1, string hexColor2)
 		{
 			Nome = nome;
-			Colore1 = colore1;
-			Colore2 = colore2;
+			Colore1 = new SolidColorBrush((Color)ColorConverter.ConvertFromString(hexColor1));
+			Colore2 = new SolidColorBrush((Color)ColorConverter.ConvertFromString(hexColor2));
 		}
 
 		#region Private methods
