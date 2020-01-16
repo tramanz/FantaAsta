@@ -6,54 +6,63 @@
 	xmlns:prism="http://prismlibrary.com/"
 	WindowStartupLocation="CenterScreen">
 
-    <Window.Style>
-        <Style TargetType="Window">
-            <Setter Property="ResizeMode" Value="CanResize"/>
-            <Setter Property="WindowState" Value="Maximized"/>
-            <Setter Property="WindowStyle" Value="None"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="AllowsTransparency" Value="True"/>
-            <Setter Property="SnapsToDevicePixels" Value="True"/>
-            <Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/>
-            <Setter Property="MinHeight" Value="500"/>
-            <Setter Property="MinWidth" Value="750"/>
-            <Setter Property="shell:WindowChrome.WindowChrome">
-                <Setter.Value>
-                    <shell:WindowChrome CaptionHeight="25" ResizeBorderThickness="15" NonClientFrameEdges="None" UseAeroCaptionButtons="False" CornerRadius="6"/>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Style>
+	<Window.Style>
+		<Style TargetType="Window">
+			<Setter Property="ResizeMode" Value="CanResize"/>
+			<Setter Property="WindowState" Value="Maximized"/>
+			<Setter Property="WindowStyle" Value="None"/>
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="AllowsTransparency" Value="True"/>
+			<Setter Property="SnapsToDevicePixels" Value="True"/>
+			<Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/>
+			<Setter Property="MinHeight" Value="500"/>
+			<Setter Property="MinWidth" Value="750"/>
+			<Setter Property="shell:WindowChrome.WindowChrome">
+				<Setter.Value>
+					<shell:WindowChrome CaptionHeight="25" ResizeBorderThickness="15" NonClientFrameEdges="None" UseAeroCaptionButtons="False" CornerRadius="6"/>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</Window.Style>
 
-    <Border BorderBrush="Black" BorderThickness="2" Margin="7">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25"/>
-                <RowDefinition Height="2"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+	<Border BorderBrush="Black" BorderThickness="2" Margin="7">
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="25"/>
+				<RowDefinition Height="2"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
 
-            <!--Menu-->
-            <DockPanel Grid.Row="0" Background="Gray" MouseLeftButtonDown="OnTitleBarClicked">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <UniformGrid Columns="3" Width="80">
-                        <Button Style="{StaticResource MinimizeButton}" Command="{Binding Source={x:Static SystemCommands.MinimizeWindowCommand}}" shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
+			<!--Menu-->
+			<DockPanel Grid.Row="0" Background="DarkGray" MouseLeftButtonDown="OnTitleBarClicked">
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+					<UniformGrid Columns="3" Width="80">
+						<Button Style="{StaticResource MinimizeButton}" Command="{Binding Source={x:Static SystemCommands.MinimizeWindowCommand}}" shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
 
-                        <Button Style="{StaticResource ResizeButton}" Command="{Binding Source={x:Static SystemCommands.MaximizeWindowCommand}}" shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
+						<Button Style="{StaticResource ResizeButton}" Command="{Binding Source={x:Static SystemCommands.MaximizeWindowCommand}}" shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
 
-                        <Button Style="{StaticResource ExitButton}" Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}" shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
-                    </UniformGrid>
-                </StackPanel>
-            </DockPanel>
+						<Button Style="{StaticResource ExitButton}" Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}" shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
+					</UniformGrid>
+				</StackPanel>
+			</DockPanel>
 
-            <!--Separatore-->
-            <Rectangle Grid.Row="1" Fill="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+			<!--Separatore-->
+			<Rectangle Grid.Row="1" Fill="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 
-            <!--Contenuto-->
-            <Grid Grid.Row="2" Background="LightGray">
-                <ContentControl prism:RegionManager.RegionName="MainRegion"/>
-            </Grid>
-        </Grid>
-    </Border>
+			<!--Contenuto-->
+			<Grid Grid.Row="2" Background="LightGray">
+				<Image Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
+					<Image.Source>
+						<DrawingImage>
+							<DrawingImage.Drawing>
+								<GeometryDrawing Geometry="{StaticResource BallIcon}" Brush="DarkGray"/>
+							</DrawingImage.Drawing>
+						</DrawingImage>
+					</Image.Source>
+				</Image>
+				<ContentControl prism:RegionManager.RegionName="MainRegion"/>
+			</Grid>
+		</Grid>
+	</Border>
 
 </Window>

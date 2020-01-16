@@ -384,7 +384,7 @@
 
     <!--Stile bottoni finestra principale-->
     <Style x:Key="ThreeButtons" TargetType="Button">
-        <Setter Property="Background" Value="Gray"/>
+        <Setter Property="Background" Value="DarkGray"/>
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="ClipToBounds" Value="True"/>
         <Setter Property="Template">

@@ -31,6 +31,7 @@ namespace FantaAsta.Models
 		public bool InLista { get; set; } = true;
 
 		#endregion
+
 		public Giocatore(int id, Ruoli ruolo, string nome, string squadra, double quotazione)
 		{
 			ID = id;
