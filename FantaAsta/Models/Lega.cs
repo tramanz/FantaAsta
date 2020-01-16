@@ -70,22 +70,24 @@ namespace FantaAsta.Models
 		/// <returns>Il giocatore estratto.</returns>
 		public Giocatore EstraiGiocatore(Ruoli ruolo)
 		{
-			// La probabilità di un giocatore di essere estratto (a meno di un fattore correttivo per i giocatori meno quotati, dovuto alla divisione intera) è:
-			//           1
-			// p = --------------,
-			//           (k - 1)
-			//      N * 5
-			// dove N è il numero di giocatori nella lista del ruolo specificato e k = 1, 2, ..., 5 è l'indice del gruppo in cui è presente il giocatore.
-			// I giocatori in lista vengono ordinati in modo decrescente e divisi in 5 gruppi di cardinalità K = [N/5] (ad eccezione dell'ultimo, pari a K = N - 4*[N/5]).
-			// In questo modo si rende più probabile l'estrazione di un giocatore più quotato rispetto ad uno meno quotato,
-			// mantenendo al contempo la probabilità uniforme all'interno di uno stesso gruppo.
+			// *************************************************************************************************************************************************************************************************
+			// *                                                                                                                                                                                               *
+			// * La probabilità di un giocatore di essere estratto (a meno di un fattore correttivo per i giocatori meno quotati, dovuto alla divisione intera) è:                                             *
+			// *        1                                                                                                                                                                                      *
+			// * p = ---------,                                                                                                                                                                                *
+			// *           k                                                                                                                                                                                   *
+			// *      N * 5                                                                                                                                                                                    *
+			// * dove N è il numero di giocatori nella lista del ruolo specificato e k = 0, 1, ..., 4 è l'indice del gruppo in cui è presente il giocatore.                                                    *
+			// * I giocatori in lista vengono ordinati in modo decrescente e divisi in 5 gruppi di cardinalità M = [N/5] (ad eccezione dell'ultimo, pari a M = N - 4*[N/5]).                                   *
+			// * In questo modo si rende più probabile l'estrazione di un giocatore più quotato rispetto ad uno meno quotato, mantenendo al contempo la probabilità uniforme all'interno di uno stesso gruppo. *
+			// *                                                                                                                                                                                               *
+			// *************************************************************************************************************************************************************************************************
 
 			// Ricavo dalla lista i giocatori del ruolo specificato e ordino per quotazione decrescente
-			List<Giocatore> listaRuolo = GeneraListaPerRuolo(Svincolati, ruolo).OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome).ToList();
+			List<Giocatore> listaRuolo = GeneraListaPerRuolo(Svincolati, ruolo).OrderByDescending(g => g.Quotazione).ToList();
 
-			// Ricavo il numero N di giocatori totali e il numero K di giocatori per intervallo
+			// Ricavo il numero N di giocatori totali
 			int N = listaRuolo.Count;
-			int K = (int)Math.Floor((double)(N / 5));
 
 			// Se non sono presenti giocatori del ruolo specificato, ritorno null
 			if (N == 0)
@@ -95,42 +97,33 @@ namespace FantaAsta.Models
 			if (N < 5)
 				return listaRuolo[m_random.Next(0, N - 1)];
 
-			// Costruisco la lista degli intervalli
-			List<Intervallo> estrazioni = new List<Intervallo>
-			{
-				new Intervallo(0, K - 1),
-				new Intervallo(K,  2 * K - 1),
-				new Intervallo(2 * K, 3 * K - 1),
-				new Intervallo(3 * K, 4 * K - 1),
-				new Intervallo(4 * K, N - 1)
-			};
-
-			// Continuo ad estrarre un indice finché la condizione d'uscita non è soddisfatta
+			// Inizializzo le variabili di supporto per l'estrazione
+			int[] estrazioni = new int[5];
+			int k = 0;
 			bool flag = true;
-			int n; int k = 0;
+
+			// Continuo ad estrarre un indice di gruppo finché la condizione d'uscita non è soddisfatta
 			while (flag)
 			{
-				// Estraggo un indice dalla lista
-				n = m_random.Next(0, N - 1);
+				// Estraggo un indice di gruppo
+				k = m_random.Next(0, 4);
 
-				// Ricavo l'indice dell'intervallo in cui ricade l'indice estratto
-				k = estrazioni.IndexOf(estrazioni.Find(i => n >= i.Inf && n <= i.Sup));
+				// Aggiorno il numero di volte che l'indice è stato estratto e la condizione d'uscita
+				flag = ++estrazioni[k] < k + 1;
+			}
 
-				// Aggiorno il numero di volte che l'intervallo è stato estratto
-				estrazioni[k].Estrazioni++;
-
-				// Aggiorno la condizione d'uscita
-				flag = estrazioni[k].Estrazioni < k + 1;
+			// Ricavo il numero di giocatori per intervallo (se l'intervallo estratto è l'ultimo, aggiungo il resto della divisione intera)
+			int M = (int)Math.Floor((double)(N / 5));
+			if (k == 4)
+			{
+				M += N % M;
 			}
 
 			// Ricavo l'intervallo estratto
-			List<Giocatore> intervallo = listaRuolo.GetRange(estrazioni[k].Inf, estrazioni[k].Dim);
+			List<Giocatore> listaIntervallo = listaRuolo.GetRange(k * M, M);
 
-			// Estraggo con probabilità uniforme un indice dall'intervallo estratto
-			k = m_random.Next(0, estrazioni[k].Dim - 1);
-
-			// Ritorno il giocatore corrispondente all'indice estratto
-			return intervallo[k];
+			// Estraggo un giocatore con probabilità uniforme dall'intervallo estratto
+			return listaIntervallo[m_random.Next(0, M - 1)];
 		}
 
 		/// <summary>
@@ -499,31 +492,5 @@ namespace FantaAsta.Models
 		}
 
 		#endregion
-
-		/// <summary>
-		/// Classe di supporto per identificare un intervallo numerico e il numero di volte che viene estratto
-		/// </summary>
-		private class Intervallo
-		{
-			#region Properties
-
-			public int Inf { get; }
-
-			public int Sup { get; }
-
-			public int Dim { get; }
-
-			public int Estrazioni { get; set; }
-
-			#endregion
-
-			public Intervallo(int inf, int sup)
-			{
-				Inf = inf;
-				Sup = sup;
-				Dim = sup - inf + 1;
-				Estrazioni = 0;
-			}
-		}
 	}
 }
