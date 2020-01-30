@@ -83,18 +83,27 @@ namespace FantaAsta.Models
 			// *************************************************************************************************************************************************************************************************
 
 			// Ricavo dalla lista i giocatori del ruolo specificato e ordino per quotazione decrescente
-			List<Giocatore> listaRuolo = GeneraListaPerRuolo(Svincolati, ruolo).OrderByDescending(g => g.Quotazione).ToList();
+			List<Giocatore> listaRuolo = GeneraListaPerRuolo(Svincolati, ruolo).Where(g => !g.Scartato).OrderByDescending(g => g.Quotazione).ToList();
 
 			// Ricavo il numero N di giocatori totali
 			int N = listaRuolo.Count;
 
-			// Se non sono presenti giocatori del ruolo specificato, ritorno null
+			// Se non sono presenti giocatori del ruolo specificato, aggiorno lo stato 'scartato' di tutti e ritorno null
 			if (N == 0)
+			{
+				foreach (Giocatore giocatore in GeneraListaPerRuolo(Svincolati, ruolo))
+				{
+					giocatore.Scartato = false;
+				}
+
 				return null;
+			}
 
 			// Se in lista sono rimasti meno di 5 giocatori del ruolo specificato, ritorno un giocatore con probabilità uniforme
 			if (N < 5)
+			{
 				return listaRuolo[m_random.Next(0, N - 1)];
+			}
 
 			// Inizializzo le variabili di supporto per l'estrazione
 			int[] estrazioni = new int[5];
@@ -317,6 +326,18 @@ namespace FantaAsta.Models
 		public bool ImportaLista(string filePath)
 		{
 			return CaricaListaDaFile(filePath, false);
+		}
+
+		/// <summary>
+		/// Metodo per verificare se un giocatore è stato acquistato da una fantasquadra e aggiornare il suo stato
+		/// </summary>
+		/// <param name="giocatore">Il giocatore da controllare</param>
+		public void ControllaAcquistoGiocatore(Giocatore giocatore)
+		{
+			if (giocatore != null)
+			{
+				giocatore.Scartato = FantaSquadre.Find(s => s.Giocatori.Contains(giocatore)) == null;
+			}
 		}
 
 		#endregion

@@ -151,6 +151,8 @@ namespace FantaAsta.ViewModels
 
 		private void EstraiGiocatore()
 		{
+			m_lega.ControllaAcquistoGiocatore(GiocatoreCorrente);
+
 			m_timer.Enabled = true;
 			m_timer.Start();
 

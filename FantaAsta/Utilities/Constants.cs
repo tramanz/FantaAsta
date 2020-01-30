@@ -20,7 +20,7 @@ namespace FantaAsta.Utilities
 		public static Squadra ATALANTA = new Squadra("Atalanta", "#000000", "#1E71B8");
 		public static Squadra AVELLINO = new Squadra("Avellino", "#FFFFFF", "#009774");
 		public static Squadra BARI = new Squadra("Vicenza", "#FE0000", "#FFFFFF");
-		public static Squadra BENEVENTO = new Squadra("Benevento", "FBF428", "#DE0728");
+		public static Squadra BENEVENTO = new Squadra("Benevento", "#FBF428", "#DE0728");
 		public static Squadra BOLOGNA = new Squadra("Bologna", "#A21C26", "#1A2F48");
 		public static Squadra BRESCIA = new Squadra("Brescia", "#004E8E", "#FFFFFF");
 		public static Squadra CAGLIARI = new Squadra("Cagliari", "#AD002A", "#002350");
@@ -52,7 +52,7 @@ namespace FantaAsta.Utilities
 		public static Squadra PARMA = new Squadra("Parma", "#FEC532", "#035183");
 		public static Squadra PERUGIA = new Squadra("Perugia", "#EA0001", "#FFFFFF");
 		public static Squadra PESCARA = new Squadra("Pescara", "#FFFFFF", "#0096D5");
-		public static Squadra PIACENZA = new Squadra("Piacenza", "#FE0000", "FFFFFF");
+		public static Squadra PIACENZA = new Squadra("Piacenza", "#FE0000", "#FFFFFF");
 		public static Squadra PISA = new Squadra("Pisa", "#000000", "#5479D4");
 		public static Squadra PORDENONE = new Squadra("Pordenone", "#FFFFFF", "#008735");
 		public static Squadra REGGINA = new Squadra("Reggina", "#8E0000", "#FFFFFF");
