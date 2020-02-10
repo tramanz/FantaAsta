@@ -372,24 +372,24 @@ namespace FantaAsta.Models
 		/// <returns>True se l'operazione è andata a buon fine, false altrimenti</returns>
 		private bool CaricaListaDaFile(string filePath, bool isLoadingAtStart)
 		{
-			Lista = new List<Giocatore>();
-			Svincolati = new List<Giocatore>();
+			if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+			{
+				return false;
+			}
 
 			if (!Directory.Exists(Constants.DATA_DIRECTORY_PATH))
 			{
 				Directory.CreateDirectory(Constants.DATA_DIRECTORY_PATH);
 			}
 
-			if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
-			{
-				return false;
-			}
+			Lista = new List<Giocatore>();
+			Svincolati = new List<Giocatore>();
 
 			if (!isLoadingAtStart)
 			{
 				try
 				{
-					PercorsoFileLista = Path.Combine(Constants.DATA_DIRECTORY_PATH, $"Quotazioni ({DateTime.Now.Day}_{DateTime.Now.Month}_{DateTime.Now.Year}).csv");
+					PercorsoFileLista = Path.Combine(Constants.DATA_DIRECTORY_PATH, $"Quotazioni ({DateTime.Now.ToString("dd_MM_yyyy")}).csv");
 					File.Copy(filePath, PercorsoFileLista, true);
 				}
 				catch
@@ -460,17 +460,31 @@ namespace FantaAsta.Models
 		{
 			if (FantaSquadre != null)
 			{
+				List<Giocatore> listaSupporto; Giocatore giocatoreSupporto;
+
 				foreach (FantaSquadra squadra in FantaSquadre)
 				{
+					listaSupporto = new List<Giocatore>();
+
 					foreach (Giocatore giocatore in squadra.Giocatori)
 					{
-						giocatore.InLista = Lista.Contains(giocatore);
+						// Se il giocatore è in lista, prendo l'istanza nella lista
+						// (per mantenere un'unica istanza del giocatore tra lista e rose),
+						// altrimenti lascio l'istanza attuale
+						giocatoreSupporto = Lista.Contains(giocatore) ? Lista.Find(g => g.Equals(giocatore)) : giocatore;
+						giocatoreSupporto.InLista = Lista.Contains(giocatore);
+						giocatoreSupporto.Prezzo = giocatore.Prezzo;
 
-						if (Svincolati.Contains(giocatore))
+						// Rimuovo il giocatore dalla lista degli svincolati
+						if (Svincolati.Contains(giocatoreSupporto))
 						{
-							Svincolati.Remove(giocatore);
+							Svincolati.Remove(giocatoreSupporto);
 						}
+
+						listaSupporto.Add(giocatoreSupporto);
 					}
+
+					squadra.Giocatori = listaSupporto;
 				}
 
 				RoseResettate?.Invoke(this, System.EventArgs.Empty);
