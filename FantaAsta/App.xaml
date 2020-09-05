@@ -7,21 +7,11 @@
 	<Application.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				
-				<ResourceDictionary>
-					<FontFamily x:Key="NunitoBlack">/Resources/Fonts/#Nunito Black</FontFamily>
-					<FontFamily x:Key="NunitoBold">/Resources/Fonts/#Nunito Bold</FontFamily>
-					<FontFamily x:Key="NunitoExtraBold">/Resources/Fonts/#Nunito ExtraBold</FontFamily>
-					<FontFamily x:Key="NunitoExtraLight">/Resources/Fonts/#Nunito ExtraLight</FontFamily>
-					<FontFamily x:Key="NunitoLight">/Resources/Fonts/#Nunito Light</FontFamily>
-					<FontFamily x:Key="NunitoMedium">/Resources/Fonts/#Nunito Medium</FontFamily>
-					<FontFamily x:Key="NunitoRegular">/Resources/Fonts/#Nunito Regular</FontFamily>
-					<FontFamily x:Key="NunitoSemiBold">/Resources/Fonts/#Nunito SemiBold</FontFamily>
-				</ResourceDictionary>
 
-				<ResourceDictionary Source="Resources/Icons.xaml"/>
-				<ResourceDictionary Source="Resources/Styles.xaml"/>
-				
+				<ResourceDictionary Source="Resources/Fonts/Fonts.xaml"/>
+				<ResourceDictionary Source="Resources/Controls/Icons.xaml"/>
+				<ResourceDictionary Source="Resources/Controls/Styles.xaml"/>
+
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Application.Resources>

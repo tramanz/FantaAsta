@@ -1,5 +1,4 @@
 .vs
-*.csv
 FantaAsta/bin
 FantaAsta/obj
 FantaAsta/Installer/*.exe

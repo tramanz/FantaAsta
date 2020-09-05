@@ -162,15 +162,19 @@
     <Compile Include="Views\StoricoView.xaml.cs">
       <DependentUpon>StoricoView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Resources\Controls\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Resources\Controls\StarsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Resources\Icons.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Resources\Controls\Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="Resources\Styles.xaml">
+    <Page Include="Resources\Fonts\Fonts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -257,25 +261,26 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <EmbeddedResource Include="Resources\Data\Squadre.csv" />
     <None Include="signature.pfx" />
     <None Include="ViewModels\ViewModels.cd" />
-    <Resource Include="Resources\Fonts\Nunito-Black.ttf" />
-    <Resource Include="Resources\Fonts\Nunito-Bold.ttf" />
-    <Resource Include="Resources\Fonts\Nunito-ExtraBold.ttf" />
-    <Resource Include="Resources\Fonts\Nunito-ExtraLight.ttf" />
-    <Resource Include="Resources\Fonts\Nunito-Light.ttf" />
-    <Resource Include="Resources\Fonts\Nunito-Medium.ttf" />
-    <Resource Include="Resources\Fonts\Nunito-Regular.ttf" />
-    <Resource Include="Resources\Fonts\Nunito-SemiBold.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Nunito-Black.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Nunito-Bold.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Nunito-ExtraBold.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Nunito-ExtraLight.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Nunito-Light.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Nunito-Medium.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Nunito-Regular.ttf" />
+    <EmbeddedResource Include="Resources\Fonts\Nunito-SemiBold.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Fonts\SIL Open Font License.txt" />
+    <EmbeddedResource Include="Resources\Fonts\SIL Open Font License.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\FantaLegaManager.ico" />
+    <EmbeddedResource Include="Resources\FantaLegaManager.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

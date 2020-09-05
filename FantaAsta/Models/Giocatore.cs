@@ -1,7 +1,5 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using FantaAsta.Enums;
-using FantaAsta.Utilities;
 
 namespace FantaAsta.Models
 {
@@ -35,12 +33,12 @@ namespace FantaAsta.Models
 
 		#endregion
 
-		public Giocatore(int id, Ruoli ruolo, string nome, string squadra, double quotazione)
+		public Giocatore(int id, Ruoli ruolo, string nome, Squadra squadra, double quotazione)
 		{
 			ID = id;
 			Ruolo = ruolo;
 			Nome = nome;
-			Squadra = Constants.SQUADRE.Find(s => s.Nome.Equals(squadra, StringComparison.OrdinalIgnoreCase));
+			Squadra = squadra;
 			Quotazione = quotazione;
 		}
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Xml;
 using FantaAsta.Enums;
@@ -26,6 +27,8 @@ namespace FantaAsta.Models
 
 		[DataMember(Name = "PercorsoFileLista")]
 		public string PercorsoFileLista { get; set; }
+
+		public List<Squadra> Squadre { get; private set; }
 
 		public List<Giocatore> Lista { get; private set; }
 
@@ -54,6 +57,8 @@ namespace FantaAsta.Models
 
 		public Lega()
 		{
+			CaricaSquadre();
+
 			CaricaLista();
 
 			CaricaFantaSquadre();
@@ -389,7 +394,7 @@ namespace FantaAsta.Models
 			{
 				try
 				{
-					PercorsoFileLista = Path.Combine(Constants.DATA_DIRECTORY_PATH, $"Quotazioni ({DateTime.Now.ToString("dd_MM_yyyy")}).csv");
+					PercorsoFileLista = Path.Combine(Constants.DATA_DIRECTORY_PATH, $"Quotazioni ({DateTime.Now:dd_MM_yyyy}).csv");
 					File.Copy(filePath, PercorsoFileLista, true);
 				}
 				catch
@@ -398,14 +403,14 @@ namespace FantaAsta.Models
 				}
 			}
 
-			using (var reader = new StreamReader(PercorsoFileLista))
+			using (StreamReader reader = new StreamReader(PercorsoFileLista))
 			{
 				Giocatore giocatore;
 				while (!reader.EndOfStream)
 				{
 					string[] data = reader.ReadLine().Split(';');
 
-					giocatore = new Giocatore(Convert.ToInt32(data[0]), (Ruoli)Enum.Parse(typeof(Ruoli), data[1]), data[2], data[3], Convert.ToDouble(data[4]));
+					giocatore = new Giocatore(Convert.ToInt32(data[0]), (Ruoli)Enum.Parse(typeof(Ruoli), data[1]), data[2], Squadre.Single(s => s.Nome.Equals(data[3], StringComparison.OrdinalIgnoreCase)), Convert.ToDouble(data[4]));
 
 					Lista.Add(giocatore);
 					Svincolati.Add(giocatore);
@@ -451,6 +456,25 @@ namespace FantaAsta.Models
 			}
 
 			AggiornaStatoGiocatoriInRosa();
+		}
+
+		/// <summary>
+		/// Metodo per caricare le squadre da file .csv nelle risorse
+		/// </summary>
+		private void CaricaSquadre()
+		{
+			Squadre = new List<Squadra>();
+
+			using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("FantaAsta.Resources.Data.Squadre.csv"))
+			using (StreamReader reader = new StreamReader(stream))
+			{
+				while (!reader.EndOfStream)
+				{
+					string[] data = reader.ReadLine().Split(';');
+
+					Squadre.Add(new Squadra(data[0], data[1], data[2]));
+				}
+			}
 		}
 
 		/// <summary>

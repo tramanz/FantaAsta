@@ -1,0 +1,14 @@
+﻿<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<FontFamily x:Key="NunitoBlack">#Nunito Black</FontFamily>
+	<FontFamily x:Key="NunitoBold">#Nunito Bold</FontFamily>
+	<FontFamily x:Key="NunitoExtraBold">#Nunito ExtraBold</FontFamily>
+	<FontFamily x:Key="NunitoExtraLight">#Nunito ExtraLight</FontFamily>
+	<FontFamily x:Key="NunitoLight">#Nunito Light</FontFamily>
+	<FontFamily x:Key="NunitoMedium">#Nunito Medium</FontFamily>
+	<FontFamily x:Key="NunitoRegular">#Nunito Regular</FontFamily>
+	<FontFamily x:Key="NunitoSemiBold">#Nunito SemiBold</FontFamily>
+	
+</ResourceDictionary>
