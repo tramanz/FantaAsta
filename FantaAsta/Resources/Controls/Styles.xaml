@@ -95,8 +95,8 @@
 								</ControlTemplate>
 							</ToggleButton.Template>
 						</ToggleButton>
-						<ContentPresenter x:Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0"/>
-						<TextBox x:Name="PART_EditableTextBox" Style="{x:Null}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Focusable="True" Background="Transparent" Visibility="Hidden" IsReadOnly="{TemplateBinding IsReadOnly}">
+						<ContentPresenter x:Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+						<TextBox x:Name="PART_EditableTextBox" Style="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0" Focusable="True" Background="Transparent" Visibility="Hidden" IsReadOnly="{TemplateBinding IsReadOnly}">
 							<TextBox.Template>
 								<ControlTemplate TargetType="TextBox">
 									<Border x:Name="PART_ContentHost" Focusable="False" Background="{TemplateBinding Background}"/>
@@ -139,14 +139,14 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="ComboBoxItem">
 					<Border x:Name="Border" Background="White" CornerRadius="4" Margin="0,1">
-						<ContentPresenter x:Name="Content" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,1,0,1"/>
+						<ContentPresenter x:Name="Content" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,1"/>
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="Content" Property="TextElement.Foreground" Value="DarkGray"/>
 							<Setter TargetName="Border" Property="Background" Value="LightCyan"/>
 						</Trigger>
 						<Trigger Property="IsSelected" Value="True">
-							<Setter TargetName="Content" Property="TextElement.Foreground" Value="DarkGray"/>
 							<Setter TargetName="Border" Property="Background" Value="LightCyan"/>
 						</Trigger>
 					</ControlTemplate.Triggers>
@@ -166,9 +166,6 @@
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter TargetName="Border" Property="BorderBrush" Value="LightCyan"/>
-						</Trigger>
-						<Trigger Property="IsFocused" Value="True">
 							<Setter TargetName="Border" Property="BorderBrush" Value="LightCyan"/>
 						</Trigger>
 					</ControlTemplate.Triggers>
@@ -410,7 +407,7 @@
 					<Condition Property="IsMouseOver" Value="True"/>
 					<Condition Property="IsStylusOver" Value="False"/>
 				</MultiTrigger.Conditions>
-				<Setter Property="Background" Value="DarkGray"/>
+				<Setter Property="Background" Value="LightGray"/>
 			</MultiTrigger>
 		</Style.Triggers>
 	</Style>
