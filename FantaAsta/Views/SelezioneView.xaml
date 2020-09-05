@@ -5,25 +5,51 @@
 	xmlns:prism="http://prismlibrary.com/"
 	prism:ViewModelLocator.AutoWireViewModel="True">
 
-	<Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
+	<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+		<!--Sfondo-->
+		<Grid Margin="5">
+			<Image Stretch="Uniform" Opacity="0.5">
+				<Image.Source>
+					<DrawingImage>
+						<DrawingImage.Drawing>
+							<GeometryDrawing Geometry="{StaticResource PitchIcon}" Brush="DarkGreen"/>
+						</DrawingImage.Drawing>
+					</DrawingImage>
+				</Image.Source>
+			</Image>
 
-		<Border Grid.Row="0" Background="LightBlue" BorderBrush="Black" BorderThickness="2" CornerRadius="6" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,20">
-			<TextBlock Text="FANTA LEGA MANAGER" FontFamily="{StaticResource NunitoBold}" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="25,15"/>
-		</Border>
+			<Image Stretch="Uniform" Margin="41">
+				<Image.Source>
+					<DrawingImage>
+						<DrawingImage.Drawing>
+							<GeometryDrawing Geometry="{StaticResource BallIcon}" Brush="Black"/>
+						</DrawingImage.Drawing>
+					</DrawingImage>
+				</Image.Source>
+			</Image>
+		</Grid>
 
-		<Button Grid.Row="1" Content="Avvia asta" FontSize="24" Command="{Binding AvviaAstaCommand}" Width="275" Height="75" Margin="0,20"/>
+		<!--Bottoni-->
+		<Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
 
-		<UniformGrid Grid.Row="2" Rows="2" Columns="2" Margin="0,20,0,0">
-			<Button Content="Gestisci rose" FontSize="24" Command="{Binding GestisciRoseCommand}" Width="275" Height="75" Margin="0,0,5,5"/>
-			<Button Content="Svuota rose" FontSize="24" Command="{Binding SvuotaRoseCommand}" Width="275" Height="75" Margin="5,0,0,5"/>
-			<Button Content="Aggiungi squadra" FontSize="24" Command="{Binding AggiungiSquadraCommand}" Width="275" Height="75" Margin="0,5,5,0"/>
-			<Button Content="Importa lista" FontSize="24" Command="{Binding ImportaListaCommand}" Width="275" Height="75" Margin="5,5,0,0"/>
-		</UniformGrid>
+			<Border Grid.Row="0" Background="LightCyan" BorderBrush="Black" BorderThickness="2" CornerRadius="6" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="25" Margin="0,0,0,20">
+				<TextBlock Text="FANTA LEGA MANAGER" FontFamily="{StaticResource NunitoBold}" FontSize="90"/>
+			</Border>
+
+			<Button Grid.Row="1" Content="Avvia asta" FontSize="45" Command="{Binding AvviaAstaCommand}" Width="400" Height="100" Margin="0,20"/>
+
+			<UniformGrid Grid.Row="2" Rows="2" Columns="2" Margin="0,20,0,0">
+				<Button Content="Gestisci rose" FontSize="45" Command="{Binding GestisciRoseCommand}" Width="400" Height="100" Margin="0,0,5,5"/>
+				<Button Content="Svuota rose" FontSize="45" Command="{Binding SvuotaRoseCommand}" Width="400" Height="100" Margin="5,0,0,5"/>
+				<Button Content="Aggiungi squadra" FontSize="45" Command="{Binding AggiungiSquadraCommand}" Width="400" Height="100" Margin="0,5,5,0"/>
+				<Button Content="Importa lista" FontSize="45" Command="{Binding ImportaListaCommand}" Width="400" Height="100" Margin="5,5,0,0"/>
+			</UniformGrid>
+		</Grid>
 	</Grid>
 
 </UserControl>

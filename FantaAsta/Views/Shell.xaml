@@ -34,7 +34,7 @@
 			</Grid.RowDefinitions>
 
 			<!--Menu-->
-			<DockPanel Grid.Row="0" Background="DarkGray" MouseLeftButtonDown="OnTitleBarClicked">
+			<DockPanel Grid.Row="0" Background="LightCyan" MouseLeftButtonDown="OnTitleBarClicked">
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
 					<UniformGrid Columns="3" Width="80">
 						<Button Style="{StaticResource MinimizeButton}" Command="{Binding Source={x:Static SystemCommands.MinimizeWindowCommand}}" shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
@@ -49,17 +49,8 @@
 			<!--Separatore-->
 			<Rectangle Grid.Row="1" Fill="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 
-			<!--Contenuto-->
+			<!--Regione principale-->
 			<Grid Grid.Row="2" Background="LightGray">
-				<Image Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.7" Margin="20">
-					<Image.Source>
-						<DrawingImage>
-							<DrawingImage.Drawing>
-								<GeometryDrawing Geometry="{StaticResource BallIcon}" Brush="DarkGray"/>
-							</DrawingImage.Drawing>
-						</DrawingImage>
-					</Image.Source>
-				</Image>
 				<ContentControl prism:RegionManager.RegionName="MainRegion"/>
 			</Grid>
 		</Grid>
