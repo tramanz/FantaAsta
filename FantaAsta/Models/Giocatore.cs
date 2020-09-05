@@ -40,7 +40,7 @@ namespace FantaAsta.Models
 			ID = id;
 			Ruolo = ruolo;
 			Nome = nome;
-			Squadra = Constants.SERIE_A.Find(s => s.Nome.Equals(squadra, StringComparison.OrdinalIgnoreCase));
+			Squadra = Constants.SQUADRE.Find(s => s.Nome.Equals(squadra, StringComparison.OrdinalIgnoreCase));
 			Quotazione = quotazione;
 		}
 

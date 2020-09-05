@@ -16,7 +16,7 @@ namespace FantaAsta.Resources.Converters
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return value is string initials ? Constants.SERIE_A.Select(s => s.Nome).FirstOrDefault(s => s.StartsWith(initials, StringComparison.OrdinalIgnoreCase)) : string.Empty;
+			return value is string initials ? Constants.SQUADRE.Select(s => s.Nome).FirstOrDefault(s => s.StartsWith(initials, StringComparison.OrdinalIgnoreCase)) : string.Empty;
 		}
 	}
 }
