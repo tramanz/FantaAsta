@@ -67,7 +67,7 @@ namespace FantaAsta.Utilities
 			new Squadra("Torino", "#7B1C20", "#FFFFFF"),
 			new Squadra("Trapani", "#7B1C22", "#FFFFFF"),
 			new Squadra("Triestina", "#FE0000", "#FFFFFF"),
-			new Squadra("Udinese", "#FFFFFF", "#000000"),
+			new Squadra("Udinese", "#000000", "#FFFFFF"),
 			new Squadra("Verona", "#004A9A", "#FEE500"),
 			new Squadra("Vicenza", "#FFFFFF", "#FE0000"),
 			new Squadra("Venezia", "#000000", "#FF972E")

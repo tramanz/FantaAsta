@@ -51,7 +51,7 @@
 
 			<!--Contenuto-->
 			<Grid Grid.Row="2" Background="LightGray">
-				<Image Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
+				<Image Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.7" Margin="20">
 					<Image.Source>
 						<DrawingImage>
 							<DrawingImage.Drawing>
