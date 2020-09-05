@@ -1,6 +1,7 @@
 [Setup]
 #define ApplicationVersion GetFileVersion('Skeleton\FantaLegaManager.exe')
-AppCopyright=2019 - Marco Tramarin
+
+AppCopyright=Marco Tramarin © 2020
 AppName=Fanta Lega Manager
 AppVerName=Fanta Lega Manager
 AppVersion={#ApplicationVersion}
