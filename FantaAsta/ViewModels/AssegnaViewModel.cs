@@ -102,9 +102,11 @@ namespace FantaAsta.ViewModels
 
 		private void Conferma()
 		{
+			FantaSquadra fantaSquadra = m_lega?.FantaSquadre.Single(s => s.Nome.Equals(SquadraSelezionata));
+
 			if (double.IsNaN(m_prezzo))
 			{
-				m_dialogService.ShowMessage("Inserire un prezzo", MessageType.Error);
+				m_dialogService.ShowMessage("Inserire un prezzo.", MessageType.Error);
 
 				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
 			}
@@ -114,9 +116,15 @@ namespace FantaAsta.ViewModels
 
 				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
 			}
+			else if (m_prezzo > fantaSquadra.Budget)
+			{
+				m_dialogService.ShowMessage("Budget non disponibile.", MessageType.Error);
+
+				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
+			}
 			else
 			{
-				bool result = m_lega.AggiungiGiocatore(m_lega?.FantaSquadre.Single(s => s.Nome.Equals(SquadraSelezionata)), m_giocatore, m_prezzo);
+				bool result = m_lega.AggiungiGiocatore(fantaSquadra, m_giocatore, m_prezzo);
 
 				if (!result)
 				{
@@ -128,7 +136,7 @@ namespace FantaAsta.ViewModels
 		}
 		private bool AbilitaConferma()
 		{
-			return !double.IsNaN(m_prezzo);
+			return !string.IsNullOrEmpty(SquadraSelezionata) && !double.IsNaN(m_prezzo);
 		}
 
 		private void Annulla()

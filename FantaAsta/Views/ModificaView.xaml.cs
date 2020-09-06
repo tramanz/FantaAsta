@@ -49,7 +49,7 @@ namespace FantaAsta.Views
 			{
 				m_parola += e.Key == Key.Space ? " " : e.Key == Key.Oem4 ? "'" : e.Key.ToString();
 
-				Giocatore giocatore = ((ObservableCollection<Giocatore>)lista.ItemsSource).Where(g => g.Nome.StartsWith(m_parola, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+				Giocatore giocatore = ((ObservableCollection<Giocatore>)lista.ItemsSource).FirstOrDefault(g => g.Nome.StartsWith(m_parola, StringComparison.OrdinalIgnoreCase));
 				if (giocatore != null)
 				{
 					lista.SelectedItem = giocatore;

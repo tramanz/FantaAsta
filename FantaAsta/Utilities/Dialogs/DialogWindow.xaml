@@ -32,8 +32,17 @@
 												</DrawingImage.Drawing>
 											</DrawingImage>
 										</Image.Source>
+										<Image.Style>
+											<Style TargetType="Image">
+												<Style.Triggers>
+													<DataTrigger Binding="{Binding Icon}" Value="{x:Null}">
+														<Setter Property="Visibility" Value="Collapsed"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</Image.Style>
 									</Image>
-									<TextBlock Text="{Binding Title}" FontSize="24" VerticalAlignment="Center" Margin="20,0,0,0"/>
+									<TextBlock Text="{Binding Title}" FontSize="24" VerticalAlignment="Center" Margin="10,0,0,0"/>
 								</StackPanel>
 								<Rectangle Grid.Row="1" Fill="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 								<Border Grid.Row="2">

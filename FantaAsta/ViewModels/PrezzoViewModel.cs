@@ -42,7 +42,7 @@ namespace FantaAsta.ViewModels
 
 		#region Events
 
-		public event EventHandler SelectNameTextBox;
+		public event EventHandler SelectPrezzoTextBox;
 
 		#endregion
 
@@ -92,7 +92,7 @@ namespace FantaAsta.ViewModels
 			{
 				m_dialogService.ShowMessage("Inserire un prezzo", MessageType.Error);
 
-				SelectNameTextBox?.Invoke(this, System.EventArgs.Empty);
+				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
 			}
 			else
 			{
@@ -124,7 +124,13 @@ namespace FantaAsta.ViewModels
 			{
 				m_dialogService.ShowMessage("Il prezzo di acquisto non può essere inferiore alla quotazione del giocatore.", MessageType.Error);
 
-				SelectNameTextBox?.Invoke(this, System.EventArgs.Empty);
+				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
+			}
+			else if (m_prezzo > m_squadra.Budget)
+			{
+				m_dialogService.ShowMessage("Budget non disponibile.", MessageType.Error);
+
+				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
 			}
 			else
 			{
@@ -143,7 +149,7 @@ namespace FantaAsta.ViewModels
 			{
 				m_dialogService.ShowMessage("Il prezzo di vendita non può essere minore o uguale a 0.", MessageType.Error);
 
-				SelectNameTextBox?.Invoke(this, System.EventArgs.Empty);
+				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
 			}
 			else
 			{

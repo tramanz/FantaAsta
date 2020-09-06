@@ -20,7 +20,7 @@ namespace FantaAsta.Views
 		{
 			if (e.NewValue != null)
 			{
-				(DataContext as PrezzoViewModel).SelectNameTextBox += OnSelectNameTextBox;
+				(DataContext as PrezzoViewModel).SelectPrezzoTextBox += OnSelectNameTextBox;
 			}
 		}
 
