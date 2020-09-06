@@ -19,7 +19,7 @@
 			<Setter Property="MinWidth" Value="750"/>
 			<Setter Property="shell:WindowChrome.WindowChrome">
 				<Setter.Value>
-					<shell:WindowChrome CaptionHeight="25" ResizeBorderThickness="15" NonClientFrameEdges="None" UseAeroCaptionButtons="False" CornerRadius="6"/>
+					<shell:WindowChrome CaptionHeight="30" ResizeBorderThickness="15" NonClientFrameEdges="None" UseAeroCaptionButtons="False"/>
 				</Setter.Value>
 			</Setter>
 		</Style>
@@ -28,15 +28,15 @@
 	<Border BorderBrush="Black" BorderThickness="2" Margin="7">
 		<Grid>
 			<Grid.RowDefinitions>
-				<RowDefinition Height="25"/>
+				<RowDefinition Height="30"/>
 				<RowDefinition Height="2"/>
 				<RowDefinition Height="*"/>
 			</Grid.RowDefinitions>
 
 			<!--Menu-->
-			<DockPanel Grid.Row="0" Background="LightCyan" MouseLeftButtonDown="OnTitleBarClicked">
+			<DockPanel Grid.Row="0" Background="{StaticResource SecondaryColor}" MouseLeftButtonDown="OnTitleBarClicked">
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-					<UniformGrid Columns="3" Width="80">
+					<UniformGrid Columns="3" Width="90">
 						<Button Style="{StaticResource MinimizeButton}" Command="{Binding Source={x:Static SystemCommands.MinimizeWindowCommand}}" shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
 
 						<Button Style="{StaticResource ResizeButton}" Command="{Binding Source={x:Static SystemCommands.MaximizeWindowCommand}}" shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
@@ -50,7 +50,7 @@
 			<Rectangle Grid.Row="1" Fill="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 
 			<!--Regione principale-->
-			<Grid Grid.Row="2" Background="LightGray">
+			<Grid Grid.Row="2" Background="{StaticResource BackgroundColor}">
 				<ContentControl prism:RegionManager.RegionName="MainRegion"/>
 			</Grid>
 		</Grid>

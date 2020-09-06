@@ -6,9 +6,9 @@
 	xmlns:prism="http://prismlibrary.com/"
 	prism:ViewModelLocator.AutoWireViewModel="True">
 
-    <UserControl.Resources>
+	<UserControl.Resources>
 
-        <ItemsPanelTemplate x:Key="PannelloLista">
+		<ItemsPanelTemplate x:Key="PannelloLista">
 			<VirtualizingStackPanel/>
 		</ItemsPanelTemplate>
 
@@ -24,15 +24,16 @@
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="ListViewItem">
-						<Border x:Name="Border" Background="Transparent" CornerRadius="6">
-							<ContentPresenter TextElement.FontSize="20" Margin="4,2,0,2"/>
+						<Border x:Name="Border" Background="{TemplateBinding Background}" CornerRadius="6">
+							<ContentPresenter x:Name="Content" TextElement.Foreground="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}" TextElement.FontSize="20" Margin="4,2,0,2"/>
 						</Border>
 						<ControlTemplate.Triggers>
 							<Trigger Property="IsSelected" Value="True">
-								<Setter TargetName="Border" Property="Background" Value="LightGreen"/>
+								<Setter Property="Background" Value="{StaticResource SecondaryColor}"/>
 							</Trigger>
 							<Trigger Property="IsMouseOver" Value="True">
-								<Setter TargetName="Border" Property="Background" Value="LightBlue"/>
+								<Setter Property="Background" Value="{StaticResource SecondaryColor}"/>
+								<Setter Property="Foreground" Value="White"/>
 							</Trigger>
 						</ControlTemplate.Triggers>
 					</ControlTemplate>
@@ -50,32 +51,6 @@
 			<Setter Property="Margin" Value="5"/>
 		</Style>
 
-		<Style x:Key="BottoneFreccia" TargetType="Button">
-			<Setter Property="OverridesDefaultStyle" Value="True"/>
-			<Setter Property="Width" Value="40"/>
-			<Setter Property="Height" Value="30"/>
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="Button">
-						<Border x:Name="Border" Background="White" BorderBrush="Black" BorderThickness="2" CornerRadius="8">
-							<Path x:Name="Content" Data="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" Fill="Black" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-						</Border>
-						<ControlTemplate.Triggers>
-							<Trigger Property="IsMouseOver" Value="True">
-								<Setter TargetName="Border" Property="Background" Value="LightBlue"/>
-								<Setter TargetName="Border" Property="BorderBrush" Value="DarkGray"/>
-								<Setter TargetName="Content" Property="Fill" Value="DarkGray"/>
-							</Trigger>
-							<Trigger Property="IsEnabled" Value="False">
-								<Setter TargetName="Border" Property="BorderBrush" Value="Gray"/>
-								<Setter TargetName="Content" Property="Fill" Value="Gray"/>
-							</Trigger>
-						</ControlTemplate.Triggers>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-		</Style>
-
 	</UserControl.Resources>
 
 	<Grid>
@@ -89,7 +64,7 @@
 			<ColumnDefinition Width="Auto"/>
 		</Grid.ColumnDefinitions>
 
-		<Label Grid.Row="0" Grid.Column="0" Content="Rosa" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
+		<TextBlock Grid.Row="0" Grid.Column="0" Text="Rosa" FontFamily="{StaticResource NunitoSemiBold}" FontSize="28" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
 		<ListView Grid.Row="1" Grid.Column="0" Name="rosaLstView" ItemsSource="{Binding Rosa}" SelectedItem="{Binding GiocatoreSelezionato}" PreviewKeyDown="OnPreviewKeyDown">
 			<ListView.ItemTemplate>
 				<DataTemplate DataType="ListViewItem">
@@ -99,29 +74,29 @@
 							<ColumnDefinition Width="4*"/>
 							<ColumnDefinition Width="1*"/>
 						</Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" CornerRadius="2" HorizontalAlignment="Stretch" Margin="0,0,3,0">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Ruolo}" Value="{x:Static enums:Ruoli.P}">
-                                            <Setter Property="Background" Value="LightYellow"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Ruolo}" Value="{x:Static enums:Ruoli.D}">
-                                            <Setter Property="Background" Value="PaleGreen"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Ruolo}" Value="{x:Static enums:Ruoli.C}">
-                                            <Setter Property="Background" Value="LightBlue"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Ruolo}" Value="{x:Static enums:Ruoli.A}">
-                                            <Setter Property="Background" Value="IndianRed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-                            <Label  Content="{Binding Ruolo}" HorizontalAlignment="Center"/>
-                        </Border>
-                        <Label Grid.Column="1" Content="{Binding Nome}"/>
-						<Label Grid.Column="2" Content="{Binding Prezzo}" HorizontalAlignment="Center"/>
+						<Border Grid.Column="0" CornerRadius="2" HorizontalAlignment="Stretch" Margin="0,0,3,0">
+							<Border.Style>
+								<Style TargetType="Border">
+									<Style.Triggers>
+										<DataTrigger Binding="{Binding Ruolo}" Value="{x:Static enums:Ruoli.P}">
+											<Setter Property="Background" Value="{StaticResource PortieriColor}"/>
+										</DataTrigger>
+										<DataTrigger Binding="{Binding Ruolo}" Value="{x:Static enums:Ruoli.D}">
+											<Setter Property="Background" Value="{StaticResource DifensoriColor}"/>
+										</DataTrigger>
+										<DataTrigger Binding="{Binding Ruolo}" Value="{x:Static enums:Ruoli.C}">
+											<Setter Property="Background" Value="{StaticResource CentrocampistiColor}"/>
+										</DataTrigger>
+										<DataTrigger Binding="{Binding Ruolo}" Value="{x:Static enums:Ruoli.A}">
+											<Setter Property="Background" Value="{StaticResource AttaccantiColor}"/>
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</Border.Style>
+							<Label  Content="{Binding Ruolo}" HorizontalAlignment="Center"/>
+						</Border>
+						<Label Grid.Column="1" Content="{Binding Nome}" Foreground="{TemplateBinding TextElement.Foreground}"/>
+						<Label Grid.Column="2" Content="{Binding Prezzo}" Foreground="{TemplateBinding TextElement.Foreground}" HorizontalAlignment="Center"/>
 					</Grid>
 				</DataTemplate>
 			</ListView.ItemTemplate>
@@ -132,39 +107,39 @@
 			<Button Style="{StaticResource IconButton}" Content="{StaticResource RightArrowIcon}" Command="{Binding RimuoviCommand}" Height="30" Margin="0,5,0,0"/>
 		</StackPanel>
 
-		<Label Grid.Row="0" Grid.Column="2" Content="Svincolati" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
+		<TextBlock Grid.Row="0" Grid.Column="2" Text="Svincolati" FontFamily="{StaticResource NunitoSemiBold}" FontSize="28" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
 		<ListView Grid.Row="1" Grid.Column="2" Name="svincolatiLstView" ItemsSource="{Binding Svincolati}" SelectedItem="{Binding SvincolatoSelezionato}" PreviewKeyDown="OnPreviewKeyDown">
 			<ListView.ItemTemplate>
 				<DataTemplate DataType="ListViewItem">
 					<Grid>
 						<Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.5*"/>
-                            <ColumnDefinition Width="4*"/>
-                            <ColumnDefinition Width="1*"/>
-                        </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" CornerRadius="2" HorizontalAlignment="Stretch" Margin="0,0,3,0">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Ruolo}" Value="{x:Static enums:Ruoli.P}">
-                                            <Setter Property="Background" Value="LightYellow"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Ruolo}" Value="{x:Static enums:Ruoli.D}">
-                                            <Setter Property="Background" Value="PaleGreen"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Ruolo}" Value="{x:Static enums:Ruoli.C}">
-                                            <Setter Property="Background" Value="LightBlue"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Ruolo}" Value="{x:Static enums:Ruoli.A}">
-                                            <Setter Property="Background" Value="IndianRed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-                            <Label  Content="{Binding Ruolo}" HorizontalAlignment="Center"/>
-                        </Border>
-                        <Label Grid.Column="1" Content="{Binding Nome}"/>
-						<Label Grid.Column="2" Content="{Binding Quotazione}" HorizontalAlignment="Center"/>
+							<ColumnDefinition Width="0.5*"/>
+							<ColumnDefinition Width="4*"/>
+							<ColumnDefinition Width="1*"/>
+						</Grid.ColumnDefinitions>
+						<Border Grid.Column="0" CornerRadius="2" HorizontalAlignment="Stretch" Margin="0,0,3,0">
+							<Border.Style>
+								<Style TargetType="Border">
+									<Style.Triggers>
+										<DataTrigger Binding="{Binding Ruolo}" Value="{x:Static enums:Ruoli.P}">
+											<Setter Property="Background" Value="{StaticResource PortieriColor}"/>
+										</DataTrigger>
+										<DataTrigger Binding="{Binding Ruolo}" Value="{x:Static enums:Ruoli.D}">
+											<Setter Property="Background" Value="{StaticResource DifensoriColor}"/>
+										</DataTrigger>
+										<DataTrigger Binding="{Binding Ruolo}" Value="{x:Static enums:Ruoli.C}">
+											<Setter Property="Background" Value="{StaticResource CentrocampistiColor}"/>
+										</DataTrigger>
+										<DataTrigger Binding="{Binding Ruolo}" Value="{x:Static enums:Ruoli.A}">
+											<Setter Property="Background" Value="{StaticResource AttaccantiColor}"/>
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</Border.Style>
+							<Label  Content="{Binding Ruolo}" HorizontalAlignment="Center"/>
+						</Border>
+						<Label Grid.Column="1" Content="{Binding Nome}" Foreground="{TemplateBinding TextElement.Foreground}"/>
+						<Label Grid.Column="2" Content="{Binding Quotazione}" Foreground="{TemplateBinding TextElement.Foreground}" HorizontalAlignment="Center"/>
 					</Grid>
 				</DataTemplate>
 			</ListView.ItemTemplate>

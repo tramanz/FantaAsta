@@ -87,7 +87,7 @@ namespace FantaAsta.ViewModels
 		{
 			if (double.IsNaN(m_prezzo))
 			{
-				m_dialogService.ShowMessage("Inserire un prezzo", MessageType.Warning);
+				m_dialogService.ShowMessage("Inserire un prezzo", MessageType.Error);
 
 				SelectNameTextBox?.Invoke(this, System.EventArgs.Empty);
 			}
@@ -119,7 +119,7 @@ namespace FantaAsta.ViewModels
 		{
 			if (m_prezzo < m_giocatore.Quotazione)
 			{
-				m_dialogService.ShowMessage("Il prezzo di acquisto non può essere inferiore alla quotazione del giocatore.", MessageType.Warning);
+				m_dialogService.ShowMessage("Il prezzo di acquisto non può essere inferiore alla quotazione del giocatore.", MessageType.Error);
 
 				SelectNameTextBox?.Invoke(this, System.EventArgs.Empty);
 			}

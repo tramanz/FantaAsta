@@ -5,20 +5,30 @@
 	xmlns:prism="http://prismlibrary.com/"
 	prism:ViewModelLocator.AutoWireViewModel="True">
 
+	<UserControl.Resources>
+		
+		<Style x:Key="{x:Type Button}" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+			<Setter Property="FontSize" Value="45"/>
+			<Setter Property="Width" Value="400"/>
+			<Setter Property="Height" Value="100"/>
+		</Style>
+		
+	</UserControl.Resources>
+
 	<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 		<!--Sfondo-->
 		<Grid Margin="5">
-			<Image Stretch="Uniform" Opacity="0.5">
+			<Image Stretch="Uniform">
 				<Image.Source>
 					<DrawingImage>
 						<DrawingImage.Drawing>
-							<GeometryDrawing Geometry="{StaticResource PitchIcon}" Brush="DarkGreen"/>
+							<GeometryDrawing Geometry="{StaticResource PitchIcon}" Brush="ForestGreen"/>
 						</DrawingImage.Drawing>
 					</DrawingImage>
 				</Image.Source>
 			</Image>
 
-			<Image Stretch="Uniform" Margin="41">
+			<Image Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center">
 				<Image.Source>
 					<DrawingImage>
 						<DrawingImage.Drawing>
@@ -37,17 +47,17 @@
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
 
-			<Border Grid.Row="0" Background="LightCyan" BorderBrush="Black" BorderThickness="2" CornerRadius="6" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="25" Margin="0,0,0,20">
+			<Border Grid.Row="0" Background="{StaticResource SecondaryColor}" BorderBrush="Black" BorderThickness="2" CornerRadius="6" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="25">
 				<TextBlock Text="FANTA LEGA MANAGER" FontFamily="{StaticResource NunitoBold}" FontSize="90"/>
 			</Border>
 
-			<Button Grid.Row="1" Content="Avvia asta" FontSize="45" Command="{Binding AvviaAstaCommand}" Width="400" Height="100" Margin="0,20"/>
+			<Button Grid.Row="1" Content="Avvia asta" FontSize="45" Command="{Binding AvviaAstaCommand}" Width="400" Height="100" Margin="0,40"/>
 
-			<UniformGrid Grid.Row="2" Rows="2" Columns="2" Margin="0,20,0,0">
-				<Button Content="Gestisci rose" FontSize="45" Command="{Binding GestisciRoseCommand}" Width="400" Height="100" Margin="0,0,5,5"/>
-				<Button Content="Svuota rose" FontSize="45" Command="{Binding SvuotaRoseCommand}" Width="400" Height="100" Margin="5,0,0,5"/>
-				<Button Content="Aggiungi squadra" FontSize="45" Command="{Binding AggiungiSquadraCommand}" Width="400" Height="100" Margin="0,5,5,0"/>
-				<Button Content="Importa lista" FontSize="45" Command="{Binding ImportaListaCommand}" Width="400" Height="100" Margin="5,5,0,0"/>
+			<UniformGrid Grid.Row="2" Rows="2" Columns="2">
+				<Button Content="Gestisci rose" Command="{Binding GestisciRoseCommand}" Margin="0,0,0,5"/>
+				<Button Content="Svuota rose" Command="{Binding SvuotaRoseCommand}" Margin="0,0,0,5"/>
+				<Button Content="Aggiungi squadra" Command="{Binding AggiungiSquadraCommand}" Margin="0,5,0,0"/>
+				<Button Content="Importa lista" Command="{Binding ImportaListaCommand}" Margin="0,5,0,0"/>
 			</UniformGrid>
 		</Grid>
 	</Grid>

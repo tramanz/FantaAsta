@@ -15,7 +15,7 @@
             <Image.Source>
                 <DrawingImage>
                     <DrawingImage.Drawing>
-                        <GeometryDrawing Geometry="{Binding Icon}" Brush="Black"/>
+                        <GeometryDrawing Geometry="{Binding Icon}" Brush="{Binding IconColor}"/>
                     </DrawingImage.Drawing>
                 </DrawingImage>
             </Image.Source>

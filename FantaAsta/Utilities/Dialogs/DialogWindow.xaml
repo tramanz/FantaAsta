@@ -4,47 +4,49 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	WindowStartupLocation="CenterOwner">
 
-    <Window.Style>
-        <Style TargetType="Window">
-            <Setter Property="WindowStyle" Value="None"/>
-            <Setter Property="ResizeMode" Value="NoResize"/>
-            <Setter Property="SizeToContent" Value="WidthAndHeight"/>
-            <Setter Property="AllowsTransparency" Value="True"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Window">
-                        <Border Background="LightGray" BorderThickness="2" BorderBrush="Black" CornerRadius="6">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="2"/>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="2"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
+	<Window.Style>
+		<Style TargetType="Window">
+			<Setter Property="WindowStyle" Value="None"/>
+			<Setter Property="ResizeMode" Value="NoResize"/>
+			<Setter Property="SizeToContent" Value="WidthAndHeight"/>
+			<Setter Property="AllowsTransparency" Value="True"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="Window">
+						<Border Background="{StaticResource BackgroundColor}" BorderThickness="2" BorderBrush="Black" CornerRadius="4">
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="2"/>
+									<RowDefinition Height="*"/>
+									<RowDefinition Height="2"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
 
-                                <TextBlock Grid.Row="0" Text="{Binding Title}" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
-                                <Rectangle Grid.Row="1" Fill="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-                                <ContentPresenter Grid.Row="2" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
-                                <Rectangle Grid.Row="3" Fill="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-                                <ItemsControl Grid.Row="4" ItemsSource="{Binding Buttons}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal"/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Button Content="{Binding Content}" Command="{Binding Command}" FontSize="20" MinWidth="150" Height="40" Margin="5,0"/>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Style>
+								<TextBlock Grid.Row="0" Text="{Binding Title}" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
+								<Rectangle Grid.Row="1" Fill="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+								<Border Grid.Row="2" Background="{StaticResource DisabledColor}">
+									<ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
+								</Border>
+								<Rectangle Grid.Row="3" Fill="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+								<ItemsControl Grid.Row="4" ItemsSource="{Binding Buttons}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+									<ItemsControl.ItemsPanel>
+										<ItemsPanelTemplate>
+											<StackPanel Orientation="Horizontal"/>
+										</ItemsPanelTemplate>
+									</ItemsControl.ItemsPanel>
+									<ItemsControl.ItemTemplate>
+										<DataTemplate>
+											<Button Content="{Binding Content}" Command="{Binding Command}" FontSize="20" MinWidth="150" Height="40" Margin="5,0"/>
+										</DataTemplate>
+									</ItemsControl.ItemTemplate>
+								</ItemsControl>
+							</Grid>
+						</Border>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</Window.Style>
 
 </Window>

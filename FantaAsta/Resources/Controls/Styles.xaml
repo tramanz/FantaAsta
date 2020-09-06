@@ -11,6 +11,15 @@
 	<FontFamily x:Key="NunitoMedium">../Fonts/#Nunito Medium</FontFamily>
 	<FontFamily x:Key="NunitoRegular">../Fonts/#Nunito Regular</FontFamily>
 	<FontFamily x:Key="NunitoSemiBold">../Fonts/#Nunito SemiBold</FontFamily>
+	
+	<!--Colori-->
+	<SolidColorBrush x:Key="SecondaryColor" Color="#FF4195C0"/>
+	<SolidColorBrush x:Key="BackgroundColor" Color="LightGray"/>
+	<SolidColorBrush x:Key="DisabledColor" Color="DarkGray"/>
+	<SolidColorBrush x:Key="PortieriColor" Color="LightYellow"/>
+	<SolidColorBrush x:Key="DifensoriColor" Color="PaleGreen"/>
+	<SolidColorBrush x:Key="CentrocampistiColor" Color="LightBlue"/>
+	<SolidColorBrush x:Key="AttaccantiColor" Color="IndianRed"/>
 
 	<!--Default label-->
 	<Style x:Key="{x:Type Label}" TargetType="{x:Type Label}">
@@ -27,19 +36,23 @@
 	<!--Default button (testo)-->
 	<Style x:Key="{x:Type Button}" TargetType="{x:Type Button}">
 		<Setter Property="SnapsToDevicePixels" Value="True"/>
+		<Setter Property="Background" Value="White"/>
+		<Setter Property="BorderBrush" Value="Black"/>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="Button">
-					<Border x:Name="Border" Background="White" BorderBrush="Black" BorderThickness="2" CornerRadius="8">
-						<ContentPresenter x:Name="Content" VerticalAlignment="Center" HorizontalAlignment="Center" TextElement.FontSize="{TemplateBinding FontSize}" TextElement.Foreground="{TemplateBinding Foreground}"/>
+					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" CornerRadius="8">
+						<ContentPresenter TextElement.FontSize="{TemplateBinding FontSize}" TextElement.Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter TargetName="Border" Property="Background" Value="LightCyan"/>
+							<Setter Property="BorderBrush" Value="White"/>
+							<Setter Property="Foreground" Value="White"/>
+							<Setter Property="Background" Value="{StaticResource SecondaryColor}"/>
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="False">
-							<Setter TargetName="Border" Property="BorderBrush" Value="DarkGray"/>
-							<Setter TargetName="Content" Property="TextElement.Foreground" Value="DarkGray"/>
+							<Setter Property="BorderBrush" Value="{StaticResource DisabledColor}"/>
+							<Setter Property="Foreground" Value="{StaticResource DisabledColor}"/>
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -49,6 +62,9 @@
 
 	<!--Default button (icona)-->
 	<Style x:Key="IconButton" TargetType="{x:Type Button}">
+		<Setter Property="SnapsToDevicePixels" Value="True"/>
+		<Setter Property="Foreground" Value="Black"/>
+		<Setter Property="BorderBrush" Value="Black"/>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="Button">
@@ -67,11 +83,12 @@
 					</Image>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter Property="Foreground" Value="LightCyan"/>
+							<Setter Property="Foreground" Value="{StaticResource SecondaryColor}"/>
+							<Setter Property="BorderBrush" Value="White"/>
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="False">
-							<Setter Property="Foreground" Value="DarkGray"/>
-							<Setter Property="BorderBrush" Value ="DarkGray"/>
+							<Setter Property="Foreground" Value="{StaticResource DisabledColor}"/>
+							<Setter Property="BorderBrush" Value="{StaticResource DisabledColor}"/>
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -89,14 +106,14 @@
 						<ToggleButton x:Name="ToggleButton" Background="White" BorderBrush="Black" Focusable="False" ClickMode="Press" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
 							<ToggleButton.Template>
 								<ControlTemplate TargetType="ToggleButton">
-									<Border x:Name="Border" Background="{Binding Background, RelativeSource={RelativeSource AncestorType=ToggleButton}}" BorderBrush="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=ToggleButton}}" BorderThickness="2" CornerRadius="6">
-										<Path x:Name="Arrow" HorizontalAlignment="Right" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z" Fill="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=ToggleButton}}" Margin="0,0,6,0"/>
+									<Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" CornerRadius="6">
+										<Path x:Name="Arrow" HorizontalAlignment="Right" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z" Fill="{TemplateBinding BorderBrush}" Margin="0,0,6,0"/>
 									</Border>
 								</ControlTemplate>
 							</ToggleButton.Template>
 						</ToggleButton>
 						<ContentPresenter x:Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-						<TextBox x:Name="PART_EditableTextBox" Style="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0" Focusable="True" Background="Transparent" Visibility="Hidden" IsReadOnly="{TemplateBinding IsReadOnly}">
+						<TextBox x:Name="PART_EditableTextBox" Style="{x:Null}" Focusable="True" IsReadOnly="{TemplateBinding IsReadOnly}" Background="Transparent" Visibility="Hidden" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0">
 							<TextBox.Template>
 								<ControlTemplate TargetType="TextBox">
 									<Border x:Name="PART_ContentHost" Focusable="False" Background="{TemplateBinding Background}"/>
@@ -124,7 +141,8 @@
 							<Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0"/>
 						</Trigger>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter TargetName="ToggleButton" Property="Background" Value="LightCyan"/>
+							<Setter TargetName="ToggleButton" Property="Background" Value="{StaticResource SecondaryColor}"/>
+							<Setter TargetName="ToggleButton" Property="BorderBrush" Value="White"/>
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -143,11 +161,11 @@
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter TargetName="Content" Property="TextElement.Foreground" Value="DarkGray"/>
-							<Setter TargetName="Border" Property="Background" Value="LightCyan"/>
+							<Setter TargetName="Border" Property="Background" Value="{StaticResource SecondaryColor}"/>
+							<Setter TargetName="Content" Property="TextElement.Foreground" Value="White"/>
 						</Trigger>
 						<Trigger Property="IsSelected" Value="True">
-							<Setter TargetName="Border" Property="Background" Value="LightCyan"/>
+							<Setter TargetName="Border" Property="Background" Value="{StaticResource SecondaryColor}"/>
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -166,7 +184,7 @@
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter TargetName="Border" Property="BorderBrush" Value="LightCyan"/>
+							<Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource SecondaryColor}"/>
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -187,7 +205,7 @@
 						</Grid.RowDefinitions>
 						<TabPanel x:Name="HeaderPanel" Grid.Row="0" Margin="0,0,4,-1" IsItemsHost="True" KeyboardNavigation.TabIndex="1" Background="Transparent" />
 						<Border x:Name="Border" Grid.Row="1" BorderBrush="Black" Background="{TemplateBinding Background}" BorderThickness="2" CornerRadius="0,6,0,0" KeyboardNavigation.TabNavigation="Local" KeyboardNavigation.DirectionalNavigation="Contained" KeyboardNavigation.TabIndex="2">
-							<ContentPresenter x:Name="PART_SelectedContentHost" Margin="4" ContentSource="SelectedContent" />
+							<ContentPresenter x:Name="PART_SelectedContentHost" Margin="4" ContentSource="SelectedContent"/>
 						</Border>
 					</Grid>
 				</ControlTemplate>
@@ -206,14 +224,14 @@
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter TargetName="Border" Property="Background" Value="LightCyan"/>
-							<Setter TargetName="Border" Property="BorderBrush" Value="Black"/>
-							<Setter TargetName="Content" Property="TextElement.Foreground" Value="Black"/>
+							<Setter TargetName="Border" Property="Background" Value="{StaticResource SecondaryColor}"/>
+							<Setter TargetName="Border" Property="BorderBrush" Value="White"/>
+							<Setter TargetName="Content" Property="TextElement.Foreground" Value="White"/>
 						</Trigger>
 						<Trigger Property="IsSelected" Value="False">
 							<Setter TargetName="Border" Property="Background" Value="White"/>
-							<Setter TargetName="Border" Property="BorderBrush" Value="DarkGray"/>
-							<Setter TargetName="Content" Property="TextElement.Foreground" Value="DarkGray"/>
+							<Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource DisabledColor}"/>
+							<Setter TargetName="Content" Property="TextElement.Foreground" Value="{StaticResource DisabledColor}"/>
 						</Trigger>
 						<Trigger Property="IsSelected" Value="True">
 							<Setter TargetName="Border" Property="Background" Value="White"/>
@@ -233,16 +251,18 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="RepeatButton">
-					<Border x:Name="Border" Background="Gray" BorderBrush="Black" CornerRadius="2" BorderThickness="1" Height="18" Width="18" Margin="1">
+					<Border x:Name="Border" Background="{StaticResource BackgroundColor}" BorderBrush="Black" CornerRadius="2" BorderThickness="1" Height="18" Width="18" Margin="1">
 						<Path x:Name="Path" Data="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" Fill="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter TargetName="Border" Property="Background" Value="LightCyan"/>
+							<Setter TargetName="Border" Property="Background" Value="{StaticResource SecondaryColor}"/>
+							<Setter TargetName="Border" Property="BorderBrush" Value="White"/>
+							<Setter TargetName="Path" Property="Fill" Value="White"/>
 						</Trigger>
 						<Trigger Property="IsPressed" Value="True">
-							<Setter TargetName="Border" Property="BorderBrush" Value="DarkGray"/>
-							<Setter TargetName="Path" Property="Fill" Value="DarkGray"/>
+							<Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource DisabledColor}"/>
+							<Setter TargetName="Path" Property="Fill" Value="{StaticResource DisabledColor}"/>
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -258,10 +278,10 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="RepeatButton">
-					<Border x:Name="Border" Background="Transparent" CornerRadius="2" Margin="1"/>
+					<Border x:Name="Border" Background="{StaticResource BackgroundColor}" CornerRadius="2" Margin="1"/>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsPressed" Value="True">
-							<Setter TargetName="Border" Property="Background" Value="LightCyan"/>
+							<Setter TargetName="Border" Property="Background" Value="{StaticResource SecondaryColor}"/>
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -280,10 +300,10 @@
 					<Border x:Name="Border" Background="Black" CornerRadius="2"/>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter TargetName="Border" Property="Background" Value="LightCyan"/>
+							<Setter TargetName="Border" Property="Background" Value="{StaticResource SecondaryColor}"/>
 						</Trigger>
 						<Trigger Property="IsDragging" Value="True">
-							<Setter TargetName="Border" Property="Background" Value="LightCyan"/>
+							<Setter TargetName="Border" Property="Background" Value="{StaticResource SecondaryColor}"/>
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -307,7 +327,7 @@
 						<RepeatButton Style="{StaticResource ScrollBarPageButton}" Command="ScrollBar.PageUpCommand"/>
 					</Track.DecreaseRepeatButton>
 					<Track.Thumb>
-						<Thumb Style="{StaticResource ScrollBarThumb}" Background="LightCyan" MinHeight="30" Margin="1"/>
+						<Thumb Style="{StaticResource ScrollBarThumb}" Background="{StaticResource SecondaryColor}" MinHeight="30" Margin="1"/>
 					</Track.Thumb>
 					<Track.IncreaseRepeatButton>
 						<RepeatButton Style="{StaticResource ScrollBarPageButton}" Command="ScrollBar.PageDownCommand"/>
@@ -326,7 +346,7 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="Auto"/>
 			</Grid.ColumnDefinitions>
-			<Border Grid.ColumnSpan="3" CornerRadius="2" Background="Transparent"/>
+			<Border Grid.ColumnSpan="3" CornerRadius="2" Background="{StaticResource BackgroundColor}"/>
 			<RepeatButton Grid.Column="0" Style="{StaticResource ScrollBarLineButton}" Content="M 4 0 L 4 8 L 0 4 Z" Command="ScrollBar.LineLeftCommand"/>
 			<Border Grid.Column="1" BorderBrush="Black" CornerRadius="2" BorderThickness="1" Margin="1">
 				<Track x:Name="PART_Track" IsDirectionReversed="False">
@@ -334,7 +354,7 @@
 						<RepeatButton Style="{StaticResource ScrollBarPageButton}" Command="ScrollBar.PageLeftCommand"/>
 					</Track.DecreaseRepeatButton>
 					<Track.Thumb>
-						<Thumb Style="{StaticResource ScrollBarThumb}" Background="LightCyan" MinWidth="30" Margin="1"/>
+						<Thumb Style="{StaticResource ScrollBarThumb}" Background="{StaticResource SecondaryColor}" MinWidth="30" Margin="1"/>
 					</Track.Thumb>
 					<Track.IncreaseRepeatButton>
 						<RepeatButton Style="{StaticResource ScrollBarPageButton}" Command="ScrollBar.PageRightCommand"/>
@@ -389,8 +409,7 @@
 
 	<!--Stile bottoni finestra principale-->
 	<Style x:Key="ThreeButtons" TargetType="Button">
-		<Setter Property="Background" Value="LightCyan"/>
-		<Setter Property="BorderBrush" Value="Transparent" />
+		<Setter Property="Background" Value="{StaticResource SecondaryColor}"/>
 		<Setter Property="ClipToBounds" Value="True"/>
 		<Setter Property="Template">
 			<Setter.Value>
@@ -407,7 +426,7 @@
 					<Condition Property="IsMouseOver" Value="True"/>
 					<Condition Property="IsStylusOver" Value="False"/>
 				</MultiTrigger.Conditions>
-				<Setter Property="Background" Value="LightGray"/>
+				<Setter Property="Background" Value="{StaticResource BackgroundColor}"/>
 			</MultiTrigger>
 		</Style.Triggers>
 	</Style>
@@ -417,7 +436,7 @@
 		<Setter Property="Padding" Value="1"/>
 		<Setter Property="Content">
 			<Setter.Value>
-				<Image Stretch="Uniform" Height="12" Width="12">
+				<Image Stretch="Uniform" Height="15" Width="15">
 					<Image.Source>
 						<DrawingImage>
 							<DrawingImage.Drawing>
@@ -437,7 +456,7 @@
 			<DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Value="Maximized">
 				<Setter Property="Content">
 					<Setter.Value>
-						<Image Stretch="Uniform" Height="12" Width="12">
+						<Image Stretch="Uniform" Height="15" Width="15">
 							<Image.Source>
 								<DrawingImage>
 									<DrawingImage.Drawing>
@@ -452,7 +471,7 @@
 			<DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Value="Normal">
 				<Setter Property="Content">
 					<Setter.Value>
-						<Image Stretch="Uniform" Height="12" Width="12">
+						<Image Stretch="Uniform" Height="15" Width="15">
 							<Image.Source>
 								<DrawingImage>
 									<DrawingImage.Drawing>
@@ -472,7 +491,7 @@
 		<Setter Property="Padding" Value="1"/>
 		<Setter Property="Content">
 			<Setter.Value>
-				<Image Stretch="Uniform" Height="12" Width="12">
+				<Image Stretch="Uniform" Height="15" Width="15">
 					<Image.Source>
 						<DrawingImage>
 							<DrawingImage.Drawing>
@@ -526,7 +545,7 @@
 							<Trigger.EnterActions>
 								<BeginStoryboard Storyboard="{StaticResource OnChecking}" x:Name="OnChecking_BeginStoryboard"/>
 							</Trigger.EnterActions>
-							<Setter TargetName="SliderBackground" Property="Background" Value="LightCyan"/>
+							<Setter TargetName="SliderBackground" Property="Background" Value="{StaticResource SecondaryColor}"/>
 						</Trigger>
 						<Trigger Property="IsChecked" Value="False">
 							<Setter TargetName="SliderBackground" Property="Background" Value="White"/>

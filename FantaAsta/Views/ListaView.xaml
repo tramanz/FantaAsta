@@ -7,7 +7,7 @@
 	prism:ViewModelLocator.AutoWireViewModel="True">
 
 	<UserControl.Resources>
-		
+
 		<conv:ThreeInitialsConverter x:Key="ThreeInitialsConverter"/>
 
 		<DataTemplate x:Key="TemplateOggettoLista">
@@ -29,44 +29,44 @@
 		<ItemsPanelTemplate x:Key="TemplateContenitoreLista">
 			<StackPanel/>
 		</ItemsPanelTemplate>
-		
+
 	</UserControl.Resources>
 
 	<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
 		<UniformGrid Columns="4">
 
-			<Border BorderBrush="Black" BorderThickness="2" CornerRadius="3" Margin="5,0">
+			<Border BorderBrush="Black" Background="{StaticResource DisabledColor}" BorderThickness="2" CornerRadius="3" Margin="5,0">
 				<StackPanel HorizontalAlignment="Stretch" Margin="3">
-					<Label Content="Portieri" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
+					<TextBlock Text="Portieri" FontFamily="{StaticResource NunitoBold}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
 					<Separator Background="Black" Margin="5"/>
 					<ItemsControl ItemsSource="{Binding Portieri}" ItemsPanel="{StaticResource TemplateContenitoreLista}" ItemTemplate="{StaticResource TemplateOggettoLista}" Margin="0,0,0,5"/>
 				</StackPanel>
 			</Border>
 
-			<Border BorderBrush="Black" BorderThickness="2" CornerRadius="3" Margin="5,0">
+			<Border BorderBrush="Black" Background="{StaticResource DisabledColor}" BorderThickness="2" CornerRadius="3" Margin="5,0">
 				<StackPanel HorizontalAlignment="Stretch" Margin="3">
-					<Label Content="Difensori" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
+					<TextBlock Text="Difensori" FontFamily="{StaticResource NunitoBold}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
 					<Separator Background="Black" Margin="5"/>
 					<ItemsControl ItemsSource="{Binding Difensori}" ItemsPanel="{StaticResource TemplateContenitoreLista}" ItemTemplate="{StaticResource TemplateOggettoLista}" Margin="0,0,0,5"/>
 				</StackPanel>
 			</Border>
 
-			<Border BorderBrush="Black" BorderThickness="2" CornerRadius="3" Margin="5,0">
+			<Border BorderBrush="Black" Background="{StaticResource DisabledColor}" BorderThickness="2" CornerRadius="3" Margin="5,0">
 				<StackPanel HorizontalAlignment="Stretch" Margin="3">
-					<Label Content="Centrocampisti" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
+					<TextBlock Text="Centrocampisti" FontFamily="{StaticResource NunitoBold}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
 					<Separator Background="Black" Margin="5"/>
 					<ItemsControl ItemsSource="{Binding Centrocampisti}" ItemsPanel="{StaticResource TemplateContenitoreLista}" ItemTemplate="{StaticResource TemplateOggettoLista}" Margin="0,0,0,5"/>
 				</StackPanel>
 			</Border>
 
-			<Border BorderBrush="Black" BorderThickness="2" CornerRadius="3" Margin="5,0">
+			<Border BorderBrush="Black" Background="{StaticResource DisabledColor}" BorderThickness="2" CornerRadius="3" Margin="5,0">
 				<StackPanel HorizontalAlignment="Stretch" Margin="3">
-					<Label Content="Attaccanti" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
+					<TextBlock Text="Attaccanti" FontFamily="{StaticResource NunitoBold}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
 					<Separator Background="Black" Margin="5"/>
 					<ItemsControl ItemsSource="{Binding Attaccanti}" ItemsPanel="{StaticResource TemplateContenitoreLista}" ItemTemplate="{StaticResource TemplateOggettoLista}" Margin="0,0,0,5"/>
 				</StackPanel>
 			</Border>
-			
+
 		</UniformGrid>
 	</ScrollViewer>
 

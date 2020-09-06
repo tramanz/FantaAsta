@@ -13,7 +13,7 @@ namespace FantaAsta.Models
 
 		[DataMember(Name = "Colore1RGB")]
 		public string Colore1RGB { get; set; }
-		public SolidColorBrush Colore1 { get; set; }
+		public SolidColorBrush Colore1 { get; private set; }
 
 		[DataMember(Name = "Colore2RGB")]
 		public string Colore2RGB { get; set; }

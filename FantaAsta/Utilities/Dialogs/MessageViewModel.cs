@@ -8,6 +8,14 @@ namespace FantaAsta.Utilities.Dialogs
 {
 	public class MessageViewModel : DialogAwareViewModel
 	{
+		#region Constants
+
+		private static SolidColorBrush RED_BRUSH = new SolidColorBrush(Colors.DarkRed);
+		private static SolidColorBrush GOLD_BRUSH = new SolidColorBrush(Colors.DarkGoldenrod);
+		private static SolidColorBrush GREEN_BRUSH = new SolidColorBrush(Colors.DarkGreen);
+
+		#endregion
+
 		#region Private fields
 
 		private MessageType m_messageType;
@@ -15,6 +23,7 @@ namespace FantaAsta.Utilities.Dialogs
 		private string m_message;
 
 		private Geometry m_icon;
+		private SolidColorBrush m_iconColor;
 
 		#endregion
 
@@ -32,6 +41,12 @@ namespace FantaAsta.Utilities.Dialogs
 			protected set { SetProperty(ref m_icon, value); }
 		}
 
+		public SolidColorBrush IconColor
+		{
+			get { return m_iconColor; }
+			protected set { SetProperty(ref m_iconColor, value); }
+		}
+
 		#endregion
 
 		#region Public methods
@@ -45,16 +60,19 @@ namespace FantaAsta.Utilities.Dialogs
 				case MessageType.Error:
 					{
 						Icon = (Geometry)Application.Current.TryFindResource("CancelIcon");
+						IconColor = RED_BRUSH;
 						break;
 					}
 				case MessageType.Notification:
 					{
 						Icon = (Geometry)Application.Current.TryFindResource("CheckedIcon");
+						IconColor = GREEN_BRUSH;
 						break;
 					}
 				case MessageType.Warning:
 					{
 						Icon = (Geometry)Application.Current.TryFindResource("ExclamationMarkIcon");
+						IconColor = GOLD_BRUSH;
 						break;
 					}
 				default:
