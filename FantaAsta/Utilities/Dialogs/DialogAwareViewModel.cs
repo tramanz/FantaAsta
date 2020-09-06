@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Windows.Media;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 
@@ -12,6 +13,10 @@ namespace FantaAsta.Utilities.Dialogs
 	{
 		#region Private fields
 
+		private Geometry m_icon;
+
+		private SolidColorBrush m_iconColor;
+
 		private string m_title;
 
 		private ObservableCollection<DialogButton> m_buttons;
@@ -19,6 +24,18 @@ namespace FantaAsta.Utilities.Dialogs
 		#endregion
 
 		#region Properties 
+
+		public Geometry Icon
+		{
+			get { return m_icon; }
+			protected set { SetProperty(ref m_icon, value); }
+		}
+
+		public SolidColorBrush IconColor
+		{
+			get { return m_iconColor; }
+			protected set { SetProperty(ref m_iconColor, value); }
+		}
 
 		public string Title 
 		{ 
@@ -55,17 +72,20 @@ namespace FantaAsta.Utilities.Dialogs
 
 		public virtual void OnDialogOpened(IDialogParameters parameters)
 		{
-			InizializzaTitolo();
-			InizializzaBottoni();
+			InizializzaIcona(parameters);
+			InizializzaTitolo(parameters);
+			InizializzaBottoni(parameters);
 		}
 
 		#endregion
 
 		#region Protected methods
 
-		protected abstract void InizializzaTitolo();
+		protected abstract void InizializzaIcona(IDialogParameters parameters);
 
-		protected abstract void InizializzaBottoni();
+		protected abstract void InizializzaTitolo(IDialogParameters parameters);
+
+		protected abstract void InizializzaBottoni(IDialogParameters parameters);
 
 		protected void RaiseRequestClose(IDialogResult result)
 		{

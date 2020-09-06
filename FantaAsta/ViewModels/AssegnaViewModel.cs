@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Prism.Commands;
 using Prism.Services.Dialogs;
 using FantaAsta.Enums;
@@ -8,17 +11,17 @@ using FantaAsta.Utilities.Dialogs;
 
 namespace FantaAsta.ViewModels
 {
-	public class PrezzoViewModel : BaseDialogViewModel
+	public class AssegnaViewModel : BaseDialogViewModel
 	{
 		#region Private fields
 
 		private readonly IDialogService m_dialogService;
 
-		private FantaSquadra m_squadra;
+		private ObservableCollection<string> m_squadre;
 
 		private Giocatore m_giocatore;
 
-		private Movimenti m_movimento;
+		private string m_squadraSelezionata;
 
 		private string m_prezzoString;
 		private double m_prezzo;
@@ -26,6 +29,18 @@ namespace FantaAsta.ViewModels
 		#endregion
 
 		#region Properties
+
+		public ObservableCollection<string> Squadre
+		{
+			get { return m_squadre; }
+			set { SetProperty(ref m_squadre, value); }
+		}
+
+		public string SquadraSelezionata
+		{
+			get { return m_squadraSelezionata; }
+			set { SetProperty(ref m_squadraSelezionata, value); Buttons[0]?.Command.RaiseCanExecuteChanged(); }
+		}
 
 		public string Prezzo
 		{
@@ -42,11 +57,11 @@ namespace FantaAsta.ViewModels
 
 		#region Events
 
-		public event EventHandler SelectNameTextBox;
+		public event EventHandler SelectPrezzoTextBox;
 
 		#endregion
 
-		public PrezzoViewModel(IDialogService dialogService, Lega lega) : base(lega)
+		public AssegnaViewModel(IDialogService dialogService, Lega lega) : base(lega)
 		{
 			m_dialogService = dialogService;
 		}
@@ -55,13 +70,12 @@ namespace FantaAsta.ViewModels
 
 		public override void OnDialogOpened(IDialogParameters parameters)
 		{
-			m_giocatore = parameters.GetValue<Giocatore>("Giocatore");
-			m_squadra = parameters.GetValue<FantaSquadra>("FantaSquadra");
-			m_movimento = parameters.GetValue<Movimenti>("Movimento");
-
 			base.OnDialogOpened(parameters);
-
+			
+			m_giocatore = parameters.GetValue<Giocatore>("Giocatore");
 			Prezzo = m_giocatore.Quotazione.ToString();
+
+			Squadre = new ObservableCollection<string>(m_lega?.FantaSquadre.Select(s => s.Nome).OrderBy(s => s));
 		}
 
 		#endregion
@@ -73,7 +87,7 @@ namespace FantaAsta.ViewModels
 
 		protected override void InizializzaTitolo(IDialogParameters parameters)
 		{
-			Title = $"Inserisci il prezzo di {parameters.GetValue<Movimenti>("Movimento").ToString().ToLower()}";
+			Title = $"Chi si aggiudica {parameters.GetValue<Giocatore>("Giocatore").Nome}?";
 		}
 
 		protected override void InizializzaBottoni(IDialogParameters parameters)
@@ -92,17 +106,21 @@ namespace FantaAsta.ViewModels
 			{
 				m_dialogService.ShowMessage("Inserire un prezzo", MessageType.Error);
 
-				SelectNameTextBox?.Invoke(this, System.EventArgs.Empty);
+				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
+			}
+			else if (m_prezzo < m_giocatore.Quotazione)
+			{
+				m_dialogService.ShowMessage("Il prezzo di acquisto non può essere inferiore alla quotazione del giocatore.", MessageType.Error);
+
+				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
 			}
 			else
 			{
-				if (m_movimento == Movimenti.Acquisto)
+				bool result = m_lega.AggiungiGiocatore(m_lega?.FantaSquadre.Single(s => s.Nome.Equals(SquadraSelezionata)), m_giocatore, m_prezzo);
+
+				if (!result)
 				{
-					AcquistaGiocatore();
-				}
-				else if (m_movimento == Movimenti.Vendita)
-				{
-					VendiGiocatore();
+					m_dialogService.ShowMessage("Il giocatore non può essere aggiunto", MessageType.Error);
 				}
 
 				Annulla();
@@ -116,39 +134,6 @@ namespace FantaAsta.ViewModels
 		private void Annulla()
 		{
 			RaiseRequestClose(new DialogResult(ButtonResult.OK));
-		}
-
-		private void AcquistaGiocatore()
-		{
-			if (m_prezzo < m_giocatore.Quotazione)
-			{
-				m_dialogService.ShowMessage("Il prezzo di acquisto non può essere inferiore alla quotazione del giocatore.", MessageType.Error);
-
-				SelectNameTextBox?.Invoke(this, System.EventArgs.Empty);
-			}
-			else
-			{
-				bool result = m_lega.AggiungiGiocatore(m_squadra, m_giocatore, m_prezzo);
-
-				if (!result)
-				{
-					m_dialogService.ShowMessage("Il giocatore non può essere aggiunto", MessageType.Error);
-				}
-			}
-		}
-
-		private void VendiGiocatore()
-		{
-			if (m_prezzo <= 0)
-			{
-				m_dialogService.ShowMessage("Il prezzo di vendita non può essere minore o uguale a 0.", MessageType.Error);
-
-				SelectNameTextBox?.Invoke(this, System.EventArgs.Empty);
-			}
-			else
-			{
-				m_lega.RimuoviGiocatore(m_squadra, m_giocatore, m_prezzo);
-			}
 		}
 
 		#endregion

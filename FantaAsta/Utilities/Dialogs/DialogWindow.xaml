@@ -23,9 +23,20 @@
 									<RowDefinition Height="Auto"/>
 								</Grid.RowDefinitions>
 
-								<TextBlock Grid.Row="0" Text="{Binding Title}" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
+								<StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20,10">
+									<Image Stretch="Uniform" Width="30" Height="30" VerticalAlignment="Center">
+										<Image.Source>
+											<DrawingImage>
+												<DrawingImage.Drawing>
+													<GeometryDrawing Geometry="{Binding Icon}" Brush="{Binding IconColor}"/>
+												</DrawingImage.Drawing>
+											</DrawingImage>
+										</Image.Source>
+									</Image>
+									<TextBlock Text="{Binding Title}" FontSize="24" VerticalAlignment="Center" Margin="20,0,0,0"/>
+								</StackPanel>
 								<Rectangle Grid.Row="1" Fill="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-								<Border Grid.Row="2" Background="{StaticResource DisabledColor}">
+								<Border Grid.Row="2">
 									<ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
 								</Border>
 								<Rectangle Grid.Row="3" Fill="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>

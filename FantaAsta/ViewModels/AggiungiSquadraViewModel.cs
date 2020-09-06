@@ -40,12 +40,15 @@ namespace FantaAsta.ViewModels
 
 		#region Protected methods
 
-		protected override void InizializzaTitolo()
+		protected override void InizializzaIcona(IDialogParameters parameters)
+		{ }
+
+		protected override void InizializzaTitolo(IDialogParameters parameters)
 		{
 			Title = "Inserisci il nome della squadra";
 		}
 
-		protected override void InizializzaBottoni()
+		protected override void InizializzaBottoni(IDialogParameters parameters)
 		{
 			Buttons.Add(new DialogButton("Aggiungi", new DelegateCommand(Aggiungi, AbilitaAggiungi)));
 			Buttons.Add(new DialogButton("Chiudi", new DelegateCommand(Chiudi)));

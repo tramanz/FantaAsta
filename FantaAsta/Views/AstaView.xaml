@@ -5,21 +5,12 @@
 	xmlns:prism="http://prismlibrary.com/"
 	prism:ViewModelLocator.AutoWireViewModel="True">
 
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition/>
-			<RowDefinition/>
-			<RowDefinition/>
-			<RowDefinition/>
-		</Grid.RowDefinitions>
-
-		<Grid Grid.Row="0" VerticalAlignment="Top" Margin="20,10,0,10">
-			<Button Content="Cambia modalità" Command="{Binding CambiaModalitaAstaCommand}" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Center" Width="400" Height="70"/>
-			<Border Background="{StaticResource SecondaryColor}" CornerRadius="8" Width="400" HorizontalAlignment="Center">
-				<Label FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center">
-					<Label.Style>
-						<Style TargetType="{x:Type Label}" BasedOn="{StaticResource {x:Type Label}}">
+	<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+		<UniformGrid Rows="3">
+			<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+				<Button Command="{Binding CambiaModalitaAstaCommand}" FontSize="40" Width="400" Height="70" HorizontalAlignment="Center" Margin="0,10">
+					<Button.Style>
+						<Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
 							<Style.Triggers>
 								<DataTrigger Binding="{Binding ModalitaAstaInvernaleAttiva}" Value="False">
 									<Setter Property="Content" Value="ASTA ESTIVA"/>
@@ -29,44 +20,36 @@
 								</DataTrigger>
 							</Style.Triggers>
 						</Style>
-					</Label.Style>
-				</Label>
-			</Border>
-		</Grid>
+					</Button.Style>
+				</Button>
 
-		<UniformGrid Grid.Row="1" Columns="2" HorizontalAlignment="Center" Margin="0,5">
-			<StackPanel Orientation="Horizontal">
-				<Label Content="Seleziona ruolo:" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-				<ComboBox ItemsSource="{Binding Ruoli}" SelectedItem="{Binding RuoloSelezionato}" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="80" Height="70" Margin="5,0,0,0"/>
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+					<Label Content="Seleziona ruolo:" FontSize="40" VerticalAlignment="Center"/>
+					<ComboBox ItemsSource="{Binding Ruoli}" SelectedItem="{Binding RuoloSelezionato}" FontSize="40" Width="80" Height="60" Margin="5,0,0,0"/>
+				</StackPanel>
+
+				<UniformGrid Columns="2" HorizontalAlignment="Center" Margin="0,10">
+					<Button Content="Estrai giocatore"  Command="{Binding EstraiGiocatoreCommand}" FontSize="40" Width="400" Height="70"/>
+					<Button Content="Assegna giocatore" FontSize="40" Command="{Binding AssegnaGiocatoreCommand}" HorizontalAlignment="Center" Width="400" Height="70" Margin="10,0,0,0"/>
+				</UniformGrid>
 			</StackPanel>
-			<Button Content="Estrai giocatore" FontSize="40" Command="{Binding EstraiGiocatoreCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="325" Height="70" Margin="20,0,0,0"/>
+
+			<Border DataContext="{Binding GiocatoreCorrente}" Background="{StaticResource DisabledColor}" BorderBrush="Black" BorderThickness="2" CornerRadius="3" Margin="20,0">
+				<Grid Margin="10,5">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="0.5*"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="0.5*"/>
+					</Grid.ColumnDefinitions>
+
+					<Border Grid.Column="0" DataContext="{Binding Squadra}" BorderThickness="2" Background="{Binding Colore1}" BorderBrush="{Binding Colore2}" CornerRadius="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,50">
+						<TextBlock Text="{Binding Nome}" Foreground="{Binding Colore2}" FontSize="80" FontFamily="{StaticResource NunitoBold}" VerticalAlignment="Center"  HorizontalAlignment="Center"/>
+					</Border>
+					<TextBlock Grid.Column="1" Text="{Binding Nome}" FontSize="100" FontFamily="{StaticResource NunitoBold}" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"/>
+					<TextBlock Grid.Column="2" Text="{Binding Quotazione}" FontSize="100" FontFamily="{StaticResource NunitoBold}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+				</Grid>
+			</Border>
 		</UniformGrid>
-
-		<Border Grid.Row="2" BorderBrush="Black" BorderThickness="2" CornerRadius="3" Margin="20,5" DataContext="{Binding GiocatoreCorrente}">
-			<Grid Margin="8,5">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="0.5*"/>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="0.5*"/>
-				</Grid.ColumnDefinitions>
-
-				<Border Grid.Column="0" DataContext="{Binding Squadra}" BorderThickness="2" Background="{Binding Colore1}" BorderBrush="{Binding Colore2}" CornerRadius="6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,10,5,10">
-					<TextBlock Text="{Binding Nome}" Foreground="{Binding Colore2}" FontSize="70" FontFamily="{StaticResource NunitoBold}" VerticalAlignment="Center"  HorizontalAlignment="Center"/>
-				</Border>
-				<TextBlock Grid.Column="1" Text="{Binding Nome}" FontSize="70" FontFamily="{StaticResource NunitoBold}" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"/>
-				<TextBlock Grid.Column="2" Text="{Binding Quotazione}" FontSize="70" FontFamily="{StaticResource NunitoBold}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,0"/>
-			</Grid>
-		</Border>
-
-		<StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5">
-			<Label Content="Acquistato da" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-			<ComboBox ItemsSource="{Binding Squadre}" SelectedItem="{Binding SquadraSelezionata}" Width="250" Height="70" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="10,0"/>
-			<Label Content="per" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-			<TextBox Text="{Binding Prezzo, UpdateSourceTrigger=PropertyChanged}" FontSize="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Width="125" Height="70" Margin="10,0,0,0"/>
-			<Label Content="fantamilioni" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0"/>
-		</StackPanel>
-
-		<Button Grid.Row="4" Content="Assegna giocatore" FontSize="40" Command="{Binding AssegnaGiocatoreCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="400" Height="70" Margin="0,5,0,0"/>
-	</Grid>
+	</ScrollViewer>
 
 </UserControl>

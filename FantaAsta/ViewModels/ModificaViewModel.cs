@@ -6,6 +6,7 @@ using FantaAsta.Models;
 using FantaAsta.Enums;
 using FantaAsta.EventArgs;
 using FantaAsta.Utilities.Dialogs;
+using System.Reflection.Emit;
 
 namespace FantaAsta.ViewModels
 {
@@ -87,12 +88,15 @@ namespace FantaAsta.ViewModels
 
 		#region Protected methods
 
-		protected override void InizializzaTitolo()
+		protected override void InizializzaIcona(IDialogParameters parameters)
+		{ }
+
+		protected override void InizializzaTitolo(IDialogParameters parameters)
 		{
-			Title = $"Modifica la rosa di {m_squadra.Nome}";
+			Title = $"Modifica la rosa di {parameters.GetValue<FantaSquadra>("squadra").Nome}";
 		}
 
-		protected override void InizializzaBottoni()
+		protected override void InizializzaBottoni(IDialogParameters parameters)
 		{
 			Buttons.Add(new DialogButton("Chiudi", new DelegateCommand(Chiudi)));
 		}

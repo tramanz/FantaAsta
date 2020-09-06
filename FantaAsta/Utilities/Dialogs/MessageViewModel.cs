@@ -10,20 +10,15 @@ namespace FantaAsta.Utilities.Dialogs
 	{
 		#region Constants
 
-		private static SolidColorBrush RED_BRUSH = new SolidColorBrush(Colors.DarkRed);
-		private static SolidColorBrush GOLD_BRUSH = new SolidColorBrush(Colors.DarkGoldenrod);
-		private static SolidColorBrush GREEN_BRUSH = new SolidColorBrush(Colors.DarkGreen);
+		private static readonly SolidColorBrush RED_BRUSH = new SolidColorBrush(Colors.DarkRed);
+		private static readonly SolidColorBrush GOLD_BRUSH = new SolidColorBrush(Colors.DarkGoldenrod);
+		private static readonly SolidColorBrush GREEN_BRUSH = new SolidColorBrush(Colors.DarkGreen);
 
 		#endregion
 
 		#region Private fields
 
-		private MessageType m_messageType;
-
 		private string m_message;
-
-		private Geometry m_icon;
-		private SolidColorBrush m_iconColor;
 
 		#endregion
 
@@ -35,27 +30,25 @@ namespace FantaAsta.Utilities.Dialogs
 			protected set { SetProperty(ref m_message, value); }
 		}
 
-		public Geometry Icon
-		{
-			get { return m_icon; }
-			protected set { SetProperty(ref m_icon, value); }
-		}
-
-		public SolidColorBrush IconColor
-		{
-			get { return m_iconColor; }
-			protected set { SetProperty(ref m_iconColor, value); }
-		}
-
 		#endregion
 
 		#region Public methods
 
 		public override void OnDialogOpened(IDialogParameters parameters)
 		{
+			base.OnDialogOpened(parameters);
+
 			Message = parameters.GetValue<string>("Message");
-			m_messageType = parameters.GetValue<MessageType>("Type");
-			switch (m_messageType)
+		}
+
+		#endregion
+
+		#region Protected methods
+
+		protected override void InizializzaIcona(IDialogParameters parameters)
+		{
+			MessageType messageType = parameters.GetValue<MessageType>("Type");
+			switch (messageType)
 			{
 				case MessageType.Error:
 					{
@@ -78,17 +71,12 @@ namespace FantaAsta.Utilities.Dialogs
 				default:
 					break;
 			}
-
-			base.OnDialogOpened(parameters);
 		}
 
-		#endregion
-
-		#region Protected methods
-
-		protected override void InizializzaTitolo()
+		protected override void InizializzaTitolo(IDialogParameters parameters)
 		{
-			switch (m_messageType)
+			MessageType messageType = parameters.GetValue<MessageType>("Type");
+			switch (messageType)
 			{
 				case MessageType.Error:
 					{
@@ -110,9 +98,10 @@ namespace FantaAsta.Utilities.Dialogs
 			}
 		}
 
-		protected override void InizializzaBottoni()
+		protected override void InizializzaBottoni(IDialogParameters parameters)
 		{
-			switch (m_messageType)
+			MessageType messageType = parameters.GetValue<MessageType>("Type");
+			switch (messageType)
 			{
 				case MessageType.Error:
 				case MessageType.Notification:

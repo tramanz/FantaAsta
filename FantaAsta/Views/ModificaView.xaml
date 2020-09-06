@@ -64,7 +64,7 @@
 			<ColumnDefinition Width="Auto"/>
 		</Grid.ColumnDefinitions>
 
-		<TextBlock Grid.Row="0" Grid.Column="0" Text="Rosa" FontFamily="{StaticResource NunitoSemiBold}" FontSize="28" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
+		<TextBlock Grid.Row="0" Grid.Column="0" Text="Rosa" FontFamily="{StaticResource NunitoSemiBold}" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
 		<ListView Grid.Row="1" Grid.Column="0" Name="rosaLstView" ItemsSource="{Binding Rosa}" SelectedItem="{Binding GiocatoreSelezionato}" PreviewKeyDown="OnPreviewKeyDown">
 			<ListView.ItemTemplate>
 				<DataTemplate DataType="ListViewItem">
@@ -107,7 +107,7 @@
 			<Button Style="{StaticResource IconButton}" Content="{StaticResource RightArrowIcon}" Command="{Binding RimuoviCommand}" Height="30" Margin="0,5,0,0"/>
 		</StackPanel>
 
-		<TextBlock Grid.Row="0" Grid.Column="2" Text="Svincolati" FontFamily="{StaticResource NunitoSemiBold}" FontSize="28" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
+		<TextBlock Grid.Row="0" Grid.Column="2" Text="Svincolati" FontFamily="{StaticResource NunitoSemiBold}" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5"/>
 		<ListView Grid.Row="1" Grid.Column="2" Name="svincolatiLstView" ItemsSource="{Binding Svincolati}" SelectedItem="{Binding SvincolatoSelezionato}" PreviewKeyDown="OnPreviewKeyDown">
 			<ListView.ItemTemplate>
 				<DataTemplate DataType="ListViewItem">

@@ -129,6 +129,7 @@
     <Compile Include="ViewModels\Base\BaseDialogViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="Utilities\Dialogs\DialogAwareViewModel.cs" />
+    <Compile Include="ViewModels\AssegnaViewModel.cs" />
     <Compile Include="ViewModels\PrezzoViewModel.cs" />
     <Compile Include="ViewModels\AggiungiSquadraViewModel.cs" />
     <Compile Include="ViewModels\AstaViewModel.cs" />
@@ -152,6 +153,9 @@
     </Compile>
     <Compile Include="Views\ModificaView.xaml.cs">
       <DependentUpon>ModificaView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AssegnaView.xaml.cs">
+      <DependentUpon>AssegnaView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PrezzoView.xaml.cs">
       <DependentUpon>PrezzoView.xaml</DependentUpon>
@@ -189,6 +193,10 @@
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AssegnaView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\PrezzoView.xaml">
       <SubType>Designer</SubType>

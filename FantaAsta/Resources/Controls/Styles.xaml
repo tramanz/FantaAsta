@@ -216,27 +216,25 @@
 	<!--Default tab item-->
 	<Style x:Key="{x:Type TabItem}" TargetType="{x:Type TabItem}">
 		<Setter Property="SnapsToDevicePixels" Value="True"/>
+		<Setter Property="Background" Value="White"/>
+		<Setter Property="BorderBrush" Value="{StaticResource DisabledColor}"/>
+		<Setter Property="Foreground" Value="{StaticResource DisabledColor}"/>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="TabItem">
-					<Border x:Name="Border" BorderThickness="2" BorderBrush="Black" CornerRadius="8,8,0,0" MinWidth="100" MinHeight="40">
-						<ContentPresenter x:Name="Content" ContentSource="Header" TextElement.FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,10,2"/>
+					<Border BorderThickness="2" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" CornerRadius="8,8,0,0" MinWidth="100" MinHeight="40">
+						<ContentPresenter x:Name="ContentSite" ContentSource="Header" TextElement.Foreground="{TemplateBinding Foreground}" TextElement.FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,10,2"/>
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter TargetName="Border" Property="Background" Value="{StaticResource SecondaryColor}"/>
-							<Setter TargetName="Border" Property="BorderBrush" Value="White"/>
-							<Setter TargetName="Content" Property="TextElement.Foreground" Value="White"/>
-						</Trigger>
-						<Trigger Property="IsSelected" Value="False">
-							<Setter TargetName="Border" Property="Background" Value="White"/>
-							<Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource DisabledColor}"/>
-							<Setter TargetName="Content" Property="TextElement.Foreground" Value="{StaticResource DisabledColor}"/>
+							<Setter Property="Background" Value="{StaticResource SecondaryColor}"/>
+							<Setter Property="BorderBrush" Value="White"/>
+							<Setter Property="Foreground" Value="White"/>
 						</Trigger>
 						<Trigger Property="IsSelected" Value="True">
-							<Setter TargetName="Border" Property="Background" Value="White"/>
-							<Setter TargetName="Border" Property="BorderBrush" Value="Black"/>
-							<Setter TargetName="Content" Property="TextElement.Foreground" Value="Black"/>
+							<Setter Property="Background" Value="White"/>
+							<Setter Property="BorderBrush" Value="Black"/>
+							<Setter Property="Foreground" Value="Black"/>
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>

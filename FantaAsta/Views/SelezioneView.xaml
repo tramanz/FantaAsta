@@ -17,7 +17,7 @@
 
 	<Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 		<!--Sfondo-->
-		<Grid Margin="5">
+		<Grid Opacity="0.7" Margin="5">
 			<Image Stretch="Uniform">
 				<Image.Source>
 					<DrawingImage>

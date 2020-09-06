@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
+using System.Collections.Generic;
 using System.Timers;
 using Prism.Commands;
 using Prism.Services.Dialogs;
 using FantaAsta.Models;
 using FantaAsta.Enums;
-using FantaAsta.EventArgs;
-using FantaAsta.Utilities.Dialogs;
 
 namespace FantaAsta.ViewModels
 {
@@ -21,13 +17,9 @@ namespace FantaAsta.ViewModels
 
 		private readonly Timer m_timer;
 
-		private ObservableCollection<string> m_squadre;
-
 		private Giocatore m_giocatoreCorrente;
 
-		private string m_squadraSelezionata;
 		private string m_ruoloSelezionato;
-		private string m_prezzo;
 
 		private bool m_modalitaAstaInvernaleAttiva;
 
@@ -39,34 +31,16 @@ namespace FantaAsta.ViewModels
 
 		public List<string> Ruoli => new List<string> { "P", "D", "C", "A" };
 
-		public ObservableCollection<string> Squadre
-		{
-			get { return m_squadre; }
-			set { SetProperty(ref m_squadre, value); }
-		}
-
 		public Giocatore GiocatoreCorrente
 		{
 			get { return m_giocatoreCorrente; }
 			set { SetProperty(ref m_giocatoreCorrente, value); }
 		}
 
-		public string SquadraSelezionata
-		{
-			get { return m_squadraSelezionata; }
-			set { SetProperty(ref m_squadraSelezionata, value); AssegnaGiocatoreCommand?.RaiseCanExecuteChanged(); }
-		}
-
 		public string RuoloSelezionato
 		{
 			get { return m_ruoloSelezionato; }
 			set { SetProperty(ref m_ruoloSelezionato, value); EstraiGiocatoreCommand?.RaiseCanExecuteChanged(); }
-		}
-
-		public string Prezzo
-		{
-			get { return m_prezzo; }
-			set { SetProperty(ref m_prezzo, value); AssegnaGiocatoreCommand?.RaiseCanExecuteChanged(); }
 		}
 
 		public bool ModalitaAstaInvernaleAttiva
@@ -89,14 +63,12 @@ namespace FantaAsta.ViewModels
 		{
 			m_dialogService = dialogService;
 
-			m_lega.FantaSquadraAggiunta += OnFantaSquadraAggiunta;
-			m_lega.FantaSquadraRimossa += OnFantaSquadraRimossa;
+			m_lega.GiocatoreAggiunto += OnGiocatoreAggiunto;
+			m_lega.GiocatoreRimosso += OnGiocatoreRimosso;
 			m_lega.ModalitàAstaCambiata += OnModalitaAstaCambiata;
 
 			m_timer = new Timer { AutoReset = true, Enabled = false, Interval = 50 };
 			m_timer.Elapsed += OnTick;
-
-			Squadre = new ObservableCollection<string>(m_lega?.FantaSquadre.Select(s => s.Nome).OrderBy(s => s));
 
 			EstraiGiocatoreCommand = new DelegateCommand(EstraiGiocatore, AbilitaEstraiGiocatore);
 			AssegnaGiocatoreCommand = new DelegateCommand(AssegnaGiocatore, AbilitaAssegnaGiocatore);
@@ -122,6 +94,7 @@ namespace FantaAsta.ViewModels
 				m_repetitions = 0;
 
 				EstraiGiocatoreCommand?.RaiseCanExecuteChanged();
+				AssegnaGiocatoreCommand?.RaiseCanExecuteChanged();
 			}
 			else
 			{
@@ -129,20 +102,19 @@ namespace FantaAsta.ViewModels
 			}
 		}
 
-		private void OnFantaSquadraAggiunta(object sender, FantaSquadraEventArgs e)
-		{
-			Squadre.Add(e.FantaSquadra.Nome);
-			Squadre = new ObservableCollection<string>(Squadre.OrderBy(s => s));
-		}
-
-		private void OnFantaSquadraRimossa(object sender, FantaSquadraEventArgs e)
-		{
-			Squadre.Remove(e.FantaSquadra.Nome);
-		}
-
 		private void OnModalitaAstaCambiata(object sender, System.EventArgs e)
 		{
 			ModalitaAstaInvernaleAttiva = m_lega.ModalitaAstaInvernaleAttiva;
+		}
+
+		private void OnGiocatoreAggiunto(object sender, EventArgs.GiocatoreAggiuntoEventArgs e)
+		{
+			AssegnaGiocatoreCommand?.RaiseCanExecuteChanged();
+		}
+
+		private void OnGiocatoreRimosso(object sender, EventArgs.GiocatoreRimossoEventArgs e)
+		{
+			AssegnaGiocatoreCommand?.RaiseCanExecuteChanged();
 		}
 
 		#endregion
@@ -157,6 +129,7 @@ namespace FantaAsta.ViewModels
 			m_timer.Start();
 
 			EstraiGiocatoreCommand?.RaiseCanExecuteChanged();
+			AssegnaGiocatoreCommand?.RaiseCanExecuteChanged();
 		}
 		private bool AbilitaEstraiGiocatore()
 		{
@@ -165,33 +138,17 @@ namespace FantaAsta.ViewModels
 
 		private void AssegnaGiocatore()
 		{
-			if (!double.TryParse(Prezzo, NumberStyles.AllowDecimalPoint, null, out double prezzo))
-			{
-				m_dialogService.ShowMessage("Inserire un numero", MessageType.Error);
-			}
-			else if (m_lega.FantaSquadre.Select(s => s.Giocatori).Where(g => g.Contains(GiocatoreCorrente)).Count() > 0)
-			{
-				m_dialogService.ShowMessage("Il giocatore selezionato è già assegnato ad una squadra", MessageType.Error);
-			}
-			else if (prezzo < GiocatoreCorrente.Quotazione)
-			{
-				m_dialogService.ShowMessage("Il prezzo di acquisto non può essere inferiore alla quotazione del giocatore", MessageType.Error);
-			}
-			else
-			{
-				var squadra = m_lega.FantaSquadre.Where(s => s.Nome.Equals(SquadraSelezionata)).Single();
+			m_dialogService.ShowDialog("Assegna", new DialogParameters
+				{
+					{ "Type", DialogType.Popup },
+					{ "Giocatore", GiocatoreCorrente }
+				}, null);
 
-				bool result = m_lega.AggiungiGiocatore(squadra, GiocatoreCorrente, Convert.ToDouble(Prezzo));
-
-				string msg = result ? "Giocatore aggiunto" : "Il giocatore non può essere aggiunto";
-				MessageType type = result ? MessageType.Notification : MessageType.Error;
-
-				m_dialogService.ShowMessage(msg, type);
-			}
+			AssegnaGiocatoreCommand?.RaiseCanExecuteChanged();
 		}
 		private bool AbilitaAssegnaGiocatore()
 		{
-			return GiocatoreCorrente != null && !string.IsNullOrEmpty(SquadraSelezionata) && !string.IsNullOrEmpty(Prezzo);
+			return GiocatoreCorrente != null && !m_timer.Enabled && m_lega.FantaSquadre.SingleOrDefault(s => s.Giocatori.Contains(GiocatoreCorrente)) == null;
 		}
 
 		private void CambiaModalitaAsta()
