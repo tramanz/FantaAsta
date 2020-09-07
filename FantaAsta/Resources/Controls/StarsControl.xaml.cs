@@ -12,11 +12,10 @@ namespace FantaAsta.Resources.Controls
 	{
 		#region Constants
 
-		private const int STAR_DIM = 25;
+		private const int STAR_DIM = 30;
 
 		private static Thickness STAR_MARGIN = new Thickness(2);
 
-		private static SolidColorBrush WHITE_BRUSH = new SolidColorBrush(Colors.White);
 		private static SolidColorBrush GOLD_BRUSH = new SolidColorBrush(Colors.DarkGoldenrod);
 
 		#endregion
@@ -76,7 +75,7 @@ namespace FantaAsta.Resources.Controls
 
 				for (int i = 0; i < starsToPaintCompletely; i++)
 				{
-					starDrawing = new GeometryDrawing(GOLD_BRUSH, new Pen(WHITE_BRUSH, 2), starGeometry);
+					starDrawing = new GeometryDrawing(GOLD_BRUSH, new Pen(GOLD_BRUSH, 2), starGeometry);
 
 					starImage = new Image
 					{
@@ -98,7 +97,7 @@ namespace FantaAsta.Resources.Controls
 
 					DrawingGroup drawingGroup = new DrawingGroup();
 					drawingGroup.Children.Add(new GeometryDrawing(GOLD_BRUSH, null, rectStarGeometry));
-					drawingGroup.Children.Add(new GeometryDrawing(null, new Pen(WHITE_BRUSH, 2), starGeometry));
+					drawingGroup.Children.Add(new GeometryDrawing(null, new Pen(GOLD_BRUSH, 2), starGeometry));
 
 					starImage = new Image
 					{
@@ -116,7 +115,7 @@ namespace FantaAsta.Resources.Controls
 
 			while (paintedStars < 5)
 			{
-				starDrawing = new GeometryDrawing(null, new Pen(WHITE_BRUSH, 2), starGeometry);
+				starDrawing = new GeometryDrawing(null, new Pen(GOLD_BRUSH, 2), starGeometry);
 
 				starImage = new Image
 				{

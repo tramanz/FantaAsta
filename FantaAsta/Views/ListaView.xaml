@@ -37,7 +37,7 @@
 
 			<Border BorderBrush="Black" Background="{StaticResource DisabledColor}" BorderThickness="2" CornerRadius="3" Margin="5,0">
 				<StackPanel HorizontalAlignment="Stretch" Margin="3">
-					<TextBlock Text="Portieri" FontFamily="{StaticResource NunitoBold}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
+					<TextBlock Text="Portieri" FontFamily="{StaticResource NunitoBold}" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
 					<Separator Background="Black" Margin="5"/>
 					<ItemsControl ItemsSource="{Binding Portieri}" ItemsPanel="{StaticResource TemplateContenitoreLista}" ItemTemplate="{StaticResource TemplateOggettoLista}" Margin="0,0,0,5"/>
 				</StackPanel>
@@ -45,7 +45,7 @@
 
 			<Border BorderBrush="Black" Background="{StaticResource DisabledColor}" BorderThickness="2" CornerRadius="3" Margin="5,0">
 				<StackPanel HorizontalAlignment="Stretch" Margin="3">
-					<TextBlock Text="Difensori" FontFamily="{StaticResource NunitoBold}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
+					<TextBlock Text="Difensori" FontFamily="{StaticResource NunitoBold}" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
 					<Separator Background="Black" Margin="5"/>
 					<ItemsControl ItemsSource="{Binding Difensori}" ItemsPanel="{StaticResource TemplateContenitoreLista}" ItemTemplate="{StaticResource TemplateOggettoLista}" Margin="0,0,0,5"/>
 				</StackPanel>
@@ -53,7 +53,7 @@
 
 			<Border BorderBrush="Black" Background="{StaticResource DisabledColor}" BorderThickness="2" CornerRadius="3" Margin="5,0">
 				<StackPanel HorizontalAlignment="Stretch" Margin="3">
-					<TextBlock Text="Centrocampisti" FontFamily="{StaticResource NunitoBold}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
+					<TextBlock Text="Centrocampisti" FontFamily="{StaticResource NunitoBold}" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
 					<Separator Background="Black" Margin="5"/>
 					<ItemsControl ItemsSource="{Binding Centrocampisti}" ItemsPanel="{StaticResource TemplateContenitoreLista}" ItemTemplate="{StaticResource TemplateOggettoLista}" Margin="0,0,0,5"/>
 				</StackPanel>
@@ -61,7 +61,7 @@
 
 			<Border BorderBrush="Black" Background="{StaticResource DisabledColor}" BorderThickness="2" CornerRadius="3" Margin="5,0">
 				<StackPanel HorizontalAlignment="Stretch" Margin="3">
-					<TextBlock Text="Attaccanti" FontFamily="{StaticResource NunitoBold}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
+					<TextBlock Text="Attaccanti" FontFamily="{StaticResource NunitoBold}" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" Margin="0,0,0,5"/>
 					<Separator Background="Black" Margin="5"/>
 					<ItemsControl ItemsSource="{Binding Attaccanti}" ItemsPanel="{StaticResource TemplateContenitoreLista}" ItemTemplate="{StaticResource TemplateOggettoLista}" Margin="0,0,0,5"/>
 				</StackPanel>
