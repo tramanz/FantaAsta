@@ -114,10 +114,10 @@
 									</ItemsControl.ItemsPanel>
 									<ItemsControl.ItemTemplate>
 										<DataTemplate>
-											<Grid HorizontalAlignment="Stretch" Margin="0,2">
+											<Grid HorizontalAlignment="Stretch" Margin="5,2,0,2">
 												<Grid.ColumnDefinitions>
 													<ColumnDefinition Width="0.5*"/>
-													<ColumnDefinition Width="2.75*"/>
+													<ColumnDefinition Width="3*"/>
 													<ColumnDefinition Width="0.75*"/>
 												</Grid.ColumnDefinitions>
 
