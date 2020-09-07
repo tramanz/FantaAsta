@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
 using System.Timers;
 using Prism.Commands;
 using Prism.Services.Dialogs;
@@ -11,49 +9,111 @@ namespace FantaAsta.ViewModels
 {
 	public class AstaViewModel : BaseViewModel, IDisposable
 	{
+		#region Constants
+
+		private const int MAX_REPETITIONS = 6;
+
+		#endregion
+
 		#region Private fields
 
 		private readonly IDialogService m_dialogService;
 
 		private readonly Timer m_timer;
 
+		private int m_repetitions;
+
 		private Giocatore m_giocatoreCorrente;
 
-		private string m_ruoloSelezionato;
+		private Ruoli m_ruoloSelezionato;
+		private bool m_isPortieriSelected;
+		private bool m_isDifensoriSelected;
+		private bool m_isCentrocampistiSelected;
+		private bool m_isAttaccantiSelected;
 
-		private bool m_modalitaAstaInvernaleAttiva;
-
-		private int m_repetitions;
+		private bool m_isAstaEstivaSelected;
+		private bool m_isAstaInvernaleSelected;
 
 		#endregion
 
 		#region Properties
 
-		public List<string> Ruoli => new List<string> { "P", "D", "C", "A" };
-
 		public Giocatore GiocatoreCorrente
 		{
 			get { return m_giocatoreCorrente; }
-			set { SetProperty(ref m_giocatoreCorrente, value); }
+			set { _ = SetProperty(ref m_giocatoreCorrente, value); }
 		}
 
-		public string RuoloSelezionato
+		public bool IsPortieriSelected
 		{
-			get { return m_ruoloSelezionato; }
-			set { SetProperty(ref m_ruoloSelezionato, value); EstraiGiocatoreCommand?.RaiseCanExecuteChanged(); }
+			get { return m_isPortieriSelected; }
+			set 
+			{
+				_ = SetProperty(ref m_isPortieriSelected, value);
+				if (value)
+				{
+					m_ruoloSelezionato = Ruoli.P;
+				}
+			}
 		}
 
-		public bool ModalitaAstaInvernaleAttiva
+		public bool IsDifensoriSelected
 		{
-			get { return m_modalitaAstaInvernaleAttiva; }
-			set { SetProperty(ref m_modalitaAstaInvernaleAttiva, value); }
+			get { return m_isDifensoriSelected; }
+			set
+			{
+				_ = SetProperty(ref m_isDifensoriSelected, value);
+				if (value)
+				{
+					m_ruoloSelezionato = Ruoli.D;
+				}
+			}
 		}
+
+		public bool IsCentrocampistiSelected
+		{
+			get { return m_isCentrocampistiSelected; }
+			set
+			{
+				_ = SetProperty(ref m_isCentrocampistiSelected, value);
+				if (value)
+				{
+					m_ruoloSelezionato = Ruoli.C;
+				}
+			}
+		}
+
+		public bool IsAttaccantiSelected
+		{
+			get { return m_isAttaccantiSelected; }
+			set
+			{
+				_ = SetProperty(ref m_isAttaccantiSelected, value);
+				if (value)
+				{
+					m_ruoloSelezionato = Ruoli.A;
+				}
+			}
+		}
+
+		public bool IsAstaEstivaSelected
+		{
+			get { return m_isAstaEstivaSelected; }
+			set { _ = SetProperty(ref m_isAstaEstivaSelected, value); m_lega.CambiaModalitaAsta(); }
+		}
+
+		public bool IsAstaInvernaleSelected
+		{
+			get { return m_isAstaInvernaleSelected; }
+			set { _ = SetProperty(ref m_isAstaInvernaleSelected, value); m_lega.CambiaModalitaAsta(); }
+		}
+
+		public bool BottoniAttivi { get { return !m_timer.Enabled; } }
 
 		#region Commands
 
 		public DelegateCommand EstraiGiocatoreCommand { get; }
 		public DelegateCommand AssegnaGiocatoreCommand { get; }
-		public DelegateCommand CambiaModalitaAstaCommand { get; }
 
 		#endregion
 
@@ -65,14 +125,15 @@ namespace FantaAsta.ViewModels
 
 			m_lega.GiocatoreAggiunto += OnGiocatoreAggiunto;
 			m_lega.GiocatoreRimosso += OnGiocatoreRimosso;
-			m_lega.ModalitàAstaCambiata += OnModalitaAstaCambiata;
 
 			m_timer = new Timer { AutoReset = true, Enabled = false, Interval = 50 };
 			m_timer.Elapsed += OnTick;
 
+			IsPortieriSelected = true;
+			IsAstaEstivaSelected = true;
+
 			EstraiGiocatoreCommand = new DelegateCommand(EstraiGiocatore, AbilitaEstraiGiocatore);
 			AssegnaGiocatoreCommand = new DelegateCommand(AssegnaGiocatore, AbilitaAssegnaGiocatore);
-			CambiaModalitaAstaCommand = new DelegateCommand(CambiaModalitaAsta);
 		}
 
 		#region Private methods
@@ -81,11 +142,9 @@ namespace FantaAsta.ViewModels
 
 		private void OnTick(object sender, ElapsedEventArgs e)
 		{
-			GiocatoreCorrente = m_lega.EstraiGiocatore((Ruoli)Enum.Parse(typeof(Ruoli), RuoloSelezionato));
+			GiocatoreCorrente = m_lega.EstraiGiocatore(m_ruoloSelezionato);
 
-			m_repetitions++;
-
-			if (m_repetitions == 6)
+			if (++m_repetitions == MAX_REPETITIONS)
 			{
 				m_timer.Stop();
 				m_timer.Interval = 50;
@@ -95,16 +154,13 @@ namespace FantaAsta.ViewModels
 
 				EstraiGiocatoreCommand?.RaiseCanExecuteChanged();
 				AssegnaGiocatoreCommand?.RaiseCanExecuteChanged();
+			
+				RaisePropertyChanged(nameof(BottoniAttivi));
 			}
 			else
 			{
 				m_timer.Interval += 50;
 			}
-		}
-
-		private void OnModalitaAstaCambiata(object sender, System.EventArgs e)
-		{
-			ModalitaAstaInvernaleAttiva = m_lega.ModalitaAstaInvernaleAttiva;
 		}
 
 		private void OnGiocatoreAggiunto(object sender, EventArgs.GiocatoreAggiuntoEventArgs e)
@@ -130,10 +186,12 @@ namespace FantaAsta.ViewModels
 
 			EstraiGiocatoreCommand?.RaiseCanExecuteChanged();
 			AssegnaGiocatoreCommand?.RaiseCanExecuteChanged();
+
+			RaisePropertyChanged(nameof(BottoniAttivi));
 		}
 		private bool AbilitaEstraiGiocatore()
 		{
-			return !string.IsNullOrEmpty(RuoloSelezionato) && !m_timer.Enabled;
+			return BottoniAttivi;
 		}
 
 		private void AssegnaGiocatore()
@@ -148,12 +206,7 @@ namespace FantaAsta.ViewModels
 		}
 		private bool AbilitaAssegnaGiocatore()
 		{
-			return GiocatoreCorrente != null && !m_timer.Enabled && m_lega.FantaSquadre.SingleOrDefault(s => s.Giocatori.Contains(GiocatoreCorrente)) == null;
-		}
-
-		private void CambiaModalitaAsta()
-		{
-			m_lega.CambiaModalitaAsta();
+			return BottoniAttivi && GiocatoreCorrente != null;
 		}
 
 		#endregion

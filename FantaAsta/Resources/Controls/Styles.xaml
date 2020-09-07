@@ -42,7 +42,7 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="Button">
 					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" CornerRadius="8">
-						<ContentPresenter TextElement.FontSize="{TemplateBinding FontSize}" TextElement.Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+						<ContentPresenter TextElement.FontSize="{TemplateBinding FontSize}" TextElement.Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="{TemplateBinding Padding}"/>
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
@@ -89,6 +89,38 @@
 						<Trigger Property="IsEnabled" Value="False">
 							<Setter Property="Foreground" Value="{StaticResource DisabledColor}"/>
 							<Setter Property="BorderBrush" Value="{StaticResource DisabledColor}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!--Default radio button (testo)-->
+	<Style x:Key="{x:Type RadioButton}" TargetType="{x:Type RadioButton}">
+		<Setter Property="SnapsToDevicePixels" Value="True"/>
+		<Setter Property="Background" Value="White"/>
+		<Setter Property="BorderBrush" Value="Black"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="RadioButton">
+					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="2" CornerRadius="8">
+						<ContentPresenter TextElement.FontSize="{TemplateBinding FontSize}" TextElement.Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="BorderBrush" Value="White"/>
+							<Setter Property="Foreground" Value="White"/>
+							<Setter Property="Background" Value="{StaticResource SecondaryColor}"/>
+						</Trigger>
+						<Trigger Property="IsChecked" Value="True">
+							<Setter Property="BorderBrush" Value="White"/>
+							<Setter Property="Foreground" Value="White"/>
+							<Setter Property="Background" Value="{StaticResource SecondaryColor}"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter Property="BorderBrush" Value="{StaticResource DisabledColor}"/>
+							<Setter Property="Foreground" Value="{StaticResource DisabledColor}"/>
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>

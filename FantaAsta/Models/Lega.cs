@@ -341,7 +341,7 @@ namespace FantaAsta.Models
 		{
 			if (giocatore != null)
 			{
-				giocatore.Scartato = FantaSquadre.Find(s => s.Giocatori.Contains(giocatore)) == null;
+				giocatore.Scartato = !FantaSquadre.Any(s => s.Giocatori.Contains(giocatore));
 			}
 		}
 
@@ -544,14 +544,7 @@ namespace FantaAsta.Models
 
 				foreach (FantaSquadra squadra in FantaSquadre)
 				{
-					if (attivaAstaInvernale)
-					{
-						squadra.Budget += Constants.BUDGET_INVERNALE;
-					}
-					else
-					{
-						squadra.Budget -= Constants.BUDGET_INVERNALE;
-					}
+					squadra.Budget += attivaAstaInvernale ? Constants.BUDGET_INVERNALE : -Constants.BUDGET_INVERNALE;
 				}
 
 				ModalitàAstaCambiata?.Invoke(this, System.EventArgs.Empty);
