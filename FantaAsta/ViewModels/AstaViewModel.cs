@@ -98,14 +98,28 @@ namespace FantaAsta.ViewModels
 
 		public bool IsAstaEstivaSelected
 		{
-			get { return m_isAstaEstivaSelected; }
-			set { _ = SetProperty(ref m_isAstaEstivaSelected, value); m_lega.CambiaModalitaAsta(); }
+			get { return !m_lega.ModalitaAstaInvernaleAttiva; }
+			set 
+			{
+				_ = SetProperty(ref m_isAstaEstivaSelected, value);
+				if (value)
+				{
+					m_lega.CambiaModalitaAsta();
+				}
+			}
 		}
 
 		public bool IsAstaInvernaleSelected
-		{
-			get { return m_isAstaInvernaleSelected; }
-			set { _ = SetProperty(ref m_isAstaInvernaleSelected, value); m_lega.CambiaModalitaAsta(); }
+		{ 
+			get { return m_lega.ModalitaAstaInvernaleAttiva; }
+			set
+			{
+				_ = SetProperty(ref m_isAstaInvernaleSelected, value);
+				if (value)
+				{
+					m_lega.CambiaModalitaAsta();
+				}
+			}
 		}
 
 		public bool BottoniAttivi { get { return !m_timer.Enabled; } }
@@ -130,7 +144,6 @@ namespace FantaAsta.ViewModels
 			m_timer.Elapsed += OnTick;
 
 			IsPortieriSelected = true;
-			IsAstaEstivaSelected = true;
 
 			EstraiGiocatoreCommand = new DelegateCommand(EstraiGiocatore, AbilitaEstraiGiocatore);
 			AssegnaGiocatoreCommand = new DelegateCommand(AssegnaGiocatore, AbilitaAssegnaGiocatore);

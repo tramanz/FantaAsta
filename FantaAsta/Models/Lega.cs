@@ -62,6 +62,8 @@ namespace FantaAsta.Models
 			CaricaLista();
 
 			CaricaFantaSquadre();
+
+			DisattivaModalitaAstaInvernale();
 		}
 
 		#region Public methods
