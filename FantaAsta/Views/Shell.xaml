@@ -15,8 +15,8 @@
 			<Setter Property="AllowsTransparency" Value="True"/>
 			<Setter Property="SnapsToDevicePixels" Value="True"/>
 			<Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/>
-			<Setter Property="MinHeight" Value="500"/>
-			<Setter Property="MinWidth" Value="750"/>
+			<Setter Property="MinHeight" Value="900"/>
+			<Setter Property="MinWidth" Value="1300"/>
 			<Setter Property="shell:WindowChrome.WindowChrome">
 				<Setter.Value>
 					<shell:WindowChrome CaptionHeight="30" ResizeBorderThickness="15" NonClientFrameEdges="None" UseAeroCaptionButtons="False"/>
