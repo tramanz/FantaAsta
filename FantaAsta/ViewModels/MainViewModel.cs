@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Regions;
 using FantaAsta.Views;
 using FantaAsta.Models;
@@ -15,7 +16,7 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public MainViewModel(IRegionManager regionManager, Lega lega) : base(regionManager, lega)
+		public MainViewModel(IRegionManager regionManager, IEventAggregator eventAggregator, Lega lega) : base(regionManager, eventAggregator, lega)
 		{
 			IndietroCommand = new DelegateCommand(NavigateToSelezione);
 			SalvaCommand = new DelegateCommand(Salva);

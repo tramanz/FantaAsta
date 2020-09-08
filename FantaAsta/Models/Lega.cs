@@ -5,9 +5,10 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Xml;
+using Prism.Events;
+using FantaAsta.Constants;
 using FantaAsta.Enums;
-using FantaAsta.EventArgs;
-using FantaAsta.Utilities;
+using FantaAsta.Events;
 
 namespace FantaAsta.Models
 {
@@ -17,6 +18,8 @@ namespace FantaAsta.Models
 		#region Private fields
 
 		private readonly Random m_random = new Random();
+
+		private readonly IEventAggregator m_eventAggregator;
 
 		#endregion
 
@@ -42,21 +45,10 @@ namespace FantaAsta.Models
 
 		#endregion
 
-		#region Events
-
-		public event EventHandler<GiocatoreAggiuntoEventArgs> GiocatoreAggiunto;
-		public event EventHandler<GiocatoreRimossoEventArgs> GiocatoreRimosso;
-		public event EventHandler<FantaSquadraEventArgs> FantaSquadraAggiunta;
-		public event EventHandler<FantaSquadraEventArgs> FantaSquadraRimossa;
-		public event EventHandler RoseResettate;
-		public event EventHandler ModalitàAstaCambiata;
-		public event EventHandler ApriFileDialog;
-		public event EventHandler ListaImportata;
-
-		#endregion
-
-		public Lega()
+		public Lega(IEventAggregator eventAggregator)
 		{
+			m_eventAggregator = eventAggregator;
+
 			CaricaSquadre();
 
 			CaricaLista();
@@ -167,7 +159,7 @@ namespace FantaAsta.Models
 			Svincolati.Remove(giocatore);
 
 			// Segnalo alla view l'operazione
-			GiocatoreAggiunto?.Invoke(this, new GiocatoreAggiuntoEventArgs(giocatore, squadra, prezzo));
+			m_eventAggregator.GetEvent<GiocatoreAggiuntoEvent>().Publish(new GiocatoreAggiuntoEventArgs(giocatore, squadra, prezzo));
 
 			return true;
 		}
@@ -196,7 +188,7 @@ namespace FantaAsta.Models
 				}
 
 				// Segnalo alla view l'operazione
-				GiocatoreRimosso?.Invoke(this, new GiocatoreRimossoEventArgs(giocatore, squadra, prezzo));
+				m_eventAggregator.GetEvent<GiocatoreRimossoEvent>().Publish(new GiocatoreRimossoEventArgs(giocatore, squadra, prezzo));
 			}
 		}
 
@@ -205,19 +197,19 @@ namespace FantaAsta.Models
 		/// </summary>
 		public void SalvaSquadre()
 		{
-			if (!Directory.Exists(Constants.DATA_DIRECTORY_PATH))
+			if (!Directory.Exists(CommonConstants.DATA_DIRECTORY_PATH))
 			{
-				Directory.CreateDirectory(Constants.DATA_DIRECTORY_PATH);
+				Directory.CreateDirectory(CommonConstants.DATA_DIRECTORY_PATH);
 			}
 
-			if (File.Exists(Constants.DATA_FILE_PATH))
+			if (File.Exists(CommonConstants.DATA_FILE_PATH))
 			{
-				File.Delete(Constants.DATA_FILE_PATH);
+				File.Delete(CommonConstants.DATA_FILE_PATH);
 			}
 
 			DataContractSerializer dcs = new DataContractSerializer(typeof(Lega));
 
-			using (FileStream fs = new FileStream(Constants.DATA_FILE_PATH, FileMode.OpenOrCreate))
+			using (FileStream fs = new FileStream(CommonConstants.DATA_FILE_PATH, FileMode.OpenOrCreate))
 			using (XmlWriter xdw = XmlWriter.Create(fs))
 			{
 				dcs.WriteObject(xdw, this);
@@ -266,11 +258,11 @@ namespace FantaAsta.Models
 				}
 
 				squadra.ValoreMedio = 0;
-				squadra.Budget = Constants.BUDGET_ESTIVO;
+				squadra.Budget = CommonConstants.BUDGET_ESTIVO;
 				squadra.Giocatori.Clear();
 			}
 
-			RoseResettate?.Invoke(this, System.EventArgs.Empty);
+			m_eventAggregator.GetEvent<RoseResettateEvent>().Publish();
 		}
 
 		/// <summary>
@@ -278,7 +270,7 @@ namespace FantaAsta.Models
 		/// </summary>
 		public void AvviaImportaLista()
 		{
-			ApriFileDialog?.Invoke(this, System.EventArgs.Empty);
+			m_eventAggregator.GetEvent<ApriFileDialogEvent>().Publish();
 		}
 
 		/// <summary>
@@ -295,7 +287,7 @@ namespace FantaAsta.Models
 			FantaSquadre.Add(squadra);
 			FantaSquadre.OrderBy(s => s.Nome);
 
-			FantaSquadraAggiunta?.Invoke(this, new FantaSquadraEventArgs(squadra));
+			m_eventAggregator.GetEvent<FantaSquadraAggiuntaEvent>().Publish(new FantaSquadraEventArgs(squadra));
 
 			return true;
 		}
@@ -316,12 +308,12 @@ namespace FantaAsta.Models
 
 					Lista.Add(giocatore);
 
-					GiocatoreRimosso?.Invoke(this, new GiocatoreRimossoEventArgs(giocatore, squadra, giocatore.Prezzo));
+					m_eventAggregator.GetEvent<GiocatoreRimossoEvent>().Publish(new GiocatoreRimossoEventArgs(giocatore, squadra, giocatore.Prezzo));
 				}
 
 				FantaSquadre.Remove(squadra);
 
-				FantaSquadraRimossa?.Invoke(this, new FantaSquadraEventArgs(squadra));
+				m_eventAggregator.GetEvent<FantaSquadraRimossaEvent>().Publish(new FantaSquadraEventArgs(squadra));
 			}
 		}
 
@@ -356,9 +348,9 @@ namespace FantaAsta.Models
 		/// </summary>
 		private void CaricaLista()
 		{
-			if (File.Exists(Constants.DATA_FILE_PATH))
+			if (File.Exists(CommonConstants.DATA_FILE_PATH))
 			{
-				using (FileStream fs = new FileStream(Constants.DATA_FILE_PATH, FileMode.Open))
+				using (FileStream fs = new FileStream(CommonConstants.DATA_FILE_PATH, FileMode.Open))
 				{
 					DataContractSerializer ser = new DataContractSerializer(typeof(Lega));
 
@@ -384,9 +376,9 @@ namespace FantaAsta.Models
 				return false;
 			}
 
-			if (!Directory.Exists(Constants.DATA_DIRECTORY_PATH))
+			if (!Directory.Exists(CommonConstants.DATA_DIRECTORY_PATH))
 			{
-				Directory.CreateDirectory(Constants.DATA_DIRECTORY_PATH);
+				Directory.CreateDirectory(CommonConstants.DATA_DIRECTORY_PATH);
 			}
 
 			Lista = new List<Giocatore>();
@@ -396,7 +388,7 @@ namespace FantaAsta.Models
 			{
 				try
 				{
-					PercorsoFileLista = Path.Combine(Constants.DATA_DIRECTORY_PATH, $"Quotazioni ({DateTime.Now:dd_MM_yyyy}).csv");
+					PercorsoFileLista = Path.Combine(CommonConstants.DATA_DIRECTORY_PATH, $"Quotazioni ({DateTime.Now:dd_MM_yyyy}).csv");
 					File.Copy(filePath, PercorsoFileLista, true);
 				}
 				catch
@@ -425,7 +417,7 @@ namespace FantaAsta.Models
 
 			AggiornaStatoGiocatoriInRosa();
 
-			ListaImportata?.Invoke(this, System.EventArgs.Empty);
+			m_eventAggregator.GetEvent<ListaImportataEvent>().Publish();
 
 			return true;
 		}
@@ -437,7 +429,7 @@ namespace FantaAsta.Models
 		{
 			FantaSquadre = new List<FantaSquadra>();
 
-			if (File.Exists(Constants.DATA_FILE_PATH))
+			if (File.Exists(CommonConstants.DATA_FILE_PATH))
 			{
 				CaricaFantaSquadreDaFile();
 			}
@@ -448,7 +440,7 @@ namespace FantaAsta.Models
 		/// </summary>
 		private void CaricaFantaSquadreDaFile()
 		{
-			using (FileStream fs = new FileStream(Constants.DATA_FILE_PATH, FileMode.Open))
+			using (FileStream fs = new FileStream(CommonConstants.DATA_FILE_PATH, FileMode.Open))
 			{
 				DataContractSerializer ser = new DataContractSerializer(typeof(Lega));
 
@@ -513,7 +505,7 @@ namespace FantaAsta.Models
 					squadra.Giocatori = listaSupporto;
 				}
 
-				RoseResettate?.Invoke(this, System.EventArgs.Empty);
+				m_eventAggregator.GetEvent<RoseResettateEvent>().Publish();
 			}
 		}
 
@@ -546,10 +538,10 @@ namespace FantaAsta.Models
 
 				foreach (FantaSquadra squadra in FantaSquadre)
 				{
-					squadra.Budget += attivaAstaInvernale ? Constants.BUDGET_INVERNALE : -Constants.BUDGET_INVERNALE;
+					squadra.Budget += attivaAstaInvernale ? CommonConstants.BUDGET_INVERNALE : -CommonConstants.BUDGET_INVERNALE;
 				}
 
-				ModalitàAstaCambiata?.Invoke(this, System.EventArgs.Empty);
+				m_eventAggregator.GetEvent<ModalitàAstaCambiataEvent>().Publish();
 			}
 		}
 

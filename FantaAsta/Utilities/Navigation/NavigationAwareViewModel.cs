@@ -1,4 +1,5 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Events;
+using Prism.Mvvm;
 using Prism.Regions;
 
 namespace FantaAsta.Utilities.Navigation
@@ -12,11 +13,15 @@ namespace FantaAsta.Utilities.Navigation
 
 		protected readonly IRegionManager m_regionManager;
 
+		protected readonly IEventAggregator m_eventAggregator;
+
 		#endregion
 
-		protected NavigationAwareViewModel(IRegionManager regionManager)
+		protected NavigationAwareViewModel(IRegionManager regionManager, IEventAggregator eventAggregator)
 		{
 			m_regionManager = regionManager;
+
+			m_eventAggregator = eventAggregator;
 		}
 
 		#region Public methods

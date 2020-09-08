@@ -1,5 +1,6 @@
 ﻿using System;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Services.Dialogs;
 using FantaAsta.Enums;
 using FantaAsta.Models;
@@ -33,7 +34,7 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public AggiungiSquadraViewModel(IDialogService dialogService, Lega lega) : base(lega)
+		public AggiungiSquadraViewModel(IEventAggregator eventAggregator, IDialogService dialogService, Lega lega) : base(eventAggregator, lega)
 		{
 			m_dialogService = dialogService;
 		}

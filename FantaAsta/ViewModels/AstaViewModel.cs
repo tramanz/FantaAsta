@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Timers;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Services.Dialogs;
-using FantaAsta.Models;
+using FantaAsta.Constants;
 using FantaAsta.Enums;
+using FantaAsta.Events;
+using FantaAsta.Models;
 
 namespace FantaAsta.ViewModels
 {
@@ -133,12 +136,12 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public AstaViewModel(IDialogService dialogService, Lega lega) : base(lega)
+		public AstaViewModel(IEventAggregator eventAggregator, IDialogService dialogService, Lega lega) : base(eventAggregator, lega)
 		{
 			m_dialogService = dialogService;
 
-			m_lega.GiocatoreAggiunto += OnGiocatoreAggiunto;
-			m_lega.GiocatoreRimosso += OnGiocatoreRimosso;
+			m_eventAggregator.GetEvent<GiocatoreAggiuntoEvent>().Subscribe(OnGiocatoreAggiunto);
+			m_eventAggregator.GetEvent<GiocatoreRimossoEvent>().Subscribe(OnGiocatoreRimosso);
 
 			m_timer = new Timer { AutoReset = true, Enabled = false, Interval = 50 };
 			m_timer.Elapsed += OnTick;
@@ -148,7 +151,7 @@ namespace FantaAsta.ViewModels
 			EstraiGiocatoreCommand = new DelegateCommand(EstraiGiocatore, AbilitaEstraiGiocatore);
 			AssegnaGiocatoreCommand = new DelegateCommand(AssegnaGiocatore, AbilitaAssegnaGiocatore);
 		}
-
+		
 		#region Private methods
 
 		#region Event handlers
@@ -176,12 +179,12 @@ namespace FantaAsta.ViewModels
 			}
 		}
 
-		private void OnGiocatoreAggiunto(object sender, EventArgs.GiocatoreAggiuntoEventArgs e)
+		private void OnGiocatoreAggiunto(GiocatoreAggiuntoEventArgs args)
 		{
 			AssegnaGiocatoreCommand?.RaiseCanExecuteChanged();
 		}
 
-		private void OnGiocatoreRimosso(object sender, EventArgs.GiocatoreRimossoEventArgs e)
+		private void OnGiocatoreRimosso(GiocatoreRimossoEventArgs args)
 		{
 			AssegnaGiocatoreCommand?.RaiseCanExecuteChanged();
 		}
@@ -209,7 +212,7 @@ namespace FantaAsta.ViewModels
 
 		private void AssegnaGiocatore()
 		{
-			m_dialogService.ShowDialog("Assegna", new DialogParameters
+			m_dialogService.ShowDialog(CommonConstants.ASSEGNA_DIALOG, new DialogParameters
 				{
 					{ "Type", DialogType.Popup },
 					{ "Giocatore", GiocatoreCorrente }

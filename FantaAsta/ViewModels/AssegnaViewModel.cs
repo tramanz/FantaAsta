@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Services.Dialogs;
 using FantaAsta.Enums;
 using FantaAsta.Models;
@@ -61,7 +61,7 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public AssegnaViewModel(IDialogService dialogService, Lega lega) : base(lega)
+		public AssegnaViewModel(IEventAggregator eventAggregator, IDialogService dialogService, Lega lega) : base(eventAggregator, lega)
 		{
 			m_dialogService = dialogService;
 		}

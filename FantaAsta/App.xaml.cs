@@ -4,6 +4,7 @@ using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
 using Prism.Unity;
+using FantaAsta.Constants;
 using FantaAsta.Models;
 using FantaAsta.Modules;
 using FantaAsta.Utilities.Regions;
@@ -25,11 +26,11 @@ namespace FantaAsta
 
 		protected override void RegisterTypes(IContainerRegistry containerRegistry)
 		{
-			containerRegistry.RegisterDialog<MessageView, MessageViewModel>("Message");
-			containerRegistry.RegisterDialog<ModificaView, ModificaViewModel>("Modifica");
-			containerRegistry.RegisterDialog<PrezzoView, PrezzoViewModel>("Prezzo");
-			containerRegistry.RegisterDialog<AggiungiSquadraView, AggiungiSquadraViewModel>("Aggiungi");
-			containerRegistry.RegisterDialog<AssegnaView, AssegnaViewModel>("Assegna");
+			containerRegistry.RegisterDialog<MessageView, MessageViewModel>(CommonConstants.MESSAGE_DIALOG);
+			containerRegistry.RegisterDialog<ModificaView, ModificaViewModel>(CommonConstants.MODIFICA_DIALOG);
+			containerRegistry.RegisterDialog<PrezzoView, PrezzoViewModel>(CommonConstants.PREZZO_DIALOG);
+			containerRegistry.RegisterDialog<AggiungiSquadraView, AggiungiSquadraViewModel>(CommonConstants.AGGIUNGI_DIALOG);
+			containerRegistry.RegisterDialog<AssegnaView, AssegnaViewModel>(CommonConstants.ASSEGNA_DIALOG);
 
 			containerRegistry.RegisterDialogWindow<DialogWindow>();
 

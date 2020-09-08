@@ -3,11 +3,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using Prism.Services.Dialogs;
+using FantaAsta.Constants;
 using FantaAsta.Enums;
-using FantaAsta.EventArgs;
+using FantaAsta.Events;
 using FantaAsta.Models;
 using FantaAsta.Views;
 using FantaAsta.Utilities.Dialogs;
@@ -61,17 +63,17 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public RoseViewModel(IRegionManager regionManager, IDialogService dialogService, Lega lega) : base(regionManager, lega)
+		public RoseViewModel(IRegionManager regionManager, IEventAggregator eventAggregator, IDialogService dialogService, Lega lega) : base(regionManager, eventAggregator, lega)
 		{
 			m_dialogService = dialogService;
 
-			m_lega.GiocatoreAggiunto += OnGiocatoreAggiunto;
-			m_lega.GiocatoreRimosso += OnGiocatoreRimosso;
-			m_lega.FantaSquadraAggiunta += OnFantaSquadraAggiunta;
-			m_lega.FantaSquadraRimossa += OnFantaSquadraRimossa;
-			m_lega.ModalitàAstaCambiata += OnModalitàAstaCambiata;
-			m_lega.RoseResettate += OnRoseResettate;
-			m_lega.ListaImportata += OnListaImportata;
+			m_eventAggregator.GetEvent<GiocatoreAggiuntoEvent>().Subscribe(OnGiocatoreAggiunto);
+			m_eventAggregator.GetEvent<GiocatoreRimossoEvent>().Subscribe(OnGiocatoreRimosso);
+			m_eventAggregator.GetEvent<FantaSquadraAggiuntaEvent>().Subscribe(OnFantaSquadraAggiunta);
+			m_eventAggregator.GetEvent<FantaSquadraRimossaEvent>().Subscribe(OnFantaSquadraRimossa);
+			m_eventAggregator.GetEvent<ModalitàAstaCambiataEvent>().Subscribe(OnModalitàAstaCambiata);
+			m_eventAggregator.GetEvent<RoseResettateEvent>().Subscribe(OnRoseResettate);
+			m_eventAggregator.GetEvent<ListaImportataEvent>().Subscribe(OnListaImportata);
 
 			Media = m_lega.QuotazioneMedia;
 			Squadre = m_lega.FantaSquadre.Count > 0 ?
@@ -102,25 +104,25 @@ namespace FantaAsta.ViewModels
 
 		#region Event handlers
 
-		private void OnGiocatoreAggiunto(object sender, GiocatoreAggiuntoEventArgs e)
+		private void OnGiocatoreAggiunto(GiocatoreAggiuntoEventArgs args)
 		{
-			Squadre.Where(s => s.FantaSquadra.Equals(e.FantaSquadra)).Single().AggiungiGiocatore(e.Giocatore);
+			Squadre.Where(s => s.FantaSquadra.Equals(args.FantaSquadra)).Single().AggiungiGiocatore(args.Giocatore);
 		}
 
-		private void OnGiocatoreRimosso(object sender, GiocatoreRimossoEventArgs e)
+		private void OnGiocatoreRimosso(GiocatoreRimossoEventArgs args)
 		{
-			Squadre.Where(s => s.FantaSquadra.Equals(e.FantaSquadra)).Single().RimuoviGiocatore(e.Giocatore);
+			Squadre.Where(s => s.FantaSquadra.Equals(args.FantaSquadra)).Single().RimuoviGiocatore(args.Giocatore);
 		}
 
-		private void OnFantaSquadraAggiunta(object sender, FantaSquadraEventArgs e)
+		private void OnFantaSquadraAggiunta(FantaSquadraEventArgs args)
 		{
-			Squadre.Add(new FantaSquadraViewModel(e.FantaSquadra));
+			Squadre.Add(new FantaSquadraViewModel(args.FantaSquadra));
 			Squadre = new ObservableCollection<FantaSquadraViewModel>(Squadre.OrderBy(s => s.Nome));
 		}
 
-		private void OnFantaSquadraRimossa(object sender, FantaSquadraEventArgs e)
+		private void OnFantaSquadraRimossa(FantaSquadraEventArgs args)
 		{
-			FantaSquadraViewModel squadraVM = Squadre.Where(s => s.Nome.Equals(e.FantaSquadra.Nome, StringComparison.Ordinal)).SingleOrDefault();
+			FantaSquadraViewModel squadraVM = Squadre.Where(s => s.Nome.Equals(args.FantaSquadra.Nome, StringComparison.Ordinal)).SingleOrDefault();
 
 			if (squadraVM != null)
 			{
@@ -128,7 +130,7 @@ namespace FantaAsta.ViewModels
 			}
 		}
 
-		private void OnModalitàAstaCambiata(object sender, System.EventArgs e)
+		private void OnModalitàAstaCambiata()
 		{
 			foreach (FantaSquadraViewModel squadraVm in Squadre)
 			{
@@ -136,7 +138,7 @@ namespace FantaAsta.ViewModels
 			}
 		}
 
-		private void OnRoseResettate(object sender, System.EventArgs e)
+		private void OnRoseResettate()
 		{
 			foreach (FantaSquadraViewModel squadraVm in Squadre)
 			{
@@ -146,7 +148,7 @@ namespace FantaAsta.ViewModels
 			}
 		}
 
-		private void OnListaImportata(object sender, System.EventArgs e)
+		private void OnListaImportata()
 		{
 			ModificaCommand?.RaiseCanExecuteChanged();
 
@@ -173,7 +175,7 @@ namespace FantaAsta.ViewModels
 		{
 			FantaSquadra fantaSquadra = m_lega.FantaSquadre.Where(s => s.Equals(squadraVM.FantaSquadra)).Single();
 					
-			m_dialogService.ShowDialog("Modifica", new DialogParameters 
+			m_dialogService.ShowDialog(CommonConstants.MODIFICA_DIALOG, new DialogParameters 
 			{
 				{ "Type", DialogType.Popup },
 				{ "squadra", fantaSquadra } 

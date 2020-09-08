@@ -1,4 +1,5 @@
 ﻿using Prism.Services.Dialogs;
+using FantaAsta.Constants;
 using FantaAsta.Enums;
 
 namespace FantaAsta.Utilities.Dialogs
@@ -17,11 +18,11 @@ namespace FantaAsta.Utilities.Dialogs
 
 			if (isModal)
 			{
-				dialogService.ShowDialog("Message", parameters, (IDialogResult res) => result = res.Result);
+				dialogService.ShowDialog(CommonConstants.MESSAGE_DIALOG, parameters, (IDialogResult res) => result = res.Result);
 			}
 			else
 			{
-				dialogService.Show("Message", parameters, (IDialogResult res) => result = res.Result);
+				dialogService.Show(CommonConstants.MESSAGE_DIALOG, parameters, (IDialogResult res) => result = res.Result);
 			}
 
 			return result;

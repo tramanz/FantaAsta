@@ -2,12 +2,15 @@
 using System.Windows.Input;
 using Microsoft.Win32;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Regions;
 using Prism.Services.Dialogs;
+using FantaAsta.Constants;
 using FantaAsta.Enums;
+using FantaAsta.Events;
 using FantaAsta.Models;
-using FantaAsta.Views;
 using FantaAsta.Utilities.Dialogs;
+using FantaAsta.Views;
 
 namespace FantaAsta.ViewModels
 {
@@ -33,14 +36,14 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public SelezioneViewModel(IRegionManager regionManager, IDialogService dialogService, Lega lega) : base(regionManager, lega)
+		public SelezioneViewModel(IRegionManager regionManager, IEventAggregator eventAggregator, IDialogService dialogService, Lega lega) : base(regionManager, eventAggregator, lega)
 		{
 			m_dialogService = dialogService;
 
-			m_lega.ApriFileDialog += OnApriFileDialog;
-			m_lega.ListaImportata += OnListaImportata;
-			m_lega.FantaSquadraAggiunta += AggiornaComandoAvviaAsta;
-			m_lega.FantaSquadraRimossa += AggiornaComandoAvviaAsta;
+			m_eventAggregator.GetEvent<ApriFileDialogEvent>().Subscribe(OnApriFileDialog);
+			m_eventAggregator.GetEvent<ListaImportataEvent>().Subscribe(OnListaImportata);
+			m_eventAggregator.GetEvent<FantaSquadraAggiuntaEvent>().Subscribe(AggiornaComandoAvviaAsta);
+			m_eventAggregator.GetEvent<FantaSquadraRimossaEvent>().Subscribe(AggiornaComandoAvviaAsta);
 
 			AvviaAstaCommand = new DelegateCommand(AvviaAsta, AbilitaAvviaAsta);
 			GestisciRoseCommand = new DelegateCommand(GestisciRose);
@@ -63,7 +66,7 @@ namespace FantaAsta.ViewModels
 
 		#region Event handlers
 
-		private void OnApriFileDialog(object sender, System.EventArgs e)
+		private void OnApriFileDialog()
 		{
 			OpenFileDialog fd = new OpenFileDialog
 			{
@@ -86,16 +89,16 @@ namespace FantaAsta.ViewModels
 			}
 		}
 
-		private void OnListaImportata(object sender, System.EventArgs e)
+		private void OnListaImportata()
 		{
 			Mouse.OverrideCursor = Cursors.Arrow;
 
 			m_dialogService.ShowMessage("Lista importata con successo", MessageType.Notification);
 
-			AggiornaComandoAvviaAsta(null, null);
+			AggiornaComandoAvviaAsta(null);
 		}
 
-		private void AggiornaComandoAvviaAsta(object sender, System.EventArgs e)
+		private void AggiornaComandoAvviaAsta(FantaSquadraEventArgs args)
 		{
 			AvviaAstaCommand?.RaiseCanExecuteChanged();
 		}
@@ -127,7 +130,7 @@ namespace FantaAsta.ViewModels
 
 		private void AggiungiSquadra()
 		{
-			m_dialogService.ShowDialog("Aggiungi", new DialogParameters { { "Type", DialogType.Popup } }, (res) => AggiornaComandoAvviaAsta(null, null));
+			m_dialogService.ShowDialog(CommonConstants.AGGIUNGI_DIALOG, new DialogParameters { { "Type", DialogType.Popup } }, (res) => AggiornaComandoAvviaAsta(null));
 		}
 
 		private void ImportaLista()

@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using Prism.Events;
 using Prism.Regions;
 using FantaAsta.Models;
 using FantaAsta.Utilities.Navigation;
@@ -15,7 +16,7 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		protected BaseNavigationViewModel(IRegionManager regionManager, Lega lega) : base(regionManager)
+		protected BaseNavigationViewModel(IRegionManager regionManager, IEventAggregator eventAggregator, Lega lega) : base(regionManager, eventAggregator)
 		{
 			m_syncContext = SynchronizationContext.Current;
 

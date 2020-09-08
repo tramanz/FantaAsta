@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using Prism.Events;
 using FantaAsta.Models;
 using FantaAsta.Utilities.Dialogs;
 
@@ -8,14 +9,18 @@ namespace FantaAsta.ViewModels
 	{
 		#region Protected fields
 
+		protected readonly IEventAggregator m_eventAggregator;
+
 		protected readonly SynchronizationContext m_syncContext;
 
 		protected readonly Lega m_lega;
 
 		#endregion
 
-		protected BaseDialogViewModel(Lega lega)
+		protected BaseDialogViewModel(IEventAggregator eventAggregator, Lega lega)
 		{
+			m_eventAggregator = eventAggregator;
+
 			m_syncContext = SynchronizationContext.Current;
 			
 			m_lega = lega;

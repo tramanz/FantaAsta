@@ -1,8 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using Prism.Events;
 using FantaAsta.Enums;
 using FantaAsta.Models;
-using FantaAsta.EventArgs;
+using FantaAsta.Events;
 
 namespace FantaAsta.ViewModels
 {
@@ -42,38 +43,38 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public ListaViewModel(Lega lega) : base(lega)
+		public ListaViewModel(IEventAggregator eventAggregator, Lega lega) : base(eventAggregator, lega)
 		{
 			InizializzaListe();
 
-			m_lega.GiocatoreAggiunto += OnGiocatoreAggiunto;
-			m_lega.GiocatoreRimosso += OnGiocatoreRimosso;
-			m_lega.RoseResettate += OnRoseResettate;
-			m_lega.ListaImportata += OnListaImportata;
+			m_eventAggregator.GetEvent<GiocatoreAggiuntoEvent>().Subscribe(OnGiocatoreAggiunto);
+			m_eventAggregator.GetEvent<GiocatoreRimossoEvent>().Subscribe(OnGiocatoreRimosso);
+			m_eventAggregator.GetEvent<RoseResettateEvent>().Subscribe(OnRoseResettate);
+			m_eventAggregator.GetEvent<ListaImportataEvent>().Subscribe(OnListaImportata);
 		}
 
 		#region Private methods
 
-		private void OnGiocatoreAggiunto(object sender, GiocatoreAggiuntoEventArgs e)
+		private void OnGiocatoreAggiunto(GiocatoreAggiuntoEventArgs args)
 		{
-			SelezionaListaDaRuolo(e.Giocatore.Ruolo).Remove(e.Giocatore);
+			SelezionaListaDaRuolo(args.Giocatore.Ruolo).Remove(args.Giocatore);
 		}
 
-		private void OnGiocatoreRimosso(object sender, GiocatoreRimossoEventArgs e)
+		private void OnGiocatoreRimosso(GiocatoreRimossoEventArgs args)
 		{
-			if (e.Giocatore.InLista)
+			if (args.Giocatore.InLista)
 			{
-				ObservableCollection<Giocatore> lista = SelezionaListaDaRuolo(e.Giocatore.Ruolo);
+				ObservableCollection<Giocatore> lista = SelezionaListaDaRuolo(args.Giocatore.Ruolo);
 				lista = new ObservableCollection<Giocatore>(m_lega.Svincolati.OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
 			}
 		}
 
-		private void OnRoseResettate(object sender, System.EventArgs e)
+		private void OnRoseResettate()
 		{
 			InizializzaListe();
 		}
 
-		private void OnListaImportata(object sender, System.EventArgs e)
+		private void OnListaImportata()
 		{
 			InizializzaListe();
 		}

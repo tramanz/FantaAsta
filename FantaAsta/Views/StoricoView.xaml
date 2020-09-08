@@ -14,7 +14,7 @@
 			</ItemsControl.ItemsPanel>
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
-					<TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="2"/>
+					<TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,2,0,2"/>
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>
 		</ItemsControl>

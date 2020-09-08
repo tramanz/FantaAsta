@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using FantaAsta.Utilities;
+using FantaAsta.Constants;
 
 namespace FantaAsta.Models
 {
@@ -27,7 +27,7 @@ namespace FantaAsta.Models
 		{
 			Nome = nome;
 			Giocatori = new List<Giocatore>();
-			Budget = Constants.BUDGET_ESTIVO;
+			Budget = CommonConstants.BUDGET_ESTIVO;
 		}
 
 		#region Public methods

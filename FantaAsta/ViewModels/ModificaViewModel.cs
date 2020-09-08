@@ -1,12 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Services.Dialogs;
-using FantaAsta.Models;
+using FantaAsta.Constants;
 using FantaAsta.Enums;
-using FantaAsta.EventArgs;
+using FantaAsta.Events;
+using FantaAsta.Models;
 using FantaAsta.Utilities.Dialogs;
-using System.Reflection.Emit;
 
 namespace FantaAsta.ViewModels
 {
@@ -55,7 +56,7 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public ModificaViewModel(IDialogService dialogService, Lega lega) : base(lega)
+		public ModificaViewModel(IDialogService dialogService, IEventAggregator eventAggregator, Lega lega) : base(eventAggregator, lega)
 		{
 			m_dialogService = dialogService;
 
@@ -67,8 +68,8 @@ namespace FantaAsta.ViewModels
 
 		public override void OnDialogClosed()
 		{
-			m_lega.GiocatoreAggiunto -= OnGiocatoreAggiunto;
-			m_lega.GiocatoreRimosso -= OnGiocatoreRimosso;
+			m_eventAggregator.GetEvent<GiocatoreAggiuntoEvent>().Unsubscribe(OnGiocatoreAggiunto);
+			m_eventAggregator.GetEvent<GiocatoreRimossoEvent>().Unsubscribe(OnGiocatoreRimosso);
 		}
 
 		public override void OnDialogOpened(IDialogParameters parameters)
@@ -78,8 +79,8 @@ namespace FantaAsta.ViewModels
 			Rosa = new ObservableCollection<Giocatore>(m_squadra.Giocatori.OrderBy(g => g.Ruolo).ThenByDescending(g => g.Prezzo).ThenBy(g => g.Nome));
 			Svincolati = new ObservableCollection<Giocatore>(m_lega.Svincolati.OrderBy(g => g.Nome));
 
-			m_lega.GiocatoreAggiunto += OnGiocatoreAggiunto;
-			m_lega.GiocatoreRimosso += OnGiocatoreRimosso;
+			m_eventAggregator.GetEvent<GiocatoreAggiuntoEvent>().Subscribe(OnGiocatoreAggiunto);
+			m_eventAggregator.GetEvent<GiocatoreRimossoEvent>().Subscribe(OnGiocatoreRimosso);
 
 			base.OnDialogOpened(parameters);
 		}
@@ -107,21 +108,21 @@ namespace FantaAsta.ViewModels
 
 		#region Event handlers
 
-		private void OnGiocatoreAggiunto(object sender, GiocatoreAggiuntoEventArgs e)
+		private void OnGiocatoreAggiunto(GiocatoreAggiuntoEventArgs args)
 		{
-			if (e.FantaSquadra.Equals(m_squadra) && !Rosa.Contains(e.Giocatore) && Svincolati.Contains(e.Giocatore))
+			if (args.FantaSquadra.Equals(m_squadra) && !Rosa.Contains(args.Giocatore) && Svincolati.Contains(args.Giocatore))
 			{
-				Rosa.Add(e.Giocatore);
+				Rosa.Add(args.Giocatore);
 				Rosa = new ObservableCollection<Giocatore>(Rosa.OrderBy(g => g.Ruolo).ThenByDescending(g => g.Prezzo).ThenBy(g => g.Nome));
-				Svincolati.Remove(e.Giocatore);
+				Svincolati.Remove(args.Giocatore);
 			}
 		}
 
-		private void OnGiocatoreRimosso(object sender, GiocatoreRimossoEventArgs e)
+		private void OnGiocatoreRimosso(GiocatoreRimossoEventArgs args)
 		{
-			if (e.FantaSquadra.Equals(m_squadra) && Rosa.Contains(e.Giocatore) && !Svincolati.Contains(e.Giocatore))
+			if (args.FantaSquadra.Equals(m_squadra) && Rosa.Contains(args.Giocatore) && !Svincolati.Contains(args.Giocatore))
 			{
-				Rosa.Remove(e.Giocatore);
+				Rosa.Remove(args.Giocatore);
 				Svincolati = new ObservableCollection<Giocatore>(m_lega.Svincolati.OrderBy(g => g.Nome));
 			}
 		}
@@ -138,7 +139,7 @@ namespace FantaAsta.ViewModels
 			}
 			else
 			{
-				m_dialogService.ShowDialog("Prezzo", new DialogParameters
+				m_dialogService.ShowDialog(CommonConstants.PREZZO_DIALOG, new DialogParameters
 				{
 					{ "Type", DialogType.Popup },
 					{ "Movimento", Movimenti.Acquisto },
@@ -160,7 +161,7 @@ namespace FantaAsta.ViewModels
 			}
 			else
 			{
-				m_dialogService.ShowDialog("Prezzo", new DialogParameters
+				m_dialogService.ShowDialog(CommonConstants.PREZZO_DIALOG, new DialogParameters
 				{
 					{ "Movimento", Movimenti.Vendita },
 					{ "FantaSquadra", m_squadra},
