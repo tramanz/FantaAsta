@@ -23,7 +23,7 @@ namespace FantaAsta.ViewModels
 		public string Nome
 		{
 			get { return m_nome; }
-			set { SetProperty(ref m_nome, value); Buttons[0]?.Command.RaiseCanExecuteChanged(); }
+			set { _ = SetProperty(ref m_nome, value); Buttons[0]?.Command.RaiseCanExecuteChanged(); }
 		}
 
 		#endregion
@@ -65,11 +65,11 @@ namespace FantaAsta.ViewModels
 
 			if (result)
 			{
-				m_dialogService.ShowMessage("Squadra aggiunta", MessageType.Notification);
+				_ = m_dialogService.ShowMessage("Squadra aggiunta", MessageType.Notification);
 			}
 			else
 			{
-				m_dialogService.ShowMessage("Non è possibile aggiungere una squadra con lo stesso nome di una già esistente", MessageType.Error);
+				_ = m_dialogService.ShowMessage("Non è possibile aggiungere una squadra con lo stesso nome di una già esistente", MessageType.Error);
 			}
 
 			SelectNameTextBox?.Invoke(this, System.EventArgs.Empty);

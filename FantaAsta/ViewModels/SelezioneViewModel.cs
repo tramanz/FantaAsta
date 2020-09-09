@@ -40,10 +40,10 @@ namespace FantaAsta.ViewModels
 		{
 			m_dialogService = dialogService;
 
-			m_eventAggregator.GetEvent<ApriFileDialogEvent>().Subscribe(OnApriFileDialog);
-			m_eventAggregator.GetEvent<ListaImportataEvent>().Subscribe(OnListaImportata);
-			m_eventAggregator.GetEvent<FantaSquadraAggiuntaEvent>().Subscribe(AggiornaComandoAvviaAsta);
-			m_eventAggregator.GetEvent<FantaSquadraRimossaEvent>().Subscribe(AggiornaComandoAvviaAsta);
+			_ = m_eventAggregator.GetEvent<ApriFileDialogEvent>().Subscribe(OnApriFileDialog);
+			_ = m_eventAggregator.GetEvent<ListaImportataEvent>().Subscribe(OnListaImportata);
+			_ = m_eventAggregator.GetEvent<FantaSquadraAggiuntaEvent>().Subscribe(AggiornaComandoAvviaAsta);
+			_ = m_eventAggregator.GetEvent<FantaSquadraRimossaEvent>().Subscribe(AggiornaComandoAvviaAsta);
 
 			AvviaAstaCommand = new DelegateCommand(AvviaAsta, AbilitaAvviaAsta);
 			GestisciRoseCommand = new DelegateCommand(GestisciRose);
@@ -84,7 +84,7 @@ namespace FantaAsta.ViewModels
 
 				if (result.HasValue && !result.Value)
 				{
-					m_dialogService.ShowMessage("Errore durante l'import della lista", MessageType.Error);
+					_ = m_dialogService.ShowMessage("Errore durante l'import della lista", MessageType.Error);
 				}
 			}
 		}
@@ -93,7 +93,7 @@ namespace FantaAsta.ViewModels
 		{
 			Mouse.OverrideCursor = Cursors.Arrow;
 
-			m_dialogService.ShowMessage("Lista importata con successo", MessageType.Notification);
+			_ = m_dialogService.ShowMessage("Lista importata con successo", MessageType.Notification);
 
 			AggiornaComandoAvviaAsta(null);
 		}
@@ -125,7 +125,7 @@ namespace FantaAsta.ViewModels
 		{
 			m_lega.SvuotaRose();
 
-			m_dialogService.ShowMessage("Rose resettate", MessageType.Notification);
+			_ = m_dialogService.ShowMessage("Rose resettate", MessageType.Notification);
 		}
 
 		private void AggiungiSquadra()

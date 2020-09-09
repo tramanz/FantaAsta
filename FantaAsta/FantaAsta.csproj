@@ -286,5 +286,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\FantaLegaManager.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Solution Items\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

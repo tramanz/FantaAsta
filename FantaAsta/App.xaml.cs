@@ -34,17 +34,17 @@ namespace FantaAsta
 
 			containerRegistry.RegisterDialogWindow<DialogWindow>();
 
-			containerRegistry.RegisterSingleton<Lega>();
+			_ = containerRegistry.RegisterSingleton<Lega>();
 		}
 
 		protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
 		{
-			moduleCatalog.AddModule<AstaModule>();
-			moduleCatalog.AddModule<RoseModule>();
-			moduleCatalog.AddModule<ListaModule>();
-			moduleCatalog.AddModule<StoricoModule>();
-			moduleCatalog.AddModule<MainModule>();
-			moduleCatalog.AddModule<SelezioneModule>();
+			_ = moduleCatalog.AddModule<AstaModule>();
+			_ = moduleCatalog.AddModule<RoseModule>();
+			_ = moduleCatalog.AddModule<ListaModule>();
+			_ = moduleCatalog.AddModule<StoricoModule>();
+			_ = moduleCatalog.AddModule<MainModule>();
+			_ = moduleCatalog.AddModule<SelezioneModule>();
 		}
 
 		protected override void ConfigureRegionAdapterMappings(RegionAdapterMappings regionAdapterMappings)

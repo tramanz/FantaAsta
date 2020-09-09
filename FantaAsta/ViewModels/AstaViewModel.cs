@@ -140,8 +140,8 @@ namespace FantaAsta.ViewModels
 		{
 			m_dialogService = dialogService;
 
-			m_eventAggregator.GetEvent<GiocatoreAggiuntoEvent>().Subscribe(OnGiocatoreAggiunto);
-			m_eventAggregator.GetEvent<GiocatoreRimossoEvent>().Subscribe(OnGiocatoreRimosso);
+			_ = m_eventAggregator.GetEvent<GiocatoreAggiuntoEvent>().Subscribe(OnGiocatoreAggiunto);
+			_ = m_eventAggregator.GetEvent<GiocatoreRimossoEvent>().Subscribe(OnGiocatoreRimosso);
 
 			m_timer = new Timer { AutoReset = true, Enabled = false, Interval = 50 };
 			m_timer.Elapsed += OnTick;

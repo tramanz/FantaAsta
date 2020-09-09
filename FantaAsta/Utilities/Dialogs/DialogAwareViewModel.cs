@@ -28,25 +28,25 @@ namespace FantaAsta.Utilities.Dialogs
 		public Geometry Icon
 		{
 			get { return m_icon; }
-			protected set { SetProperty(ref m_icon, value); }
+			protected set { _ = SetProperty(ref m_icon, value); }
 		}
 
 		public SolidColorBrush IconColor
 		{
 			get { return m_iconColor; }
-			protected set { SetProperty(ref m_iconColor, value); }
+			protected set { _ = SetProperty(ref m_iconColor, value); }
 		}
 
 		public string Title 
 		{ 
 			get { return m_title; }
-			protected set { SetProperty(ref m_title, value); }
+			protected set { _ = SetProperty(ref m_title, value); }
 		}
 
 		public ObservableCollection<DialogButton> Buttons
 		{
 			get { return m_buttons; }
-			protected set { SetProperty(ref m_buttons, value); }
+			protected set { _ = SetProperty(ref m_buttons, value); }
 		}
 
 		#endregion

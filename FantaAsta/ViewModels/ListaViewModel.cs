@@ -23,22 +23,22 @@ namespace FantaAsta.ViewModels
 		public ObservableCollection<Giocatore> Portieri
 		{
 			get { return m_portieri; }
-			private set { SetProperty(ref m_portieri, value); }
+			private set { _ = SetProperty(ref m_portieri, value); }
 		}
 		public ObservableCollection<Giocatore> Difensori
 		{
 			get { return m_difensori; }
-			private set { SetProperty(ref m_difensori, value); }
+			private set { _ = SetProperty(ref m_difensori, value); }
 		}
 		public ObservableCollection<Giocatore> Centrocampisti
 		{
 			get { return m_centrocampisti; }
-			private set { SetProperty(ref m_centrocampisti, value); }
+			private set { _ = SetProperty(ref m_centrocampisti, value); }
 		}
 		public ObservableCollection<Giocatore> Attaccanti
 		{
 			get { return m_attaccanti; }
-			private set { SetProperty(ref m_attaccanti, value); }
+			private set { _ = SetProperty(ref m_attaccanti, value); }
 		}
 
 		#endregion
@@ -47,17 +47,17 @@ namespace FantaAsta.ViewModels
 		{
 			InizializzaListe();
 
-			m_eventAggregator.GetEvent<GiocatoreAggiuntoEvent>().Subscribe(OnGiocatoreAggiunto);
-			m_eventAggregator.GetEvent<GiocatoreRimossoEvent>().Subscribe(OnGiocatoreRimosso);
-			m_eventAggregator.GetEvent<RoseResettateEvent>().Subscribe(OnRoseResettate);
-			m_eventAggregator.GetEvent<ListaImportataEvent>().Subscribe(OnListaImportata);
+			_ = m_eventAggregator.GetEvent<GiocatoreAggiuntoEvent>().Subscribe(OnGiocatoreAggiunto);
+			_ = m_eventAggregator.GetEvent<GiocatoreRimossoEvent>().Subscribe(OnGiocatoreRimosso);
+			_ = m_eventAggregator.GetEvent<RoseResettateEvent>().Subscribe(OnRoseResettate);
+			_ = m_eventAggregator.GetEvent<ListaImportataEvent>().Subscribe(OnListaImportata);
 		}
 
 		#region Private methods
 
 		private void OnGiocatoreAggiunto(GiocatoreAggiuntoEventArgs args)
 		{
-			SelezionaListaDaRuolo(args.Giocatore.Ruolo).Remove(args.Giocatore);
+			_ = SelezionaListaDaRuolo(args.Giocatore.Ruolo).Remove(args.Giocatore);
 		}
 
 		private void OnGiocatoreRimosso(GiocatoreRimossoEventArgs args)

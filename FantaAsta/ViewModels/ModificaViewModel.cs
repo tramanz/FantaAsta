@@ -32,23 +32,23 @@ namespace FantaAsta.ViewModels
 		public ObservableCollection<Giocatore> Svincolati
 		{
 			get { return m_svincolati; }
-			set { SetProperty(ref m_svincolati, value); }
+			set { _ = SetProperty(ref m_svincolati, value); }
 		}
 		public ObservableCollection<Giocatore> Rosa
 		{
 			get { return m_rosa; }
-			set { SetProperty(ref m_rosa, value); }
+			set { _ = SetProperty(ref m_rosa, value); }
 		}
 
 		public Giocatore GiocatoreSelezionato
 		{
 			get { return m_giocatoreSelezionato; }
-			set { SetProperty(ref m_giocatoreSelezionato, value); RimuoviCommand?.RaiseCanExecuteChanged(); }
+			set { _ = SetProperty(ref m_giocatoreSelezionato, value); RimuoviCommand?.RaiseCanExecuteChanged(); }
 		}
 		public Giocatore SvincolatoSelezionato
 		{
 			get { return m_svincolatoSelezionato; }
-			set { SetProperty(ref m_svincolatoSelezionato, value); AggiungiCommand?.RaiseCanExecuteChanged(); }
+			set { _ = SetProperty(ref m_svincolatoSelezionato, value); AggiungiCommand?.RaiseCanExecuteChanged(); }
 		}
 
 		public DelegateCommand AggiungiCommand { get; }
@@ -79,8 +79,8 @@ namespace FantaAsta.ViewModels
 			Rosa = new ObservableCollection<Giocatore>(m_squadra.Giocatori.OrderBy(g => g.Ruolo).ThenByDescending(g => g.Prezzo).ThenBy(g => g.Nome));
 			Svincolati = new ObservableCollection<Giocatore>(m_lega.Svincolati.OrderBy(g => g.Nome));
 
-			m_eventAggregator.GetEvent<GiocatoreAggiuntoEvent>().Subscribe(OnGiocatoreAggiunto);
-			m_eventAggregator.GetEvent<GiocatoreRimossoEvent>().Subscribe(OnGiocatoreRimosso);
+			_ = m_eventAggregator.GetEvent<GiocatoreAggiuntoEvent>().Subscribe(OnGiocatoreAggiunto);
+			_ = m_eventAggregator.GetEvent<GiocatoreRimossoEvent>().Subscribe(OnGiocatoreRimosso);
 
 			base.OnDialogOpened(parameters);
 		}
@@ -114,7 +114,7 @@ namespace FantaAsta.ViewModels
 			{
 				Rosa.Add(args.Giocatore);
 				Rosa = new ObservableCollection<Giocatore>(Rosa.OrderBy(g => g.Ruolo).ThenByDescending(g => g.Prezzo).ThenBy(g => g.Nome));
-				Svincolati.Remove(args.Giocatore);
+				_ = Svincolati.Remove(args.Giocatore);
 			}
 		}
 
@@ -122,7 +122,7 @@ namespace FantaAsta.ViewModels
 		{
 			if (args.FantaSquadra.Equals(m_squadra) && Rosa.Contains(args.Giocatore) && !Svincolati.Contains(args.Giocatore))
 			{
-				Rosa.Remove(args.Giocatore);
+				_ = Rosa.Remove(args.Giocatore);
 				Svincolati = new ObservableCollection<Giocatore>(m_lega.Svincolati.OrderBy(g => g.Nome));
 			}
 		}
@@ -135,7 +135,7 @@ namespace FantaAsta.ViewModels
 		{
 			if (m_lega.FantaSquadre.Select(s => s.Giocatori).Where(g => g.Contains(SvincolatoSelezionato)).Count() > 0)
 			{
-				m_dialogService.ShowMessage("Il giocatore selezionato è già assegnato ad una fantasquadra.", MessageType.Warning);
+				_ = m_dialogService.ShowMessage("Il giocatore selezionato è già assegnato ad una fantasquadra.", MessageType.Warning);
 			}
 			else
 			{
@@ -157,7 +157,7 @@ namespace FantaAsta.ViewModels
 		{
 			if (!m_squadra.Giocatori.Contains(GiocatoreSelezionato))
 			{
-				m_dialogService.ShowMessage("Il giocatore selezionato non è presente nella rosa della fantasquadra.", MessageType.Warning);
+				_ = m_dialogService.ShowMessage("Il giocatore selezionato non è presente nella rosa della fantasquadra.", MessageType.Warning);
 			}
 			else
 			{

@@ -85,14 +85,14 @@ namespace FantaAsta.Resources.Controls
 						VerticalAlignment = VerticalAlignment.Center
 					};
 
-					panel.Children.Add(starImage);
+					_ = panel.Children.Add(starImage);
 				}
 
 				paintedStars = starsToPaintCompletely;
 
 				if (starsToPaintCompletely < 5)
 				{
-					Geometry rectGeometry = new RectangleGeometry(new Rect(new Size(dimToPaint - starsToPaintCompletely * starGeometryWidth, starGeometryHeight)));
+					Geometry rectGeometry = new RectangleGeometry(new Rect(new Size(dimToPaint - (starsToPaintCompletely * starGeometryWidth), starGeometryHeight)));
 					Geometry rectStarGeometry = new CombinedGeometry(GeometryCombineMode.Intersect, starGeometry, rectGeometry);
 
 					DrawingGroup drawingGroup = new DrawingGroup();
@@ -107,7 +107,7 @@ namespace FantaAsta.Resources.Controls
 						VerticalAlignment = VerticalAlignment.Center
 					};
 
-					panel.Children.Add(starImage);
+					_ = panel.Children.Add(starImage);
 
 					paintedStars++;
 				}
@@ -125,7 +125,7 @@ namespace FantaAsta.Resources.Controls
 					VerticalAlignment = VerticalAlignment.Center
 				};
 
-				panel.Children.Add(starImage);
+				_ = panel.Children.Add(starImage);
 
 				paintedStars++;
 			}

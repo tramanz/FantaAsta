@@ -156,7 +156,7 @@ namespace FantaAsta.Models
 			squadra.AggiungiGiocatore(giocatore);
 
 			// Rimuovo il giocatore dalla lista degli svincolati
-			Svincolati.Remove(giocatore);
+			_ = Svincolati.Remove(giocatore);
 
 			// Segnalo alla view l'operazione
 			m_eventAggregator.GetEvent<GiocatoreAggiuntoEvent>().Publish(new GiocatoreAggiuntoEventArgs(giocatore, squadra, prezzo));
@@ -199,7 +199,7 @@ namespace FantaAsta.Models
 		{
 			if (!Directory.Exists(CommonConstants.DATA_DIRECTORY_PATH))
 			{
-				Directory.CreateDirectory(CommonConstants.DATA_DIRECTORY_PATH);
+				_ = Directory.CreateDirectory(CommonConstants.DATA_DIRECTORY_PATH);
 			}
 
 			if (File.Exists(CommonConstants.DATA_FILE_PATH))
@@ -285,7 +285,7 @@ namespace FantaAsta.Models
 			FantaSquadra squadra = new FantaSquadra(nome);
 
 			FantaSquadre.Add(squadra);
-			FantaSquadre.OrderBy(s => s.Nome);
+			_ = FantaSquadre.OrderBy(s => s.Nome);
 
 			m_eventAggregator.GetEvent<FantaSquadraAggiuntaEvent>().Publish(new FantaSquadraEventArgs(squadra));
 
@@ -311,7 +311,7 @@ namespace FantaAsta.Models
 					m_eventAggregator.GetEvent<GiocatoreRimossoEvent>().Publish(new GiocatoreRimossoEventArgs(giocatore, squadra, giocatore.Prezzo));
 				}
 
-				FantaSquadre.Remove(squadra);
+				_ = FantaSquadre.Remove(squadra);
 
 				m_eventAggregator.GetEvent<FantaSquadraRimossaEvent>().Publish(new FantaSquadraEventArgs(squadra));
 			}
@@ -360,7 +360,7 @@ namespace FantaAsta.Models
 				}
 			}
 
-			CaricaListaDaFile(PercorsoFileLista, true);
+			_ = CaricaListaDaFile(PercorsoFileLista, true);
 		}
 
 		/// <summary>
@@ -378,7 +378,7 @@ namespace FantaAsta.Models
 
 			if (!Directory.Exists(CommonConstants.DATA_DIRECTORY_PATH))
 			{
-				Directory.CreateDirectory(CommonConstants.DATA_DIRECTORY_PATH);
+				_ = Directory.CreateDirectory(CommonConstants.DATA_DIRECTORY_PATH);
 			}
 
 			Lista = new List<Giocatore>();
@@ -496,7 +496,7 @@ namespace FantaAsta.Models
 						// Rimuovo il giocatore dalla lista degli svincolati
 						if (Svincolati.Contains(giocatoreSupporto))
 						{
-							Svincolati.Remove(giocatoreSupporto);
+							_ = Svincolati.Remove(giocatoreSupporto);
 						}
 
 						listaSupporto.Add(giocatoreSupporto);
@@ -522,7 +522,7 @@ namespace FantaAsta.Models
 					sum += giocatore.Quotazione;
 				}
 
-				QuotazioneMedia = sum / Lista.Count + 2;
+				QuotazioneMedia = (sum / Lista.Count) + 2;
 			}
 		}
 

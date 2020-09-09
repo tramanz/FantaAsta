@@ -13,7 +13,7 @@ namespace FantaAsta.Modules
 		{
 			IRegionManager regionManager = containerProvider.Resolve<IRegionManager>();
 
-			regionManager.RegisterViewWithRegion("MainRegion", typeof(SelezioneView));
+			_ = regionManager.RegisterViewWithRegion("MainRegion", typeof(SelezioneView));
 
 			regionManager.RequestNavigate("MainRegion", nameof(SelezioneView));
 		}

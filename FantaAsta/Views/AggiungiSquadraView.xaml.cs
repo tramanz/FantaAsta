@@ -26,7 +26,7 @@ namespace FantaAsta.Views
 
 		private void OnSelectNameTextBox(object sender, System.EventArgs e)
 		{
-			nomeTxtBox.Focus();
+			_ = nomeTxtBox.Focus();
 			nomeTxtBox.SelectAll();
 		}
 

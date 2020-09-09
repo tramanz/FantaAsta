@@ -11,7 +11,7 @@ namespace FantaAsta.Modules
 
 		public void OnInitialized(IContainerProvider containerProvider)
 		{
-			containerProvider.Resolve<IRegionManager>().RegisterViewWithRegion("ContentRegion", typeof(ListaView));
+			_ = containerProvider.Resolve<IRegionManager>().RegisterViewWithRegion("ContentRegion", typeof(ListaView));
 		}
 
 		public void RegisterTypes(IContainerRegistry containerRegistry)

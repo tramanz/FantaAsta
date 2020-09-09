@@ -35,19 +35,19 @@ namespace FantaAsta.ViewModels
 		public ObservableCollection<FantaSquadraViewModel> Squadre
 		{
 			get { return m_squadre; }
-			private set { SetProperty(ref m_squadre, value); }
+			private set { _ = SetProperty(ref m_squadre, value); }
 		}
 
 		public bool IsStandalone
 		{
 			get { return m_isStandalone; }
-			set { SetProperty(ref m_isStandalone, value); }
+			set { _ = SetProperty(ref m_isStandalone, value); }
 		}
 
 		public double Media
 		{
 			get { return m_media; }
-			set { SetProperty(ref m_media, value); }
+			set { _ = SetProperty(ref m_media, value); }
 		}
 
 
@@ -67,13 +67,13 @@ namespace FantaAsta.ViewModels
 		{
 			m_dialogService = dialogService;
 
-			m_eventAggregator.GetEvent<GiocatoreAggiuntoEvent>().Subscribe(OnGiocatoreAggiunto);
-			m_eventAggregator.GetEvent<GiocatoreRimossoEvent>().Subscribe(OnGiocatoreRimosso);
-			m_eventAggregator.GetEvent<FantaSquadraAggiuntaEvent>().Subscribe(OnFantaSquadraAggiunta);
-			m_eventAggregator.GetEvent<FantaSquadraRimossaEvent>().Subscribe(OnFantaSquadraRimossa);
-			m_eventAggregator.GetEvent<ModalitàAstaCambiataEvent>().Subscribe(OnModalitàAstaCambiata);
-			m_eventAggregator.GetEvent<RoseResettateEvent>().Subscribe(OnRoseResettate);
-			m_eventAggregator.GetEvent<ListaImportataEvent>().Subscribe(OnListaImportata);
+			_ = m_eventAggregator.GetEvent<GiocatoreAggiuntoEvent>().Subscribe(OnGiocatoreAggiunto);
+			_ = m_eventAggregator.GetEvent<GiocatoreRimossoEvent>().Subscribe(OnGiocatoreRimosso);
+			_ = m_eventAggregator.GetEvent<FantaSquadraAggiuntaEvent>().Subscribe(OnFantaSquadraAggiunta);
+			_ = m_eventAggregator.GetEvent<FantaSquadraRimossaEvent>().Subscribe(OnFantaSquadraRimossa);
+			_ = m_eventAggregator.GetEvent<ModalitàAstaCambiataEvent>().Subscribe(OnModalitàAstaCambiata);
+			_ = m_eventAggregator.GetEvent<RoseResettateEvent>().Subscribe(OnRoseResettate);
+			_ = m_eventAggregator.GetEvent<ListaImportataEvent>().Subscribe(OnListaImportata);
 
 			Media = m_lega.QuotazioneMedia;
 			Squadre = m_lega.FantaSquadre.Count > 0 ?
@@ -126,7 +126,7 @@ namespace FantaAsta.ViewModels
 
 			if (squadraVM != null)
 			{
-				Squadre.Remove(squadraVM);
+				_ = Squadre.Remove(squadraVM);
 			}
 		}
 
@@ -167,7 +167,7 @@ namespace FantaAsta.ViewModels
 			{
 				m_lega.RimuoviSquadra(squadraVM.Nome);
 
-				m_dialogService.ShowMessage("Squadra eliminata", MessageType.Notification);
+				_ = m_dialogService.ShowMessage("Squadra eliminata", MessageType.Notification);
 			}
 		}
 
@@ -226,19 +226,19 @@ namespace FantaAsta.ViewModels
 		public ObservableCollection<Giocatore> Giocatori
 		{
 			get { return m_giocatori; }
-			set { SetProperty(ref m_giocatori, value); }
+			set { _ = SetProperty(ref m_giocatori, value); }
 		}
 
 		public string Budget
 		{
 			get { return m_budget; }
-			set { SetProperty(ref m_budget, value); }
+			set { _ = SetProperty(ref m_budget, value); }
 		}
 
 		public double Valore
 		{
 			get { return m_valore; }
-			set { SetProperty(ref m_valore, value); }
+			set { _ = SetProperty(ref m_valore, value); }
 		}
 
 		#endregion
@@ -269,7 +269,7 @@ namespace FantaAsta.ViewModels
 		{
 			if (Giocatori.Contains(giocatore))
 			{
-				Giocatori.Remove(giocatore);
+				_ = Giocatori.Remove(giocatore);
 				AggiornaBudget();
 				AggiornaValore();
 			}

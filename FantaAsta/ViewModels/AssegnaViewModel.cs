@@ -33,13 +33,13 @@ namespace FantaAsta.ViewModels
 		public ObservableCollection<string> Squadre
 		{
 			get { return m_squadre; }
-			set { SetProperty(ref m_squadre, value); }
+			set { _ = SetProperty(ref m_squadre, value); }
 		}
 
 		public string SquadraSelezionata
 		{
 			get { return m_squadraSelezionata; }
-			set { SetProperty(ref m_squadraSelezionata, value); Buttons[0]?.Command.RaiseCanExecuteChanged(); }
+			set { _ = SetProperty(ref m_squadraSelezionata, value); Buttons[0]?.Command.RaiseCanExecuteChanged(); }
 		}
 
 		public string Prezzo
@@ -47,7 +47,7 @@ namespace FantaAsta.ViewModels
 			get { return m_prezzoString; }
 			set
 			{
-				SetProperty(ref m_prezzoString, value);
+				_ = SetProperty(ref m_prezzoString, value);
 				m_prezzo = double.TryParse(m_prezzoString, NumberStyles.AllowDecimalPoint, null, out double number) ? number : double.NaN;
 				Buttons[0]?.Command.RaiseCanExecuteChanged();
 			}
@@ -106,19 +106,19 @@ namespace FantaAsta.ViewModels
 
 			if (double.IsNaN(m_prezzo))
 			{
-				m_dialogService.ShowMessage("Inserire un prezzo.", MessageType.Error);
+				_ = m_dialogService.ShowMessage("Inserire un prezzo.", MessageType.Error);
 
 				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
 			}
 			else if (m_prezzo < m_giocatore.Quotazione)
 			{
-				m_dialogService.ShowMessage("Il prezzo di acquisto non può essere inferiore alla quotazione del giocatore.", MessageType.Error);
+				_ = m_dialogService.ShowMessage("Il prezzo di acquisto non può essere inferiore alla quotazione del giocatore.", MessageType.Error);
 
 				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
 			}
 			else if (m_prezzo > fantaSquadra.Budget)
 			{
-				m_dialogService.ShowMessage("Budget non disponibile.", MessageType.Error);
+				_ = m_dialogService.ShowMessage("Budget non disponibile.", MessageType.Error);
 
 				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
 			}
@@ -128,7 +128,7 @@ namespace FantaAsta.ViewModels
 
 				if (!result)
 				{
-					m_dialogService.ShowMessage("Il giocatore non può essere aggiunto", MessageType.Error);
+					_ = m_dialogService.ShowMessage("Il giocatore non può essere aggiunto", MessageType.Error);
 				}
 
 				Annulla();

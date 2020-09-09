@@ -27,7 +27,7 @@ namespace FantaAsta.Utilities.Dialogs
 		public string Message
 		{
 			get { return m_message; }
-			protected set { SetProperty(ref m_message, value); }
+			protected set { _ = SetProperty(ref m_message, value); }
 		}
 
 		#endregion

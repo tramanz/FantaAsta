@@ -10,6 +10,8 @@ namespace FantaAsta.Utilities.Regions
 		public TabControlRegionAdapter(IRegionBehaviorFactory regionBehaviourFactory) : base(regionBehaviourFactory)
 		{ }
 
+		#region Protected methods
+
 		protected override void Adapt(IRegion region, TabControl regionTarget)
 		{
 			region.Views.CollectionChanged += (s, e) =>
@@ -18,7 +20,7 @@ namespace FantaAsta.Utilities.Regions
 				{
 					foreach (FrameworkElement element in e.NewItems)
 					{
-						regionTarget.Items.Add(new TabItem { Content = element, Header = element.Name });
+						_ = regionTarget.Items.Add(new TabItem { Content = element, Header = element.Name });
 					}
 				}
 			};
@@ -28,5 +30,7 @@ namespace FantaAsta.Utilities.Regions
 		{
 			return new AllActiveRegion();
 		}
+
+		#endregion
 	}
 }

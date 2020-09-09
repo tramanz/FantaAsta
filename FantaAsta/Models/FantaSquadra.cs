@@ -46,7 +46,7 @@ namespace FantaAsta.Models
 		{
 			if (Giocatori.Contains(giocatore))
 			{
-				Giocatori.Remove(giocatore);
+				_ = Giocatori.Remove(giocatore);
 				Budget += prezzo;
 				AggiornaValore();
 			}

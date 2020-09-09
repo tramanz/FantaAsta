@@ -26,7 +26,7 @@ namespace FantaAsta.Views
 
 		private void OnSelectPrezzoTextBox(object sender, System.EventArgs e)
 		{
-			prezzoTxtBox.Focus();
+			_ = prezzoTxtBox.Focus();
 			prezzoTxtBox.SelectAll();
 		}
 
