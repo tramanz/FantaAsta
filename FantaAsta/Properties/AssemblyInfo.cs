@@ -9,7 +9,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Marco Tramarin")]
 [assembly: AssemblyProduct("FantaLegaManager")]
-[assembly: AssemblyCopyright("Copyright Marco Tramarin © 2020")]
+[assembly: AssemblyCopyright("Marco Tramarin © 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
