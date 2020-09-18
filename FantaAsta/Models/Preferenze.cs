@@ -1,10 +1,11 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 using FantaAsta.Constants;
 
 namespace FantaAsta.Models
 {
 	[DataContract(Name = "FantaLegaSettings", Namespace = "")]
-	public class Preferenze
+	public class Preferenze : ICloneable
 	{
 		#region Properties
 
@@ -48,16 +49,14 @@ namespace FantaAsta.Models
 			return base.GetHashCode();
 		}
 
-		public void Copia(ref Preferenze destinazione)
+		public object Clone()
 		{
-			if (destinazione == null)
+			return new Preferenze()
 			{
-				destinazione = new Preferenze();
-			}
-
-			destinazione.PreferenzeImpostate = PreferenzeImpostate;
-			destinazione.BudgetIniziale = BudgetIniziale;
-			destinazione.BudgetAggiuntivo = BudgetAggiuntivo;
+				PreferenzeImpostate = PreferenzeImpostate,
+				BudgetIniziale = BudgetIniziale,
+				BudgetAggiuntivo = BudgetAggiuntivo
+			};
 		}
 
 		#endregion

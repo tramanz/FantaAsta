@@ -133,7 +133,7 @@ namespace FantaAsta.ViewModels
 
 		private void Aggiungi()
 		{
-			if (m_lega.FantaSquadre.Select(s => s.Giocatori).Where(g => g.Contains(SvincolatoSelezionato)).Count() > 0)
+			if (m_lega.DatiLega.FantaSquadre.Select(s => s.Giocatori).Where(g => g.Contains(SvincolatoSelezionato)).Count() > 0)
 			{
 				_ = m_dialogService.ShowMessage("Il giocatore selezionato è già assegnato ad una fantasquadra.", MessageType.Warning);
 			}

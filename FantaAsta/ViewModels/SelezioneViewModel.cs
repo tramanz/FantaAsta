@@ -121,7 +121,7 @@ namespace FantaAsta.ViewModels
 		}
 		private bool AbilitaAvviaAsta()
 		{
-			return m_lega.ListaPresente && m_lega.FantaSquadre.Count > 0;
+			return m_lega.ListaPresente && m_lega.DatiLega.FantaSquadre.Count > 0;
 		}
 
 		private void GestisciRose()

@@ -21,8 +21,7 @@ namespace FantaAsta.ViewModels
 
 		private readonly IDialogService m_dialogService;
 
-		private Preferenze m_preferenzeSalvate;
-		private Preferenze m_preferenzeCopiate;
+		private Preferenze m_copiaPreferenze;
 
 		#endregion
 
@@ -30,12 +29,12 @@ namespace FantaAsta.ViewModels
 
 		public string BudgetIniziale
 		{
-			get { return m_preferenzeCopiate.BudgetIniziale.ToString(); }
+			get { return m_copiaPreferenze.BudgetIniziale.ToString(); }
 			set
 			{
 				if (double.TryParse(value, NumberStyles.Integer, null, out double number))
 				{
-					m_preferenzeCopiate.BudgetIniziale = number;
+					m_copiaPreferenze.BudgetIniziale = number;
 
 					RaisePropertyChanged(nameof(BudgetIniziale));
 				}
@@ -44,12 +43,12 @@ namespace FantaAsta.ViewModels
 
 		public string BudgetAggiuntivo
 		{
-			get { return m_preferenzeCopiate.BudgetAggiuntivo.ToString(); }
+			get { return m_copiaPreferenze.BudgetAggiuntivo.ToString(); }
 			set
 			{
 				if (double.TryParse(value, NumberStyles.Integer, null, out double number))
 				{
-					m_preferenzeCopiate.BudgetAggiuntivo = number;
+					m_copiaPreferenze.BudgetAggiuntivo = number;
 
 					RaisePropertyChanged(nameof(BudgetAggiuntivo));
 				}
@@ -72,9 +71,8 @@ namespace FantaAsta.ViewModels
 		{
 			m_dialogService = dialogService;
 
-			m_preferenzeSalvate = m_lega.Preferenze;
-			m_preferenzeSalvate.Copia(ref m_preferenzeCopiate);
-
+			m_copiaPreferenze = m_lega.Preferenze.Clone() as Preferenze;
+			
 			DiminuisciBudgetInizialeCommand = new DelegateCommand(DiminuisciBudgetIniziale);
 			AumentaBudgetInizialeCommand = new DelegateCommand(AumentaBudgetIniziale);
 
@@ -124,8 +122,7 @@ namespace FantaAsta.ViewModels
 
 		private void Salva()
 		{
-			m_preferenzeCopiate.Copia(ref m_preferenzeSalvate);
-			m_lega.SalvaPreferenze();
+			m_lega.SalvaPreferenze(m_copiaPreferenze);
 		}
 
 		private bool Valida()
@@ -142,9 +139,9 @@ namespace FantaAsta.ViewModels
 		{
 			if (Valida())
 			{
-				if (m_preferenzeCopiate.PreferenzeImpostate)
+				if (m_copiaPreferenze.PreferenzeImpostate)
 				{
-					if (!m_preferenzeCopiate.Equals(m_preferenzeSalvate))
+					if (!m_copiaPreferenze.Equals(m_lega.Preferenze))
 					{
 						ButtonResult result = m_dialogService.ShowMessage("Le rose si resetteranno. Sei sicuro di voler salvare le modifiche?", MessageType.Warning);
 						if (result == ButtonResult.Yes)

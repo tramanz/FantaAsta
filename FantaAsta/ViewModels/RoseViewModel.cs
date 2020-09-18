@@ -77,7 +77,7 @@ namespace FantaAsta.ViewModels
 			_ = m_eventAggregator.GetEvent<FantaSquadreSalvateEvent>().Subscribe(OnFantaSquadreSalvate);
 
 			Media = m_lega.QuotazioneMedia;
-			Squadre = new ObservableCollection<FantaSquadraViewModel>(m_lega.FantaSquadre.Select(s => new FantaSquadraViewModel(s)).OrderBy(s => s.FantaSquadra.Nome));
+			Squadre = new ObservableCollection<FantaSquadraViewModel>(m_lega.DatiLega.FantaSquadre.Select(s => new FantaSquadraViewModel(s)).OrderBy(s => s.FantaSquadra.Nome));
 
 			SalvaCommand = new DelegateCommand(Salva, AbilitaSalva);
 			IndietroCommand = new DelegateCommand(NavigateToSelezione);
@@ -187,7 +187,7 @@ namespace FantaAsta.ViewModels
 
 		private void Modifica(FantaSquadraViewModel squadraVM)
 		{
-			FantaSquadra fantaSquadra = m_lega.FantaSquadre.Where(s => s.Equals(squadraVM.FantaSquadra)).Single();
+			FantaSquadra fantaSquadra = m_lega.DatiLega.FantaSquadre.Where(s => s.Equals(squadraVM.FantaSquadra)).Single();
 
 			m_dialogService.ShowDialog(CommonConstants.MODIFICA_DIALOG, new DialogParameters
 			{
@@ -209,7 +209,7 @@ namespace FantaAsta.ViewModels
 		{
 			Mouse.OverrideCursor = Cursors.Wait;
 
-			m_lega.SalvaSquadre();
+			m_lega.SalvaDati();
 
 			Mouse.OverrideCursor = Cursors.Arrow;
 		}

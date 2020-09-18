@@ -74,7 +74,7 @@ namespace FantaAsta.Modules
 
 		private void Salva()
 		{
-			m_lega.SalvaSquadre();
+			m_lega.SalvaDati();
 		}
 
 		private void ChiudiApplicazione()

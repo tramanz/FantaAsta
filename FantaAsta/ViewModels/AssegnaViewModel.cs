@@ -75,7 +75,7 @@ namespace FantaAsta.ViewModels
 			m_giocatore = parameters.GetValue<Giocatore>("Giocatore");
 			Prezzo = m_giocatore.Quotazione.ToString();
 
-			Squadre = new ObservableCollection<string>(m_lega?.FantaSquadre.Select(s => s.Nome).OrderBy(s => s));
+			Squadre = new ObservableCollection<string>(m_lega?.DatiLega.FantaSquadre.Select(s => s.Nome).OrderBy(s => s));
 		}
 
 		#endregion
@@ -102,7 +102,7 @@ namespace FantaAsta.ViewModels
 
 		private void Conferma()
 		{
-			FantaSquadra fantaSquadra = m_lega?.FantaSquadre.Single(s => s.Nome.Equals(SquadraSelezionata));
+			FantaSquadra fantaSquadra = m_lega?.DatiLega.FantaSquadre.Single(s => s.Nome.Equals(SquadraSelezionata));
 
 			if (double.IsNaN(m_prezzo))
 			{

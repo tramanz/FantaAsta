@@ -43,7 +43,7 @@ namespace FantaAsta.Views
 
 				if (result == ButtonResult.Yes)
 				{
-					m_lega.SalvaSquadre();
+					m_lega.SalvaDati();
 				}
 			}
 
