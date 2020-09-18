@@ -11,6 +11,9 @@ namespace FantaAsta.Models
 		[DataMember(Name = "BudgetIniziale")]
 		public double BudgetIniziale { get; set; }
 
+		[DataMember(Name = "BudgetAggiuntivo")]
+		public double BudgetAggiuntivo { get; set; }
+
 		#endregion
 
 		public Opzioni()
@@ -27,6 +30,7 @@ namespace FantaAsta.Models
 				bool res = true;
 
 				res &= BudgetIniziale == other.BudgetIniziale;
+				res &= BudgetAggiuntivo == other.BudgetAggiuntivo;
 
 				return res;
 			}
@@ -49,6 +53,7 @@ namespace FantaAsta.Models
 			}
 
 			destinazione.BudgetIniziale = BudgetIniziale;
+			destinazione.BudgetAggiuntivo = BudgetAggiuntivo;
 		}
 
 		#endregion
@@ -63,7 +68,8 @@ namespace FantaAsta.Models
 
 		private void SetDefaults()
 		{
-			BudgetIniziale = CommonConstants.BUDGET_ESTIVO_DEFAULT;
+			BudgetIniziale = CommonConstants.BUDGET_INIZIALE_DEFAULT;
+			BudgetAggiuntivo = CommonConstants.BUDGET_AGGIUNTIVO_DEFAULT;
 		}
 
 		#endregion

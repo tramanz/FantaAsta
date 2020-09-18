@@ -5,12 +5,20 @@ namespace FantaAsta.Constants
 {
 	public static class CommonConstants
 	{
+		#region PERCORSI
+
 		public static string DATA_DIRECTORY_PATH = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "FantaLegaManager");
 		public static string DATA_FILE_PATH = Path.Combine(DATA_DIRECTORY_PATH, "FantaLegaData.xml");
 		public static string SETTINGS_FILE_PATH = Path.Combine(DATA_DIRECTORY_PATH, "FantaLegaSettings.xml");
 
-		public const double BUDGET_ESTIVO_DEFAULT = 500;
-		public const double BUDGET_INVERNALE = 100;
+		#endregion
+
+		#region DEFAULT OPZIONI
+
+		public const double BUDGET_INIZIALE_DEFAULT = 500;
+		public const double BUDGET_AGGIUNTIVO_DEFAULT = 100;
+
+		#endregion
 
 		#region REGIONS
 

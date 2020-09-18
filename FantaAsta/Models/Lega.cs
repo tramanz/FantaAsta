@@ -564,7 +564,7 @@ namespace FantaAsta.Models
 
 				foreach (FantaSquadra squadra in FantaSquadre)
 				{
-					squadra.Budget += attivaAstaInvernale ? CommonConstants.BUDGET_INVERNALE : -CommonConstants.BUDGET_INVERNALE;
+					squadra.Budget += attivaAstaInvernale ? Opzioni.BudgetAggiuntivo : -Opzioni.BudgetAggiuntivo;
 				}
 
 				m_eventAggregator.GetEvent<ModalitàAstaCambiataEvent>().Publish();
