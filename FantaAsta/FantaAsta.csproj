@@ -109,6 +109,7 @@
     <Compile Include="Modules\MainModule.cs" />
     <Compile Include="Modules\RoseModule.cs" />
     <Compile Include="Modules\SelezioneModule.cs" />
+    <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Utilities\Navigation\NavigationAwareViewModel.cs" />
     <Compile Include="Utilities\Regions\MenuRegionAdapter.cs" />
     <Compile Include="Utilities\Regions\TabControlRegionAdapter.cs" />

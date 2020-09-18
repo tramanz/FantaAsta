@@ -32,7 +32,7 @@ namespace FantaAsta.Modules
 			
 			IRegionManager regionManager = containerProvider.Resolve<IRegionManager>();
 			_ = regionManager.RegisterViewWithRegion(CommonConstants.MAIN_REGION, typeof(MainView));
-			foreach (MenuItem menuItem in InitializeMenu())
+			foreach (MenuItem menuItem in InizializzaMenu())
 			{
 				_ = regionManager.AddToRegion(CommonConstants.MENU_REGION, menuItem);
 			}
@@ -47,18 +47,18 @@ namespace FantaAsta.Modules
 
 		#region Private methods
 
-		private List<MenuItem> InitializeMenu()
+		private List<MenuItem> InizializzaMenu()
 		{
 			// File menu
 			MenuItem fileMenuItem = new MenuItem { Header = "File", TabIndex = 0 };
-			MenuItem saveMenuItem = new MenuItem { Header = "Salva", Command = new DelegateCommand(Save), TabIndex = 0 };
-			MenuItem exitMenuItem = new MenuItem { Header = "Esci", Command = new DelegateCommand(CloseApplication), TabIndex = 0 };
+			MenuItem saveMenuItem = new MenuItem { Header = "Salva", Command = new DelegateCommand(Salva), TabIndex = 0 };
+			MenuItem exitMenuItem = new MenuItem { Header = "Esci", Command = new DelegateCommand(ChiudiApplicazione), TabIndex = 0 };
 
 			_ = fileMenuItem.Items.Add(saveMenuItem);
 			_ = fileMenuItem.Items.Add(exitMenuItem);
 
 			// Opzioni
-			MenuItem optionsMenuItem = new MenuItem { Header = "Opzioni", Command = new DelegateCommand(OpenSettings), TabIndex = 1 };
+			MenuItem optionsMenuItem = new MenuItem { Header = "Opzioni", Command = new DelegateCommand(ApriOpzioni), TabIndex = 1 };
 
 			return new List<MenuItem>
 			{
@@ -67,17 +67,17 @@ namespace FantaAsta.Modules
 			};
 		}
 
-		private void OpenSettings()
+		private void ApriOpzioni()
 		{
 			m_dialogService.ShowDialog(CommonConstants.OPZIONI_DIALOG, new DialogParameters(), null);
 		}
 
-		private void Save()
+		private void Salva()
 		{
-			m_lega.Salva();
+			m_lega.SalvaSquadre();
 		}
 
-		private void CloseApplication()
+		private void ChiudiApplicazione()
 		{
 			SystemCommands.CloseWindowCommand.Execute(null, Application.Current.MainWindow);
 		}

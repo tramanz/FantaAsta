@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using FantaAsta.Utilities;
 
 namespace FantaAsta.Models
 {
 	[DataContract(Name = "FantaSquadra", Namespace = "")]
-	public class FantaSquadra
+	public class FantaSquadra : ICloneable
 	{
 		#region Properties
 
@@ -51,6 +52,11 @@ namespace FantaAsta.Models
 			}
 		}
 
+		public object Clone()
+		{
+			return new FantaSquadra(Nome, Budget) { Giocatori = Giocatori.Clone() };
+		}
+
 		public override bool Equals(object obj)
 		{
 			if (obj is FantaSquadra other)
@@ -65,7 +71,7 @@ namespace FantaAsta.Models
 				{
 					foreach (Giocatore giocatore in Giocatori)
 					{
-						res &= other.Giocatori.Contains(giocatore);
+						res &= other.Giocatori.Contains(giocatore) && giocatore.Prezzo == other.Giocatori.Find(g => g.Equals(giocatore)).Prezzo;
 					} 
 				}
 

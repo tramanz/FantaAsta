@@ -74,13 +74,12 @@ namespace FantaAsta.ViewModels
 			_ = m_eventAggregator.GetEvent<ModalitàAstaCambiataEvent>().Subscribe(OnModalitàAstaCambiata);
 			_ = m_eventAggregator.GetEvent<RoseResettateEvent>().Subscribe(OnRoseResettate);
 			_ = m_eventAggregator.GetEvent<ListaImportataEvent>().Subscribe(OnListaImportata);
+			_ = m_eventAggregator.GetEvent<FantaSquadreSalvateEvent>().Subscribe(OnFantaSquadreSalvate);
 
 			Media = m_lega.QuotazioneMedia;
-			Squadre = m_lega.FantaSquadre.Count > 0 ?
-				new ObservableCollection<FantaSquadraViewModel>(m_lega.FantaSquadre.Select(s => new FantaSquadraViewModel(s)).OrderBy(s => s.FantaSquadra.Nome)) :
-				new ObservableCollection<FantaSquadraViewModel>();
+			Squadre = new ObservableCollection<FantaSquadraViewModel>(m_lega.FantaSquadre.Select(s => new FantaSquadraViewModel(s)).OrderBy(s => s.FantaSquadra.Nome));
 
-			SalvaCommand = new DelegateCommand(Salva);
+			SalvaCommand = new DelegateCommand(Salva, AbilitaSalva);
 			IndietroCommand = new DelegateCommand(NavigateToSelezione);
 			ModificaCommand = new DelegateCommand<FantaSquadraViewModel>(Modifica, AbilitaModifica);
 			EliminaCommand = new DelegateCommand<FantaSquadraViewModel>(Elimina);
@@ -106,27 +105,34 @@ namespace FantaAsta.ViewModels
 
 		private void OnGiocatoreAggiunto(GiocatoreAggiuntoEventArgs args)
 		{
-			Squadre.Where(s => s.FantaSquadra.Equals(args.FantaSquadra)).Single().AggiungiGiocatore(args.Giocatore);
+			Squadre.Single(s => s.FantaSquadra.Equals(args.FantaSquadra)).AggiungiGiocatore(args.Giocatore);
+
+			SalvaCommand?.RaiseCanExecuteChanged();
 		}
 
 		private void OnGiocatoreRimosso(GiocatoreRimossoEventArgs args)
 		{
-			Squadre.Where(s => s.FantaSquadra.Equals(args.FantaSquadra)).Single().RimuoviGiocatore(args.Giocatore);
+			Squadre.Single(s => s.FantaSquadra.Equals(args.FantaSquadra)).RimuoviGiocatore(args.Giocatore);
+
+			SalvaCommand?.RaiseCanExecuteChanged();
 		}
 
 		private void OnFantaSquadraAggiunta(FantaSquadraEventArgs args)
 		{
 			Squadre.Add(new FantaSquadraViewModel(args.FantaSquadra));
 			Squadre = new ObservableCollection<FantaSquadraViewModel>(Squadre.OrderBy(s => s.Nome));
+
+			SalvaCommand?.RaiseCanExecuteChanged();
 		}
 
 		private void OnFantaSquadraRimossa(FantaSquadraEventArgs args)
 		{
-			FantaSquadraViewModel squadraVM = Squadre.Where(s => s.Nome.Equals(args.FantaSquadra.Nome, StringComparison.Ordinal)).SingleOrDefault();
-
+			FantaSquadraViewModel squadraVM = Squadre.SingleOrDefault(s => s.Nome.Equals(args.FantaSquadra.Nome, StringComparison.Ordinal));
 			if (squadraVM != null)
 			{
 				_ = Squadre.Remove(squadraVM);
+				
+				SalvaCommand?.RaiseCanExecuteChanged();
 			}
 		}
 
@@ -146,13 +152,21 @@ namespace FantaAsta.ViewModels
 				squadraVm.AggiornaRosa();
 				squadraVm.AggiornaValore();
 			}
+
+			SalvaCommand?.RaiseCanExecuteChanged();
 		}
 
 		private void OnListaImportata()
 		{
-			ModificaCommand?.RaiseCanExecuteChanged();
-
 			Media = m_lega.QuotazioneMedia;
+
+			ModificaCommand?.RaiseCanExecuteChanged();
+			SalvaCommand?.RaiseCanExecuteChanged();
+		}
+
+		private void OnFantaSquadreSalvate()
+		{
+			SalvaCommand?.RaiseCanExecuteChanged();
 		}
 
 		#endregion
@@ -174,11 +188,11 @@ namespace FantaAsta.ViewModels
 		private void Modifica(FantaSquadraViewModel squadraVM)
 		{
 			FantaSquadra fantaSquadra = m_lega.FantaSquadre.Where(s => s.Equals(squadraVM.FantaSquadra)).Single();
-					
-			m_dialogService.ShowDialog(CommonConstants.MODIFICA_DIALOG, new DialogParameters 
+
+			m_dialogService.ShowDialog(CommonConstants.MODIFICA_DIALOG, new DialogParameters
 			{
 				{ "Type", DialogType.Popup },
-				{ "squadra", fantaSquadra } 
+				{ "squadra", fantaSquadra }
 			}, null);
 		}
 		private bool AbilitaModifica(FantaSquadraViewModel squadraVM)
@@ -195,9 +209,13 @@ namespace FantaAsta.ViewModels
 		{
 			Mouse.OverrideCursor = Cursors.Wait;
 
-			m_lega.Salva();
+			m_lega.SalvaSquadre();
 
 			Mouse.OverrideCursor = Cursors.Arrow;
+		}
+		private bool AbilitaSalva()
+		{
+			return m_lega.AbilitaSalvataggio();
 		}
 
 		#endregion

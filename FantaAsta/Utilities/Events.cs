@@ -32,6 +32,9 @@ namespace FantaAsta.Events
 	public class OpzioniModificateEvent : PubSubEvent
 	{ }
 
+	public class FantaSquadreSalvateEvent : PubSubEvent
+	{ }
+
 	#endregion
 
 	#region EventArgs

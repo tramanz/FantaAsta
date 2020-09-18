@@ -21,6 +21,8 @@ namespace FantaAsta.Models
 
 		private readonly IEventAggregator m_eventAggregator;
 
+		private Lega m_legaSalvata;
+
 		#endregion
 
 		#region Properties
@@ -50,14 +52,13 @@ namespace FantaAsta.Models
 		public Lega(IEventAggregator eventAggregator)
 		{
 			m_eventAggregator = eventAggregator;
-			m_eventAggregator.GetEvent<OpzioniModificateEvent>().Subscribe(OnOpzioniModificate);
+			_ = m_eventAggregator.GetEvent<OpzioniModificateEvent>().Subscribe(OnOpzioniModificate);
+
+			DeserializzaDatiLega();
 
 			CaricaOpzioni();
-
 			CaricaSquadre();
-
 			CaricaLista();
-
 			CaricaFantaSquadre();
 
 			DisattivaModalitaAstaInvernale();
@@ -198,13 +199,78 @@ namespace FantaAsta.Models
 		}
 
 		/// <summary>
-		/// Metodo per salvare i dati dell'applicazione
+		/// Metodo per verificare se un giocatore è stato acquistato da una fantasquadra e aggiornare il suo stato
 		/// </summary>
-		public void Salva()
+		/// <param name="giocatore">Il giocatore da controllare</param>
+		public void ControllaAcquistoGiocatore(Giocatore giocatore)
 		{
-			SalvaOpzioni();
+			if (giocatore != null)
+			{
+				giocatore.Scartato = !FantaSquadre.Any(s => s.Giocatori.Contains(giocatore));
+			}
+		}
 
-			SalvaSquadre();
+		/// <summary>
+		/// Metodo per verificare se ci sono state modifiche ai dati della lega
+		/// </summary>
+		/// <returns>True se ci sono state modifiche, false altrimenti</returns>
+		public bool AbilitaSalvataggio()
+		{
+			if (m_legaSalvata == null)
+				return true;
+
+			bool res = false;
+
+			res |= !string.IsNullOrEmpty(PercorsoFileLista) && !PercorsoFileLista.Equals(m_legaSalvata.PercorsoFileLista);
+			res |= FantaSquadre.Count != m_legaSalvata.FantaSquadre.Count;
+
+			if (!res)
+			{
+				foreach (FantaSquadra fantaSquadra in FantaSquadre)
+				{
+					res |= !m_legaSalvata.FantaSquadre.Contains(fantaSquadra);
+				}
+			}
+
+			return res;
+		}
+
+		/// <summary>
+		/// Metodo per salvare i dati riguardanti le fantasquadre
+		/// </summary>
+		public void SalvaSquadre()
+		{
+			if (!Directory.Exists(CommonConstants.DATA_DIRECTORY_PATH))
+			{
+				_ = Directory.CreateDirectory(CommonConstants.DATA_DIRECTORY_PATH);
+			}
+
+			if (File.Exists(CommonConstants.DATA_FILE_PATH))
+			{
+				File.Delete(CommonConstants.DATA_FILE_PATH);
+			}
+
+			XMLSerializer.Serialize(CommonConstants.DATA_FILE_PATH, this);
+
+			m_eventAggregator.GetEvent<FantaSquadreSalvateEvent>().Publish();
+		}
+
+		/// <summary>
+		/// Metodo per salvare i dati riguardanti le preferenze
+		/// </summary>
+		public void SalvaOpzioni()
+		{
+			if (!Directory.Exists(CommonConstants.DATA_DIRECTORY_PATH))
+			{
+				_ = Directory.CreateDirectory(CommonConstants.DATA_DIRECTORY_PATH);
+			}
+
+			if (File.Exists(CommonConstants.SETTINGS_FILE_PATH))
+			{
+				File.Delete(CommonConstants.SETTINGS_FILE_PATH);
+			}
+
+			XMLSerializer.Serialize(CommonConstants.SETTINGS_FILE_PATH, Opzioni);
 		}
 
 		/// <summary>
@@ -257,14 +323,6 @@ namespace FantaAsta.Models
 		}
 
 		/// <summary>
-		/// Metodo per avvia l'import di una lista di giocatori
-		/// </summary>
-		public void AvviaImportaLista()
-		{
-			m_eventAggregator.GetEvent<ApriFileDialogEvent>().Publish();
-		}
-
-		/// <summary>
 		/// Metodo per aggiungere una fantasquadra alla lega
 		/// </summary>
 		/// <param name="nome">Il nome della fantasquadra</param>
@@ -309,6 +367,14 @@ namespace FantaAsta.Models
 		}
 
 		/// <summary>
+		/// Metodo per avvia l'import di una lista di giocatori
+		/// </summary>
+		public void AvviaImportaLista()
+		{
+			m_eventAggregator.GetEvent<ApriFileDialogEvent>().Publish();
+		}
+
+		/// <summary>
 		/// Metodo per importare una lista di giocatori
 		/// </summary>
 		/// <param name="filePath">Il percorso del file .csv da cui ricavare la lista</param>
@@ -318,70 +384,9 @@ namespace FantaAsta.Models
 			return CaricaListaDaFile(filePath, false);
 		}
 
-		/// <summary>
-		/// Metodo per verificare se un giocatore è stato acquistato da una fantasquadra e aggiornare il suo stato
-		/// </summary>
-		/// <param name="giocatore">Il giocatore da controllare</param>
-		public void ControllaAcquistoGiocatore(Giocatore giocatore)
-		{
-			if (giocatore != null)
-			{
-				giocatore.Scartato = !FantaSquadre.Any(s => s.Giocatori.Contains(giocatore));
-			}
-		}
-
 		#endregion
 
 		#region Private methods
-
-		/// <summary>
-		/// Metodo per salvare i dati riguardanti le preferenze
-		/// </summary>
-		private void SalvaOpzioni()
-		{
-			if (!Directory.Exists(CommonConstants.DATA_DIRECTORY_PATH))
-			{
-				_ = Directory.CreateDirectory(CommonConstants.DATA_DIRECTORY_PATH);
-			}
-
-			if (File.Exists(CommonConstants.SETTINGS_FILE_PATH))
-			{
-				File.Delete(CommonConstants.SETTINGS_FILE_PATH);
-			}
-
-			XMLSerializer.Serialize(CommonConstants.SETTINGS_FILE_PATH, Opzioni);
-		}
-
-		/// <summary>
-		/// Metodo per salvare i dati riguardanti le fantasquadre
-		/// </summary>
-		private void SalvaSquadre()
-		{
-			if (!Directory.Exists(CommonConstants.DATA_DIRECTORY_PATH))
-			{
-				_ = Directory.CreateDirectory(CommonConstants.DATA_DIRECTORY_PATH);
-			}
-
-			if (File.Exists(CommonConstants.DATA_FILE_PATH))
-			{
-				File.Delete(CommonConstants.DATA_FILE_PATH);
-			}
-
-			XMLSerializer.Serialize(CommonConstants.DATA_FILE_PATH, this);
-		}
-
-		/// <summary>
-		/// Metodo per caricare la lista di giocatori
-		/// </summary>
-		private void CaricaLista()
-		{
-			if (File.Exists(CommonConstants.DATA_FILE_PATH))
-			{
-				PercorsoFileLista = ((Lega)XMLSerializer.Deserialize(CommonConstants.DATA_FILE_PATH, typeof(Lega))).PercorsoFileLista;
-			}
-
-			_ = CaricaListaDaFile(PercorsoFileLista, true);
-		}
 
 		/// <summary>
 		/// Metodo per caricare la lista dei giocatori da un file .csv
@@ -443,29 +448,31 @@ namespace FantaAsta.Models
 		}
 
 		/// <summary>
+		/// Metodo per caricare la lista di giocatori
+		/// </summary>
+		private void CaricaLista()
+		{
+			if (m_legaSalvata != null)
+			{
+				PercorsoFileLista = m_legaSalvata.PercorsoFileLista;
+
+				_ = CaricaListaDaFile(PercorsoFileLista, true);
+			}
+		}
+
+		/// <summary>
 		/// Metodo per caricare le fantasquadre
 		/// </summary>
 		private void CaricaFantaSquadre()
 		{
 			FantaSquadre = new List<FantaSquadra>();
 
-			if (File.Exists(CommonConstants.DATA_FILE_PATH))
+			if (m_legaSalvata != null)
 			{
-				CaricaFantaSquadreDaFile();
-			}
-		}
+				FantaSquadre = m_legaSalvata.FantaSquadre.Clone();
 
-		/// <summary>
-		/// Metodo per caricare le fantasquadre dai dati salvati
-		/// </summary>
-		private void CaricaFantaSquadreDaFile()
-		{
-			if (File.Exists(CommonConstants.DATA_FILE_PATH))
-			{
-				FantaSquadre = ((Lega)XMLSerializer.Deserialize(CommonConstants.DATA_FILE_PATH, typeof(Lega))).FantaSquadre;
+				AggiornaStatoGiocatoriInRosa();
 			}
-
-			AggiornaStatoGiocatoriInRosa();
 		}
 
 		/// <summary>
@@ -492,8 +499,8 @@ namespace FantaAsta.Models
 		/// </summary>
 		private void CaricaOpzioni()
 		{
-			Opzioni = File.Exists(CommonConstants.SETTINGS_FILE_PATH) ? 
-				XMLSerializer.Deserialize(CommonConstants.SETTINGS_FILE_PATH, typeof(Opzioni)) as Opzioni : 
+			Opzioni = File.Exists(CommonConstants.SETTINGS_FILE_PATH) ?
+				XMLSerializer.Deserialize(CommonConstants.SETTINGS_FILE_PATH, typeof(Opzioni)) as Opzioni :
 				new Opzioni();
 		}
 
@@ -572,14 +579,6 @@ namespace FantaAsta.Models
 		}
 
 		/// <summary>
-		/// Metodo eseguito quando le opzioni vengono modificate
-		/// </summary>
-		private void OnOpzioniModificate()
-		{
-			SvuotaRose();
-		}
-
-		/// <summary>
 		/// Metodo per generare la lista dei giocatori del ruolo specificato a partire da un'altra lista
 		/// </summary>
 		/// <param name="lista">La lista da cui estrarre la lista dei giocatori per ruolo</param>
@@ -588,6 +587,32 @@ namespace FantaAsta.Models
 		private IEnumerable<Giocatore> GeneraListaPerRuolo(IEnumerable<Giocatore> lista, Ruoli ruolo)
 		{
 			return lista.Where(g => g.Ruolo == ruolo);
+		}
+
+		/// <summary>
+		/// Metodo per deserializzare i dati della lega e mantenerne una copia
+		/// </summary>
+		private void DeserializzaDatiLega()
+		{
+			if (m_legaSalvata == null)
+			{
+				try
+				{
+					m_legaSalvata = XMLSerializer.Deserialize(CommonConstants.DATA_FILE_PATH, typeof(Lega)) as Lega;
+				}
+				catch
+				{ }
+			}
+		}
+
+		/// <summary>
+		/// Metodo eseguito quando le opzioni vengono modificate
+		/// </summary>
+		private void OnOpzioniModificate()
+		{
+			SvuotaRose();
+
+			SalvaSquadre();
 		}
 
 		#endregion

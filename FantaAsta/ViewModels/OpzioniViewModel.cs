@@ -125,6 +125,7 @@ namespace FantaAsta.ViewModels
 		private void Salva()
 		{
 			m_opzioniCopiate.Copia(ref m_opzioniSalvate);
+			m_lega.SalvaOpzioni();
 		}
 
 		private bool Valida()

@@ -37,11 +37,14 @@ namespace FantaAsta.Views
 		{
 			m_lega.DisattivaModalitaAstaInvernale();
 
-			ButtonResult result = m_dialogService.ShowMessage("Vuoi salvare le modifiche prima di chiudere?", MessageType.Warning);
-
-			if (result == ButtonResult.Yes)
+			if (m_lega.AbilitaSalvataggio())
 			{
-				m_lega.Salva();
+				ButtonResult result = m_dialogService.ShowMessage("Vuoi salvare le modifiche prima di chiudere?", MessageType.Warning);
+
+				if (result == ButtonResult.Yes)
+				{
+					m_lega.SalvaSquadre();
+				}
 			}
 
 			SystemCommands.CloseWindow(this);

@@ -5,7 +5,7 @@ using FantaAsta.Enums;
 namespace FantaAsta.Models
 {
 	[DataContract(Name = "Giocatore", Namespace = "")]
-	public class Giocatore
+	public class Giocatore : ICloneable
 	{
 		#region Properties
 
@@ -31,7 +31,6 @@ namespace FantaAsta.Models
 
 		public bool Scartato { get; set; } = false;
 
-
 		#endregion
 
 		public Giocatore(int id, Ruoli ruolo, string nome, Squadra squadra, double quotazione)
@@ -45,6 +44,11 @@ namespace FantaAsta.Models
 
 		#region Public methods
 
+		public object Clone()
+		{
+			return new Giocatore(ID, Ruolo, Nome, Squadra, Quotazione) { Prezzo = Prezzo };
+		}
+
 		public override bool Equals(object obj)
 		{
 			if (obj is Giocatore other)
@@ -54,9 +58,6 @@ namespace FantaAsta.Models
 				res &= ID == other.ID;
 				res &= Ruolo == other.Ruolo;
 				res &= Nome.Equals(other.Nome, StringComparison.OrdinalIgnoreCase);
-				res &= Squadra.Equals(other.Squadra);
-				res &= Quotazione == other.Quotazione;
-				res &= Prezzo == other.Prezzo;
 
 				return res;
 			}
