@@ -26,9 +26,9 @@ namespace FantaAsta.Models
 
 		#region Properties
 
-		public DatiLega DatiLega { get; private set; }
+		public static List<Squadra> Squadre { get; private set; }
 
-		public List<Squadra> Squadre { get; private set; }
+		public DatiLega DatiLega { get; private set; }
 
 		public List<Giocatore> Lista { get; private set; }
 
@@ -145,7 +145,7 @@ namespace FantaAsta.Models
 			int maximum = giocatore.Ruolo == Ruoli.P ? 3 : giocatore.Ruolo == Ruoli.D ? 8 : giocatore.Ruolo == Ruoli.C ? 8 : 6;
 
 			// Se la fantasquadra non ha abbastanza soldi o non ha spazio in rosa, l'operazione non si può effettuare
-			if (squadra.Budget - prezzo < 0 || GeneraListaPerRuolo(squadra.Giocatori, giocatore.Ruolo).Count() == maximum)
+			if (squadra.Budget - prezzo < 0 || GeneraListaPerRuolo(squadra.Rosa, giocatore.Ruolo).Count() == maximum)
 				return false;
 
 			// Memorizzo il prezzo d'acquisto del giocatore
@@ -172,7 +172,7 @@ namespace FantaAsta.Models
 		public void RimuoviGiocatore(FantaSquadra squadra, Giocatore giocatore, double prezzo)
 		{
 			// Se il giocatore è nella rosa della fantasquadra
-			if (squadra.Giocatori.Contains(giocatore))
+			if (squadra.Rosa.Contains(giocatore))
 			{
 				// Rimuovo il giocatore
 				squadra.RimuoviGiocatore(giocatore, prezzo);
@@ -199,7 +199,7 @@ namespace FantaAsta.Models
 		{
 			if (giocatore != null)
 			{
-				giocatore.Scartato = !DatiLega.FantaSquadre.Any(s => s.Giocatori.Contains(giocatore));
+				giocatore.Scartato = !DatiLega.FantaSquadre.Any(s => s.Rosa.Contains(giocatore));
 			}
 		}
 
@@ -287,7 +287,7 @@ namespace FantaAsta.Models
 		{
 			foreach (FantaSquadra squadra in DatiLega.FantaSquadre)
 			{
-				foreach (Giocatore giocatore in squadra.Giocatori)
+				foreach (Giocatore giocatore in squadra.Rosa)
 				{
 					giocatore.Prezzo = 0;
 
@@ -299,7 +299,7 @@ namespace FantaAsta.Models
 
 				squadra.ValoreMedio = 0;
 				squadra.Budget = Preferenze.BudgetIniziale;
-				squadra.Giocatori.Clear();
+				squadra.Rosa.Clear();
 			}
 
 			m_eventAggregator.GetEvent<RoseResettateEvent>().Publish();
@@ -334,7 +334,7 @@ namespace FantaAsta.Models
 
 			if (squadra != null)
 			{
-				foreach (Giocatore giocatore in squadra.Giocatori)
+				foreach (Giocatore giocatore in squadra.Rosa)
 				{
 					giocatore.Prezzo = 0;
 
@@ -384,7 +384,7 @@ namespace FantaAsta.Models
 				{
 					listaSupporto = new List<Giocatore>();
 
-					foreach (Giocatore giocatore in squadra.Giocatori)
+					foreach (Giocatore giocatore in squadra.Rosa)
 					{
 						// Se il giocatore è in lista, prendo l'istanza nella lista
 						// (per mantenere un'unica istanza del giocatore tra lista e rose),
@@ -402,7 +402,7 @@ namespace FantaAsta.Models
 						listaSupporto.Add(giocatoreSupporto);
 					}
 
-					squadra.Giocatori = listaSupporto;
+					squadra.Rosa = listaSupporto;
 				}
 
 				m_eventAggregator.GetEvent<RoseResettateEvent>().Publish();

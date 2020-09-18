@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.Serialization;
 using FantaAsta.Enums;
 
@@ -19,7 +20,8 @@ namespace FantaAsta.Models
 		public string Nome { get; set; }
 
 		[DataMember(Name = "Squadra")]
-		public Squadra Squadra { get; set;  }
+		public string SquadraString { get; set; }
+		public Squadra Squadra { get; set; }
 
 		[DataMember(Name = "Quotazione")]
 		public double Quotazione { get; set; }
@@ -70,6 +72,22 @@ namespace FantaAsta.Models
 		public object Clone()
 		{
 			return new Giocatore(ID, Ruolo, Nome, Squadra, Quotazione) { Prezzo = Prezzo };
+		}
+
+		#endregion
+
+		#region Private methods
+
+		[OnSerializing()]
+		private void OnSerializing(StreamingContext context)
+		{
+			SquadraString = Squadra.Nome;
+		}
+
+		[OnDeserialized()]
+		private void OnDeserialized(StreamingContext context)
+		{
+			Squadra = Lega.Squadre.Single(s => s.Nome.Equals(SquadraString));
 		}
 
 		#endregion

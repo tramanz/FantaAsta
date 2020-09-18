@@ -300,7 +300,7 @@ namespace FantaAsta.ViewModels
 
 		public void AggiornaRosa()
 		{
-			Giocatori = new ObservableCollection<Giocatore>(FantaSquadra.Giocatori.OrderBy(g => g.Ruolo).ThenByDescending(g => g.Prezzo));
+			Giocatori = new ObservableCollection<Giocatore>(FantaSquadra.Rosa.OrderBy(g => g.Ruolo).ThenByDescending(g => g.Prezzo));
 		}
 
 		public void AggiornaValore()

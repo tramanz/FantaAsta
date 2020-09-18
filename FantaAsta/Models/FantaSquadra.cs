@@ -13,11 +13,11 @@ namespace FantaAsta.Models
 		[DataMember(Name = "Nome")]
 		public string Nome { get; set; }
 
-		[DataMember(Name = "Giocatori")]
-		public List<Giocatore> Giocatori { get; set; }
-
 		[DataMember(Name = "Budget")]
 		public double Budget { get; set; }
+
+		[DataMember(Name = "Rosa")]
+		public List<Giocatore> Rosa { get; set; }
 
 		public double ValoreMedio { get; set; }
 
@@ -26,7 +26,7 @@ namespace FantaAsta.Models
 		public FantaSquadra(string nome, double budget)
 		{
 			Nome = nome;
-			Giocatori = new List<Giocatore>();
+			Rosa = new List<Giocatore>();
 			Budget = budget;
 		}
 
@@ -40,13 +40,13 @@ namespace FantaAsta.Models
 
 				res &= Nome.Equals(other.Nome, StringComparison.OrdinalIgnoreCase);
 				res &= Budget == other.Budget;
-				res &= Giocatori.Count == other.Giocatori.Count;
+				res &= Rosa.Count == other.Rosa.Count;
 
 				if (res)
 				{
-					foreach (Giocatore giocatore in Giocatori)
+					foreach (Giocatore giocatore in Rosa)
 					{
-						res &= other.Giocatori.Contains(giocatore) && giocatore.Prezzo == other.Giocatori.Find(g => g.Equals(giocatore)).Prezzo;
+						res &= other.Rosa.Contains(giocatore) && giocatore.Prezzo == other.Rosa.Find(g => g.Equals(giocatore)).Prezzo;
 					}
 				}
 
@@ -65,14 +65,14 @@ namespace FantaAsta.Models
 
 		public object Clone()
 		{
-			return new FantaSquadra(Nome, Budget) { Giocatori = Giocatori.Clone() };
+			return new FantaSquadra(Nome, Budget) { Rosa = Rosa.Clone() };
 		}
 
 		public void AggiungiGiocatore(Giocatore giocatore)
 		{
-			if (!Giocatori.Contains(giocatore))
+			if (!Rosa.Contains(giocatore))
 			{
-				Giocatori.Add(giocatore);
+				Rosa.Add(giocatore);
 				Budget -= giocatore.Prezzo;
 				AggiornaValore();
 			}
@@ -80,9 +80,9 @@ namespace FantaAsta.Models
 
 		public void RimuoviGiocatore(Giocatore giocatore, double prezzo)
 		{
-			if (Giocatori.Contains(giocatore))
+			if (Rosa.Contains(giocatore))
 			{
-				_ = Giocatori.Remove(giocatore);
+				_ = Rosa.Remove(giocatore);
 				Budget += prezzo;
 				AggiornaValore();
 			}
@@ -101,12 +101,12 @@ namespace FantaAsta.Models
 		private void AggiornaValore()
 		{
 			double sum = 0;
-			foreach (Giocatore giocatore in Giocatori)
+			foreach (Giocatore giocatore in Rosa)
 			{
 				sum += giocatore.Quotazione;
 			}
 
-			ValoreMedio = sum / Giocatori.Count;
+			ValoreMedio = sum / Rosa.Count;
 		}
 
 		#endregion

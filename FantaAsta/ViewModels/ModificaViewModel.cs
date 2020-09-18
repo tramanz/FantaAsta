@@ -76,7 +76,7 @@ namespace FantaAsta.ViewModels
 		{
 			m_squadra = parameters.GetValue<FantaSquadra>("squadra");
 
-			Rosa = new ObservableCollection<Giocatore>(m_squadra.Giocatori.OrderBy(g => g.Ruolo).ThenByDescending(g => g.Prezzo).ThenBy(g => g.Nome));
+			Rosa = new ObservableCollection<Giocatore>(m_squadra.Rosa.OrderBy(g => g.Ruolo).ThenByDescending(g => g.Prezzo).ThenBy(g => g.Nome));
 			Svincolati = new ObservableCollection<Giocatore>(m_lega.Svincolati.OrderBy(g => g.Nome));
 
 			_ = m_eventAggregator.GetEvent<GiocatoreAggiuntoEvent>().Subscribe(OnGiocatoreAggiunto);
@@ -133,7 +133,7 @@ namespace FantaAsta.ViewModels
 
 		private void Aggiungi()
 		{
-			if (m_lega.DatiLega.FantaSquadre.Select(s => s.Giocatori).Where(g => g.Contains(SvincolatoSelezionato)).Count() > 0)
+			if (m_lega.DatiLega.FantaSquadre.Select(s => s.Rosa).Where(g => g.Contains(SvincolatoSelezionato)).Count() > 0)
 			{
 				_ = m_dialogService.ShowMessage("Il giocatore selezionato è già assegnato ad una fantasquadra.", MessageType.Warning);
 			}
@@ -155,7 +155,7 @@ namespace FantaAsta.ViewModels
 
 		private void Rimuovi()
 		{
-			if (!m_squadra.Giocatori.Contains(GiocatoreSelezionato))
+			if (!m_squadra.Rosa.Contains(GiocatoreSelezionato))
 			{
 				_ = m_dialogService.ShowMessage("Il giocatore selezionato non è presente nella rosa della fantasquadra.", MessageType.Warning);
 			}
