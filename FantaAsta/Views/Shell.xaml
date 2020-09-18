@@ -36,7 +36,7 @@
 
 			<!--Menu-->
 			<DockPanel Grid.Row="0" Background="{StaticResource SecondaryColor}" MouseLeftButtonDown="OnTitleBarClicked">
-				<Menu prism:RegionManager.RegionName="{x:Static const:CommonConstants.MENU_REGION}" HorizontalAlignment="Left" Margin="5,0,0,0" shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
+				<Menu prism:RegionManager.RegionName="{x:Static const:CommonConstants.MENU_REGION}" HorizontalAlignment="Left" shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
 
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
 					<UniformGrid Columns="3" Width="90">

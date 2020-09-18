@@ -22,9 +22,9 @@ namespace FantaAsta.Utilities.Dialogs
 
 		#region Protected methods
 
-		protected override void OnMouseDown(MouseButtonEventArgs e)
+		protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
 		{
-			base.OnMouseDown(e);
+			base.OnMouseLeftButtonDown(e);
 
 			DragMove();
 		}
