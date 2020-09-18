@@ -58,7 +58,7 @@ namespace FantaAsta.Modules
 			_ = fileMenuItem.Items.Add(exitMenuItem);
 
 			// Opzioni
-			MenuItem optionsMenuItem = new MenuItem { Header = "Opzioni", Command = new DelegateCommand(ApriOpzioni), TabIndex = 1 };
+			MenuItem optionsMenuItem = new MenuItem { Header = "Preferenze", Command = new DelegateCommand(ApriPreferenze), TabIndex = 1 };
 
 			return new List<MenuItem>
 			{
@@ -67,9 +67,9 @@ namespace FantaAsta.Modules
 			};
 		}
 
-		private void ApriOpzioni()
+		private void ApriPreferenze()
 		{
-			m_dialogService.ShowDialog(CommonConstants.OPZIONI_DIALOG, new DialogParameters(), null);
+			m_dialogService.ShowDialog(CommonConstants.PREFERENZE_DIALOG, new DialogParameters(), null);
 		}
 
 		private void Salva()

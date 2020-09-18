@@ -39,7 +39,7 @@ namespace FantaAsta.Models
 
 		public List<Giocatore> Svincolati { get; private set; }
 
-		public Opzioni Opzioni { get; private set; }
+		public Preferenze Preferenze { get; private set; }
 
 		public bool ListaPresente { get; private set; }
 
@@ -56,7 +56,7 @@ namespace FantaAsta.Models
 
 			DeserializzaDatiLega();
 
-			CaricaOpzioni();
+			CaricaPreferenze();
 			CaricaSquadre();
 			CaricaLista();
 			CaricaFantaSquadre();
@@ -258,7 +258,7 @@ namespace FantaAsta.Models
 		/// <summary>
 		/// Metodo per salvare i dati riguardanti le preferenze
 		/// </summary>
-		public void SalvaOpzioni()
+		public void SalvaPreferenze()
 		{
 			if (!Directory.Exists(CommonConstants.DATA_DIRECTORY_PATH))
 			{
@@ -270,7 +270,9 @@ namespace FantaAsta.Models
 				File.Delete(CommonConstants.SETTINGS_FILE_PATH);
 			}
 
-			XML.Serialize(CommonConstants.SETTINGS_FILE_PATH, Opzioni);
+			Preferenze.PreferenzeImpostate = true;
+
+			XML.Serialize(CommonConstants.SETTINGS_FILE_PATH, Preferenze);
 		}
 
 		/// <summary>
@@ -315,7 +317,7 @@ namespace FantaAsta.Models
 				}
 
 				squadra.ValoreMedio = 0;
-				squadra.Budget = Opzioni.BudgetIniziale;
+				squadra.Budget = Preferenze.BudgetIniziale;
 				squadra.Giocatori.Clear();
 			}
 
@@ -331,7 +333,7 @@ namespace FantaAsta.Models
 			if (FantaSquadre.Select(s => s.Nome).Contains(nome))
 				return false;
 
-			FantaSquadra squadra = new FantaSquadra(nome, Opzioni.BudgetIniziale);
+			FantaSquadra squadra = new FantaSquadra(nome, Preferenze.BudgetIniziale);
 
 			FantaSquadre.Add(squadra);
 			_ = FantaSquadre.OrderBy(s => s.Nome);
@@ -455,7 +457,7 @@ namespace FantaAsta.Models
 
 				foreach (FantaSquadra squadra in FantaSquadre)
 				{
-					squadra.Budget += attivaAstaInvernale ? Opzioni.BudgetAggiuntivo : -Opzioni.BudgetAggiuntivo;
+					squadra.Budget += attivaAstaInvernale ? Preferenze.BudgetAggiuntivo : -Preferenze.BudgetAggiuntivo;
 				}
 
 				m_eventAggregator.GetEvent<ModalitàAstaCambiataEvent>().Publish();
@@ -572,15 +574,12 @@ namespace FantaAsta.Models
 		/// <summary>
 		/// Metodo per caricare le preferenze
 		/// </summary>
-		private void CaricaOpzioni()
+		private void CaricaPreferenze()
 		{
-			try
+			Preferenze = XML.Deserialize(CommonConstants.SETTINGS_FILE_PATH, typeof(Preferenze)) as Preferenze;
+			if (Preferenze == null)
 			{
-				Opzioni = XML.Deserialize(CommonConstants.SETTINGS_FILE_PATH, typeof(Opzioni)) as Opzioni;
-			}
-			catch
-			{
-				Opzioni = new Opzioni();
+				Preferenze = new Preferenze();
 			}
 		}
 
@@ -591,12 +590,7 @@ namespace FantaAsta.Models
 		{
 			if (m_datiLegaSalvati == null)
 			{
-				try
-				{
-					m_datiLegaSalvati = XML.Deserialize(CommonConstants.DATA_FILE_PATH, typeof(Lega)) as Lega;
-				}
-				catch
-				{ }
+				m_datiLegaSalvati = XML.Deserialize(CommonConstants.DATA_FILE_PATH, typeof(Lega)) as Lega;
 			}
 		}
 

@@ -4,9 +4,12 @@ using FantaAsta.Constants;
 namespace FantaAsta.Models
 {
 	[DataContract(Name = "FantaLegaSettings", Namespace = "")]
-	public class Opzioni
+	public class Preferenze
 	{
 		#region Properties
+
+		[DataMember(Name = "PreferenzeImpostate")]
+		public bool PreferenzeImpostate { get; set; }
 
 		[DataMember(Name = "BudgetIniziale")]
 		public double BudgetIniziale { get; set; }
@@ -16,7 +19,7 @@ namespace FantaAsta.Models
 
 		#endregion
 
-		public Opzioni()
+		public Preferenze()
 		{
 			SetDefaults();
 		}
@@ -25,7 +28,7 @@ namespace FantaAsta.Models
 
 		public override bool Equals(object obj)
 		{
-			if (obj is Opzioni other)
+			if (obj is Preferenze other)
 			{
 				bool res = true;
 
@@ -45,13 +48,14 @@ namespace FantaAsta.Models
 			return base.GetHashCode();
 		}
 
-		public void Copia(ref Opzioni destinazione)
+		public void Copia(ref Preferenze destinazione)
 		{
 			if (destinazione == null)
 			{
-				destinazione = new Opzioni();
+				destinazione = new Preferenze();
 			}
 
+			destinazione.PreferenzeImpostate = PreferenzeImpostate;
 			destinazione.BudgetIniziale = BudgetIniziale;
 			destinazione.BudgetAggiuntivo = BudgetAggiuntivo;
 		}
@@ -68,6 +72,7 @@ namespace FantaAsta.Models
 
 		private void SetDefaults()
 		{
+			PreferenzeImpostate = false;
 			BudgetIniziale = CommonConstants.BUDGET_INIZIALE_DEFAULT;
 			BudgetAggiuntivo = CommonConstants.BUDGET_AGGIUNTIVO_DEFAULT;
 		}

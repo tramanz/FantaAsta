@@ -109,7 +109,15 @@ namespace FantaAsta.ViewModels
 
 		private void AvviaAsta()
 		{
-			NavigateToMain();
+			if (!m_lega.Preferenze.PreferenzeImpostate)
+			{
+				MostraPreferenze();
+			}
+
+			if (m_lega.Preferenze.PreferenzeImpostate)
+			{
+				NavigateToMain();
+			}
 		}
 		private bool AbilitaAvviaAsta()
 		{
@@ -118,7 +126,15 @@ namespace FantaAsta.ViewModels
 
 		private void GestisciRose()
 		{
-			NavigateToGestioneRose();
+			if (!m_lega.Preferenze.PreferenzeImpostate)
+			{
+				MostraPreferenze();
+			}
+
+			if (m_lega.Preferenze.PreferenzeImpostate)
+			{
+				NavigateToGestioneRose();
+			}
 		}
 
 		private void SvuotaRose()
@@ -136,6 +152,13 @@ namespace FantaAsta.ViewModels
 		private void ImportaLista()
 		{
 			m_lega.AvviaImportaLista();
+		}
+
+		private void MostraPreferenze()
+		{
+			_ = m_dialogService.ShowMessage("Le preferenze non sono ancora state impostate.", MessageType.Error);
+
+			m_dialogService.ShowDialog(CommonConstants.PREFERENZE_DIALOG, new DialogParameters(), null);
 		}
 
 		#endregion

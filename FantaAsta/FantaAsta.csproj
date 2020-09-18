@@ -96,7 +96,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Models\Opzioni.cs" />
+    <Compile Include="Models\Preferenze.cs" />
     <Compile Include="Resources\Converters\StringDoubleConverter.cs" />
     <Compile Include="Resources\Converters\ThreeInitialsConverter.cs" />
     <Compile Include="Models\Lega.cs" />
@@ -129,7 +129,7 @@
     <Compile Include="Utilities\Enums.cs" />
     <Compile Include="Utilities\Events.cs" />
     <Compile Include="Utilities\XML.cs" />
-    <Compile Include="ViewModels\OpzioniViewModel.cs" />
+    <Compile Include="ViewModels\PreferenzeViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseNavigationViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseDialogViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
@@ -162,8 +162,8 @@
     <Compile Include="Views\AssegnaView.xaml.cs">
       <DependentUpon>AssegnaView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\OpzioniView.xaml.cs">
-      <DependentUpon>OpzioniView.xaml</DependentUpon>
+    <Compile Include="Views\PreferenzeView.xaml.cs">
+      <DependentUpon>PreferenzeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PrezzoView.xaml.cs">
       <DependentUpon>PrezzoView.xaml</DependentUpon>
@@ -206,7 +206,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\OpzioniView.xaml">
+    <Page Include="Views\PreferenzeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

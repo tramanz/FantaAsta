@@ -35,7 +35,7 @@ namespace FantaAsta.Constants
 		public const string PREZZO_DIALOG = "Prezzo";
 		public const string AGGIUNGI_DIALOG = "Aggiungi";
 		public const string ASSEGNA_DIALOG = "Assegna";
-		public const string OPZIONI_DIALOG = "Opzioni";
+		public const string PREFERENZE_DIALOG = "Preferenze";
 
 		#endregion
 	}

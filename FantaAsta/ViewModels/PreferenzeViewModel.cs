@@ -9,7 +9,7 @@ using FantaAsta.Utilities.Dialogs;
 
 namespace FantaAsta.ViewModels
 {
-	public class OpzioniViewModel : BaseDialogViewModel
+	public class PreferenzeViewModel : BaseDialogViewModel
 	{
 		#region Constants
 
@@ -21,8 +21,8 @@ namespace FantaAsta.ViewModels
 
 		private readonly IDialogService m_dialogService;
 
-		private Opzioni m_opzioniSalvate;
-		private Opzioni m_opzioniCopiate;
+		private Preferenze m_preferenzeSalvate;
+		private Preferenze m_preferenzeCopiate;
 
 		#endregion
 
@@ -30,12 +30,12 @@ namespace FantaAsta.ViewModels
 
 		public string BudgetIniziale
 		{
-			get { return m_opzioniCopiate.BudgetIniziale.ToString(); }
+			get { return m_preferenzeCopiate.BudgetIniziale.ToString(); }
 			set
 			{
 				if (double.TryParse(value, NumberStyles.Integer, null, out double number))
 				{
-					m_opzioniCopiate.BudgetIniziale = number;
+					m_preferenzeCopiate.BudgetIniziale = number;
 
 					RaisePropertyChanged(nameof(BudgetIniziale));
 				}
@@ -44,12 +44,12 @@ namespace FantaAsta.ViewModels
 
 		public string BudgetAggiuntivo
 		{
-			get { return m_opzioniCopiate.BudgetAggiuntivo.ToString(); }
+			get { return m_preferenzeCopiate.BudgetAggiuntivo.ToString(); }
 			set
 			{
 				if (double.TryParse(value, NumberStyles.Integer, null, out double number))
 				{
-					m_opzioniCopiate.BudgetAggiuntivo = number;
+					m_preferenzeCopiate.BudgetAggiuntivo = number;
 
 					RaisePropertyChanged(nameof(BudgetAggiuntivo));
 				}
@@ -68,12 +68,12 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public OpzioniViewModel(IEventAggregator eventAggregator, IDialogService dialogService, Lega lega) : base(eventAggregator, lega)
+		public PreferenzeViewModel(IEventAggregator eventAggregator, IDialogService dialogService, Lega lega) : base(eventAggregator, lega)
 		{
 			m_dialogService = dialogService;
 
-			m_opzioniSalvate = m_lega.Opzioni;
-			m_opzioniSalvate.Copia(ref m_opzioniCopiate);
+			m_preferenzeSalvate = m_lega.Preferenze;
+			m_preferenzeSalvate.Copia(ref m_preferenzeCopiate);
 
 			DiminuisciBudgetInizialeCommand = new DelegateCommand(DiminuisciBudgetIniziale);
 			AumentaBudgetInizialeCommand = new DelegateCommand(AumentaBudgetIniziale);
@@ -89,7 +89,7 @@ namespace FantaAsta.ViewModels
 
 		protected override void InizializzaTitolo(IDialogParameters parameters)
 		{
-			Title = $"Opzioni";
+			Title = "Preferenze";
 		}
 
 		protected override void InizializzaBottoni(IDialogParameters parameters)
@@ -124,8 +124,8 @@ namespace FantaAsta.ViewModels
 
 		private void Salva()
 		{
-			m_opzioniCopiate.Copia(ref m_opzioniSalvate);
-			m_lega.SalvaOpzioni();
+			m_preferenzeCopiate.Copia(ref m_preferenzeSalvate);
+			m_lega.SalvaPreferenze();
 		}
 
 		private bool Valida()
@@ -142,9 +142,9 @@ namespace FantaAsta.ViewModels
 		{
 			if (Valida())
 			{
-				if (!m_opzioniCopiate.Equals(m_opzioniSalvate))
+				if (m_preferenzeCopiate.PreferenzeImpostate)
 				{
-					if (m_opzioniCopiate.BudgetIniziale != m_opzioniSalvate.BudgetIniziale)
+					if (!m_preferenzeCopiate.Equals(m_preferenzeSalvate))
 					{
 						ButtonResult result = m_dialogService.ShowMessage("Le rose si resetteranno. Sei sicuro di voler salvare le modifiche?", MessageType.Warning);
 						if (result == ButtonResult.Yes)
@@ -156,12 +156,12 @@ namespace FantaAsta.ViewModels
 					}
 					else
 					{
-						Salva();
 						Chiudi();
 					}
 				}
 				else
 				{
+					Salva();
 					Chiudi();
 				}
 			}
