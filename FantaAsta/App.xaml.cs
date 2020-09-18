@@ -31,6 +31,7 @@ namespace FantaAsta
 			containerRegistry.RegisterDialog<PrezzoView, PrezzoViewModel>(CommonConstants.PREZZO_DIALOG);
 			containerRegistry.RegisterDialog<AggiungiSquadraView, AggiungiSquadraViewModel>(CommonConstants.AGGIUNGI_DIALOG);
 			containerRegistry.RegisterDialog<AssegnaView, AssegnaViewModel>(CommonConstants.ASSEGNA_DIALOG);
+			containerRegistry.RegisterDialog<OpzioniView, OpzioniViewModel>(CommonConstants.OPZIONI_DIALOG);
 
 			containerRegistry.RegisterDialogWindow<DialogWindow>();
 
@@ -52,6 +53,7 @@ namespace FantaAsta
 			base.ConfigureRegionAdapterMappings(regionAdapterMappings);
 
 			regionAdapterMappings.RegisterMapping(typeof(TabControl), Container.Resolve<TabControlRegionAdapter>());
+			regionAdapterMappings.RegisterMapping(typeof(Menu), Container.Resolve<MenuRegionAdapter>());
 		}
 	}
 }

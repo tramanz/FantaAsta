@@ -4,11 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Xml;
 using Prism.Events;
 using FantaAsta.Constants;
 using FantaAsta.Enums;
 using FantaAsta.Events;
+using FantaAsta.Utilities;
 
 namespace FantaAsta.Models
 {
@@ -37,6 +37,8 @@ namespace FantaAsta.Models
 
 		public List<Giocatore> Svincolati { get; private set; }
 
+		public Opzioni Opzioni { get; private set; }
+
 		public bool ListaPresente { get; private set; }
 
 		public bool ModalitaAstaInvernaleAttiva { get; private set; }
@@ -48,6 +50,9 @@ namespace FantaAsta.Models
 		public Lega(IEventAggregator eventAggregator)
 		{
 			m_eventAggregator = eventAggregator;
+			m_eventAggregator.GetEvent<OpzioniModificateEvent>().Subscribe(OnOpzioniModificate);
+
+			CaricaOpzioni();
 
 			CaricaSquadre();
 
@@ -193,27 +198,13 @@ namespace FantaAsta.Models
 		}
 
 		/// <summary>
-		/// Metodo per salvare i dati riguardanti le fantasquadre
+		/// Metodo per salvare i dati dell'applicazione
 		/// </summary>
-		public void SalvaSquadre()
+		public void Salva()
 		{
-			if (!Directory.Exists(CommonConstants.DATA_DIRECTORY_PATH))
-			{
-				_ = Directory.CreateDirectory(CommonConstants.DATA_DIRECTORY_PATH);
-			}
+			SalvaOpzioni();
 
-			if (File.Exists(CommonConstants.DATA_FILE_PATH))
-			{
-				File.Delete(CommonConstants.DATA_FILE_PATH);
-			}
-
-			DataContractSerializer dcs = new DataContractSerializer(typeof(Lega));
-
-			using (FileStream fs = new FileStream(CommonConstants.DATA_FILE_PATH, FileMode.OpenOrCreate))
-			using (XmlWriter xdw = XmlWriter.Create(fs))
-			{
-				dcs.WriteObject(xdw, this);
-			}
+			SalvaSquadre();
 		}
 
 		/// <summary>
@@ -258,7 +249,7 @@ namespace FantaAsta.Models
 				}
 
 				squadra.ValoreMedio = 0;
-				squadra.Budget = CommonConstants.BUDGET_ESTIVO;
+				squadra.Budget = Opzioni.BudgetIniziale;
 				squadra.Giocatori.Clear();
 			}
 
@@ -282,7 +273,7 @@ namespace FantaAsta.Models
 			if (FantaSquadre.Select(s => s.Nome).Contains(nome))
 				return false;
 
-			FantaSquadra squadra = new FantaSquadra(nome);
+			FantaSquadra squadra = new FantaSquadra(nome, Opzioni.BudgetIniziale);
 
 			FantaSquadre.Add(squadra);
 			_ = FantaSquadre.OrderBy(s => s.Nome);
@@ -344,20 +335,49 @@ namespace FantaAsta.Models
 		#region Private methods
 
 		/// <summary>
+		/// Metodo per salvare i dati riguardanti le preferenze
+		/// </summary>
+		private void SalvaOpzioni()
+		{
+			if (!Directory.Exists(CommonConstants.DATA_DIRECTORY_PATH))
+			{
+				_ = Directory.CreateDirectory(CommonConstants.DATA_DIRECTORY_PATH);
+			}
+
+			if (File.Exists(CommonConstants.SETTINGS_FILE_PATH))
+			{
+				File.Delete(CommonConstants.SETTINGS_FILE_PATH);
+			}
+
+			XMLSerializer.Serialize(CommonConstants.SETTINGS_FILE_PATH, Opzioni);
+		}
+
+		/// <summary>
+		/// Metodo per salvare i dati riguardanti le fantasquadre
+		/// </summary>
+		private void SalvaSquadre()
+		{
+			if (!Directory.Exists(CommonConstants.DATA_DIRECTORY_PATH))
+			{
+				_ = Directory.CreateDirectory(CommonConstants.DATA_DIRECTORY_PATH);
+			}
+
+			if (File.Exists(CommonConstants.DATA_FILE_PATH))
+			{
+				File.Delete(CommonConstants.DATA_FILE_PATH);
+			}
+
+			XMLSerializer.Serialize(CommonConstants.DATA_FILE_PATH, this);
+		}
+
+		/// <summary>
 		/// Metodo per caricare la lista di giocatori
 		/// </summary>
 		private void CaricaLista()
 		{
 			if (File.Exists(CommonConstants.DATA_FILE_PATH))
 			{
-				using (FileStream fs = new FileStream(CommonConstants.DATA_FILE_PATH, FileMode.Open))
-				{
-					DataContractSerializer ser = new DataContractSerializer(typeof(Lega));
-
-					XmlReader reader = XmlReader.Create(fs);
-
-					PercorsoFileLista = ((Lega)ser.ReadObject(reader)).PercorsoFileLista;
-				}
+				PercorsoFileLista = ((Lega)XMLSerializer.Deserialize(CommonConstants.DATA_FILE_PATH, typeof(Lega))).PercorsoFileLista;
 			}
 
 			_ = CaricaListaDaFile(PercorsoFileLista, true);
@@ -440,13 +460,9 @@ namespace FantaAsta.Models
 		/// </summary>
 		private void CaricaFantaSquadreDaFile()
 		{
-			using (FileStream fs = new FileStream(CommonConstants.DATA_FILE_PATH, FileMode.Open))
+			if (File.Exists(CommonConstants.DATA_FILE_PATH))
 			{
-				DataContractSerializer ser = new DataContractSerializer(typeof(Lega));
-
-				XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas());
-
-				FantaSquadre = new List<FantaSquadra>(((Lega)ser.ReadObject(reader)).FantaSquadre);
+				FantaSquadre = ((Lega)XMLSerializer.Deserialize(CommonConstants.DATA_FILE_PATH, typeof(Lega))).FantaSquadre;
 			}
 
 			AggiornaStatoGiocatoriInRosa();
@@ -469,6 +485,16 @@ namespace FantaAsta.Models
 					Squadre.Add(new Squadra(data[0], data[1], data[2]));
 				}
 			}
+		}
+
+		/// <summary>
+		/// Metodo per caricare le preferenze
+		/// </summary>
+		private void CaricaOpzioni()
+		{
+			Opzioni = File.Exists(CommonConstants.SETTINGS_FILE_PATH) ? 
+				XMLSerializer.Deserialize(CommonConstants.SETTINGS_FILE_PATH, typeof(Opzioni)) as Opzioni : 
+				new Opzioni();
 		}
 
 		/// <summary>
@@ -543,6 +569,14 @@ namespace FantaAsta.Models
 
 				m_eventAggregator.GetEvent<ModalitàAstaCambiataEvent>().Publish();
 			}
+		}
+
+		/// <summary>
+		/// Metodo eseguito quando le opzioni vengono modificate
+		/// </summary>
+		private void OnOpzioniModificate()
+		{
+			SvuotaRose();
 		}
 
 		/// <summary>

@@ -7,11 +7,11 @@ namespace FantaAsta.Models
 {
 	[DataContract(Name = "FantaSquadra", Namespace = "")]
 	public class FantaSquadra
-	{ 
+	{
 		#region Properties
 
 		[DataMember(Name = "Nome")]
-		public string Nome { get; set;  }
+		public string Nome { get; set; }
 
 		[DataMember(Name = "Giocatori")]
 		public List<Giocatore> Giocatori { get; set; }
@@ -23,11 +23,11 @@ namespace FantaAsta.Models
 
 		#endregion
 
-		public FantaSquadra(string nome)
+		public FantaSquadra(string nome, double budget)
 		{
 			Nome = nome;
 			Giocatori = new List<Giocatore>();
-			Budget = CommonConstants.BUDGET_ESTIVO;
+			Budget = budget;
 		}
 
 		#region Public methods
@@ -54,9 +54,28 @@ namespace FantaAsta.Models
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is FantaSquadra squadra))
+			if (obj is FantaSquadra other)
+			{
+				bool res = true;
+
+				res &= Nome.Equals(other.Nome, StringComparison.OrdinalIgnoreCase);
+				res &= Budget == other.Budget;
+				res &= Giocatori.Count == other.Giocatori.Count;
+
+				if (res)
+				{
+					foreach (Giocatore giocatore in Giocatori)
+					{
+						res &= other.Giocatori.Contains(giocatore);
+					} 
+				}
+
+				return res;
+			}
+			else
+			{
 				return false;
-			return squadra.Nome.Equals(Nome, StringComparison.Ordinal);
+			}
 		}
 
 		public override int GetHashCode()

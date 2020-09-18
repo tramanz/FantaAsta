@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 using FantaAsta.Enums;
 
 namespace FantaAsta.Models
@@ -46,10 +47,23 @@ namespace FantaAsta.Models
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is Giocatore giocatore))
-				return false;
+			if (obj is Giocatore other)
+			{
+				bool res = true;
 
-			return ID == giocatore.ID;
+				res &= ID == other.ID;
+				res &= Ruolo == other.Ruolo;
+				res &= Nome.Equals(other.Nome, StringComparison.OrdinalIgnoreCase);
+				res &= Squadra.Equals(other.Squadra);
+				res &= Quotazione == other.Quotazione;
+				res &= Prezzo == other.Prezzo;
+
+				return res;
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		public override int GetHashCode()

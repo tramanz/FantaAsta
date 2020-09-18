@@ -96,6 +96,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Opzioni.cs" />
     <Compile Include="Resources\Converters\StringDoubleConverter.cs" />
     <Compile Include="Resources\Converters\ThreeInitialsConverter.cs" />
     <Compile Include="Models\Lega.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="Modules\RoseModule.cs" />
     <Compile Include="Modules\SelezioneModule.cs" />
     <Compile Include="Utilities\Navigation\NavigationAwareViewModel.cs" />
+    <Compile Include="Utilities\Regions\MenuRegionAdapter.cs" />
     <Compile Include="Utilities\Regions\TabControlRegionAdapter.cs" />
     <Compile Include="Resources\Controls\StarsControl.xaml.cs">
       <DependentUpon>StarsControl.xaml</DependentUpon>
@@ -125,6 +127,8 @@
     <Compile Include="Utilities\Dialogs\MessageViewModel.cs" />
     <Compile Include="Utilities\Enums.cs" />
     <Compile Include="Utilities\Events.cs" />
+    <Compile Include="Utilities\XMLSerializer.cs" />
+    <Compile Include="ViewModels\OpzioniViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseNavigationViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseDialogViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
@@ -156,6 +160,9 @@
     </Compile>
     <Compile Include="Views\AssegnaView.xaml.cs">
       <DependentUpon>AssegnaView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OpzioniView.xaml.cs">
+      <DependentUpon>OpzioniView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PrezzoView.xaml.cs">
       <DependentUpon>PrezzoView.xaml</DependentUpon>
@@ -197,6 +204,10 @@
     <Page Include="Views\AssegnaView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\OpzioniView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PrezzoView.xaml">
       <SubType>Designer</SubType>

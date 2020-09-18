@@ -127,6 +127,42 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
+	
+	<!--Default repeat button (icona)-->
+	<Style x:Key="IconRepeatButton" TargetType="{x:Type RepeatButton}">
+		<Setter Property="SnapsToDevicePixels" Value="True"/>
+		<Setter Property="Foreground" Value="Black"/>
+		<Setter Property="BorderBrush" Value="Black"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="RepeatButton">
+					<Image Stretch="Uniform" Margin="2">
+						<Image.Source>
+							<DrawingImage>
+								<DrawingImage.Drawing>
+									<GeometryDrawing Geometry="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" Brush="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}">
+										<GeometryDrawing.Pen>
+											<Pen Thickness="2" Brush="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
+										</GeometryDrawing.Pen>
+									</GeometryDrawing>
+								</DrawingImage.Drawing>
+							</DrawingImage>
+						</Image.Source>
+					</Image>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Foreground" Value="{StaticResource SecondaryColor}"/>
+							<Setter Property="BorderBrush" Value="White"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter Property="Foreground" Value="{StaticResource DisabledColor}"/>
+							<Setter Property="BorderBrush" Value="{StaticResource DisabledColor}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
 	<!--Default combo box-->
 	<Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}">

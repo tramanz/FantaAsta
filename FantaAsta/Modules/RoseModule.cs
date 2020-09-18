@@ -1,6 +1,7 @@
 ﻿using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
+using FantaAsta.Constants;
 using FantaAsta.Views;
 
 namespace FantaAsta.Modules
@@ -13,8 +14,8 @@ namespace FantaAsta.Modules
 		{
 			IRegionManager regionManager = containerProvider.Resolve<IRegionManager>();
 
-			_ = regionManager.RegisterViewWithRegion("MainRegion", typeof(RoseView));
-			_ = regionManager.RegisterViewWithRegion("ContentRegion", typeof(RoseView));
+			_ = regionManager.RegisterViewWithRegion(CommonConstants.MAIN_REGION, typeof(RoseView));
+			_ = regionManager.RegisterViewWithRegion(CommonConstants.CONTENT_REGION, typeof(RoseView));
 		}
 
 		public void RegisterTypes(IContainerRegistry containerRegistry)

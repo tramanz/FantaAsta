@@ -195,7 +195,7 @@ namespace FantaAsta.ViewModels
 		{
 			Mouse.OverrideCursor = Cursors.Wait;
 
-			m_lega.SalvaSquadre();
+			m_lega.Salva();
 
 			Mouse.OverrideCursor = Cursors.Arrow;
 		}

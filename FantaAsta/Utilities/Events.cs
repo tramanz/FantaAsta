@@ -29,6 +29,9 @@ namespace FantaAsta.Events
 	public class ListaImportataEvent : PubSubEvent
 	{ }
 
+	public class OpzioniModificateEvent : PubSubEvent
+	{ }
+
 	#endregion
 
 	#region EventArgs

@@ -4,6 +4,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
 	xmlns:prism="http://prismlibrary.com/"
+	xmlns:const="clr-namespace:FantaAsta.Constants"
 	WindowStartupLocation="CenterScreen">
 
 	<Window.Style>
@@ -35,6 +36,8 @@
 
 			<!--Menu-->
 			<DockPanel Grid.Row="0" Background="{StaticResource SecondaryColor}" MouseLeftButtonDown="OnTitleBarClicked">
+				<Menu prism:RegionManager.RegionName="{x:Static const:CommonConstants.MENU_REGION}" HorizontalAlignment="Left" Margin="5,0,0,0" shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
+
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
 					<UniformGrid Columns="3" Width="90">
 						<Button Style="{StaticResource MinimizeButton}" Command="{Binding Source={x:Static SystemCommands.MinimizeWindowCommand}}" shell:WindowChrome.IsHitTestVisibleInChrome="True"/>
@@ -51,7 +54,7 @@
 
 			<!--Regione principale-->
 			<Grid Grid.Row="2" Background="{StaticResource BackgroundColor}">
-				<ContentControl prism:RegionManager.RegionName="MainRegion"/>
+				<ContentControl prism:RegionManager.RegionName="{x:Static const:CommonConstants.MAIN_REGION}"/>
 			</Grid>
 		</Grid>
 	</Border>
