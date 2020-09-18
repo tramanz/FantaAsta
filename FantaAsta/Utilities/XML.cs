@@ -5,7 +5,7 @@ using System.Xml;
 
 namespace FantaAsta.Utilities
 {
-	public static class XMLSerializer
+	public static class XML
 	{
 		public static void Serialize(string filePath, object data)
 		{

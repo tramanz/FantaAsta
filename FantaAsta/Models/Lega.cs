@@ -21,7 +21,7 @@ namespace FantaAsta.Models
 
 		private readonly IEventAggregator m_eventAggregator;
 
-		private Lega m_legaSalvata;
+		private Lega m_datiLegaSalvati;
 
 		#endregion
 
@@ -216,19 +216,19 @@ namespace FantaAsta.Models
 		/// <returns>True se ci sono state modifiche, false altrimenti</returns>
 		public bool AbilitaSalvataggio()
 		{
-			if (m_legaSalvata == null)
+			if (m_datiLegaSalvati == null)
 				return true;
 
 			bool res = false;
 
-			res |= !string.IsNullOrEmpty(PercorsoFileLista) && !PercorsoFileLista.Equals(m_legaSalvata.PercorsoFileLista);
-			res |= FantaSquadre.Count != m_legaSalvata.FantaSquadre.Count;
+			res |= !string.IsNullOrEmpty(PercorsoFileLista) && !PercorsoFileLista.Equals(m_datiLegaSalvati.PercorsoFileLista);
+			res |= FantaSquadre.Count != m_datiLegaSalvati.FantaSquadre.Count;
 
 			if (!res)
 			{
 				foreach (FantaSquadra fantaSquadra in FantaSquadre)
 				{
-					res |= !m_legaSalvata.FantaSquadre.Contains(fantaSquadra);
+					res |= !m_datiLegaSalvati.FantaSquadre.Contains(fantaSquadra);
 				}
 			}
 
@@ -250,7 +250,7 @@ namespace FantaAsta.Models
 				File.Delete(CommonConstants.DATA_FILE_PATH);
 			}
 
-			XMLSerializer.Serialize(CommonConstants.DATA_FILE_PATH, this);
+			XML.Serialize(CommonConstants.DATA_FILE_PATH, this);
 
 			m_eventAggregator.GetEvent<FantaSquadreSalvateEvent>().Publish();
 		}
@@ -270,7 +270,7 @@ namespace FantaAsta.Models
 				File.Delete(CommonConstants.SETTINGS_FILE_PATH);
 			}
 
-			XMLSerializer.Serialize(CommonConstants.SETTINGS_FILE_PATH, Opzioni);
+			XML.Serialize(CommonConstants.SETTINGS_FILE_PATH, Opzioni);
 		}
 
 		/// <summary>
@@ -389,123 +389,7 @@ namespace FantaAsta.Models
 		#region Private methods
 
 		/// <summary>
-		/// Metodo per caricare la lista dei giocatori da un file .csv
-		/// </summary>
-		/// <param name="filePath">Percorso del file .csv della lista</param>
-		/// <param name="isLoadingAtStart">Indica se il caricamento è partito da un richiesta automatica all'avvio oppure dall'utentemo</param>
-		/// <returns>True se l'operazione è andata a buon fine, false altrimenti</returns>
-		private bool CaricaListaDaFile(string filePath, bool isLoadingAtStart)
-		{
-			if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
-			{
-				return false;
-			}
-
-			if (!Directory.Exists(CommonConstants.DATA_DIRECTORY_PATH))
-			{
-				_ = Directory.CreateDirectory(CommonConstants.DATA_DIRECTORY_PATH);
-			}
-
-			Lista = new List<Giocatore>();
-			Svincolati = new List<Giocatore>();
-
-			if (!isLoadingAtStart)
-			{
-				try
-				{
-					PercorsoFileLista = Path.Combine(CommonConstants.DATA_DIRECTORY_PATH, $"Quotazioni ({DateTime.Now:dd_MM_yyyy}).csv");
-					File.Copy(filePath, PercorsoFileLista, true);
-				}
-				catch
-				{
-					return false;
-				}
-			}
-
-			using (StreamReader reader = new StreamReader(PercorsoFileLista))
-			{
-				Giocatore giocatore;
-				while (!reader.EndOfStream)
-				{
-					string[] data = reader.ReadLine().Split(';');
-
-					giocatore = new Giocatore(Convert.ToInt32(data[0]), (Ruoli)Enum.Parse(typeof(Ruoli), data[1]), data[2], Squadre.Single(s => s.Nome.Equals(data[3], StringComparison.OrdinalIgnoreCase)), Convert.ToDouble(data[4]));
-
-					Lista.Add(giocatore);
-					Svincolati.Add(giocatore);
-				}
-			}
-
-			ListaPresente = true;
-
-			AggiornaQuotazioneMedia();
-
-			AggiornaStatoGiocatoriInRosa();
-
-			m_eventAggregator.GetEvent<ListaImportataEvent>().Publish();
-
-			return true;
-		}
-
-		/// <summary>
-		/// Metodo per caricare la lista di giocatori
-		/// </summary>
-		private void CaricaLista()
-		{
-			if (m_legaSalvata != null)
-			{
-				PercorsoFileLista = m_legaSalvata.PercorsoFileLista;
-
-				_ = CaricaListaDaFile(PercorsoFileLista, true);
-			}
-		}
-
-		/// <summary>
-		/// Metodo per caricare le fantasquadre
-		/// </summary>
-		private void CaricaFantaSquadre()
-		{
-			FantaSquadre = new List<FantaSquadra>();
-
-			if (m_legaSalvata != null)
-			{
-				FantaSquadre = m_legaSalvata.FantaSquadre.Clone();
-
-				AggiornaStatoGiocatoriInRosa();
-			}
-		}
-
-		/// <summary>
-		/// Metodo per caricare le squadre da file .csv nelle risorse
-		/// </summary>
-		private void CaricaSquadre()
-		{
-			Squadre = new List<Squadra>();
-
-			using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("FantaAsta.Resources.Data.Squadre.csv"))
-			using (StreamReader reader = new StreamReader(stream))
-			{
-				while (!reader.EndOfStream)
-				{
-					string[] data = reader.ReadLine().Split(';');
-
-					Squadre.Add(new Squadra(data[0], data[1], data[2]));
-				}
-			}
-		}
-
-		/// <summary>
-		/// Metodo per caricare le preferenze
-		/// </summary>
-		private void CaricaOpzioni()
-		{
-			Opzioni = File.Exists(CommonConstants.SETTINGS_FILE_PATH) ?
-				XMLSerializer.Deserialize(CommonConstants.SETTINGS_FILE_PATH, typeof(Opzioni)) as Opzioni :
-				new Opzioni();
-		}
-
-		/// <summary>
-		/// Metodo che controlla se i giocatori nelle rose sono presenti in lista e aggiorna la lista degli svincolati
+		/// Metodo per controllare se i giocatori nelle rose sono presenti in lista e aggiornare la lista degli svincolati
 		/// </summary>
 		private void AggiornaStatoGiocatoriInRosa()
 		{
@@ -545,7 +429,7 @@ namespace FantaAsta.Models
 		/// <summary>
 		/// Metodo per calcolare la quotazione media di tutti i giocatori in lista
 		/// </summary>
-		private void AggiornaQuotazioneMedia()
+		private void AggiornaQuotazioneMediaLista()
 		{
 			if (Lista != null)
 			{
@@ -579,6 +463,202 @@ namespace FantaAsta.Models
 		}
 
 		/// <summary>
+		/// Metodo per caricare la lista dei giocatori da un file .csv
+		/// </summary>
+		/// <param name="filePath">Percorso del file .csv della lista</param>
+		/// <param name="isLoadingAtStart">Indica se il caricamento è partito da un richiesta automatica all'avvio oppure dall'utentemo</param>
+		/// <returns>True se l'operazione è andata a buon fine, false altrimenti</returns>
+		private bool CaricaListaDaFile(string filePath, bool isLoadingAtStart)
+		{
+			if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+			{
+				return false;
+			}
+
+			if (!Directory.Exists(CommonConstants.DATA_DIRECTORY_PATH))
+			{
+				_ = Directory.CreateDirectory(CommonConstants.DATA_DIRECTORY_PATH);
+			}
+
+			Lista = new List<Giocatore>();
+			Svincolati = new List<Giocatore>();
+
+			if (!isLoadingAtStart)
+			{
+				try
+				{
+					PercorsoFileLista = Path.Combine(CommonConstants.DATA_DIRECTORY_PATH, $"Quotazioni ({DateTime.Now:dd_MM_yyyy}).csv");
+					File.Copy(filePath, PercorsoFileLista, true);
+				}
+				catch
+				{
+					return false;
+				}
+			}
+
+			try
+			{
+				Giocatore giocatore;
+				foreach (string[] data in LeggiFileCSV(PercorsoFileLista))
+				{
+					giocatore = new Giocatore(Convert.ToInt32(data[0]), (Ruoli)Enum.Parse(typeof(Ruoli), data[1]), data[2], Squadre.Single(s => s.Nome.Equals(data[3], StringComparison.OrdinalIgnoreCase)), Convert.ToDouble(data[4]));
+
+					Lista.Add(giocatore);
+					Svincolati.Add(giocatore);
+				}
+			}
+			catch
+			{
+				return false;
+			}
+
+			AggiornaQuotazioneMediaLista();
+
+			AggiornaStatoGiocatoriInRosa();
+
+			ListaPresente = true;
+
+			m_eventAggregator.GetEvent<ListaImportataEvent>().Publish();
+
+			return ListaPresente;
+		}
+
+		/// <summary>
+		/// Metodo per caricare la lista di giocatori
+		/// </summary>
+		private void CaricaLista()
+		{
+			if (m_datiLegaSalvati != null)
+			{
+				PercorsoFileLista = m_datiLegaSalvati.PercorsoFileLista;
+
+				_ = CaricaListaDaFile(PercorsoFileLista, true);
+			}
+		}
+
+		/// <summary>
+		/// Metodo per caricare le fantasquadre
+		/// </summary>
+		private void CaricaFantaSquadre()
+		{
+			FantaSquadre = new List<FantaSquadra>();
+
+			if (m_datiLegaSalvati != null)
+			{
+				FantaSquadre = m_datiLegaSalvati.FantaSquadre.Clone();
+
+				AggiornaStatoGiocatoriInRosa();
+			}
+		}
+
+		/// <summary>
+		/// Metodo per caricare le squadre da file .csv nelle risorse
+		/// </summary>
+		private void CaricaSquadre()
+		{
+			Squadre = new List<Squadra>();
+
+			try
+			{
+				foreach (string[] data in LeggiRisorsaCSV("FantaAsta.Resources.Data.Squadre.csv"))
+				{
+					Squadre.Add(new Squadra(data[0], data[1], data[2]));
+				}
+			}
+			catch
+			{ }
+		}
+
+		/// <summary>
+		/// Metodo per caricare le preferenze
+		/// </summary>
+		private void CaricaOpzioni()
+		{
+			try
+			{
+				Opzioni = XML.Deserialize(CommonConstants.SETTINGS_FILE_PATH, typeof(Opzioni)) as Opzioni;
+			}
+			catch
+			{
+				Opzioni = new Opzioni();
+			}
+		}
+
+		/// <summary>
+		/// Metodo per deserializzare i dati della lega e mantenerne una copia
+		/// </summary>
+		private void DeserializzaDatiLega()
+		{
+			if (m_datiLegaSalvati == null)
+			{
+				try
+				{
+					m_datiLegaSalvati = XML.Deserialize(CommonConstants.DATA_FILE_PATH, typeof(Lega)) as Lega;
+				}
+				catch
+				{ }
+			}
+		}
+
+		/// <summary>
+		/// Metodo per leggere i dati contenuti in una risorsa .csv
+		/// </summary>
+		/// <param name="nomeRisorsa">Il percorso della risorsa .csv da leggere</param>
+		/// <returns>Una lista di dati divisi per colonna</returns>
+		private List<string[]> LeggiRisorsaCSV(string nomeRisorsa)
+		{
+			if (!nomeRisorsa.EndsWith(".csv"))
+				throw new ArgumentException("La risorsa specificata non è un file .csv");
+
+			using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(nomeRisorsa))
+			{
+				return LeggiStream(stream);
+			}
+		}
+
+		/// <summary>
+		/// Metodo per leggere i dati contenuti in un file .csv
+		/// </summary>
+		/// <param name="percorsoFile">Il percorso del file .csv da leggere</param>
+		/// <returns>Una lista di dati divisi per colonna</returns>
+		private List<string[]> LeggiFileCSV(string percorsoFile)
+		{
+			if (string.IsNullOrEmpty(percorsoFile))
+				throw new ArgumentException("Il percorso specificato non è valido");
+
+			if (!percorsoFile.EndsWith(".csv"))
+				throw new ArgumentException("Il file specificato non è un file .csv");
+
+			if (!File.Exists(percorsoFile))
+				throw new ArgumentException("Il file al percorso specificato non esiste");
+
+			using (FileStream stream = new FileStream(percorsoFile, FileMode.Open))
+			{
+				return LeggiStream(stream);
+			}
+		}
+
+		/// <summary>
+		/// Metodo per leggere uno stream di dati
+		/// </summary>
+		/// <param name="stream">Lo stream di dati da leggere</param>
+		/// <returns>Una lista di dati divisi per colonna</returns>
+		private List<string[]> LeggiStream(Stream stream)
+		{
+			List<string[]> dati = new List<string[]>();
+
+			using (StreamReader reader = new StreamReader(stream))
+			{
+				while (!reader.EndOfStream)
+				{
+					dati.Add(reader.ReadLine().Split(';'));
+				}
+			}
+
+			return dati;
+		}
+
+		/// <summary>
 		/// Metodo per generare la lista dei giocatori del ruolo specificato a partire da un'altra lista
 		/// </summary>
 		/// <param name="lista">La lista da cui estrarre la lista dei giocatori per ruolo</param>
@@ -589,21 +669,7 @@ namespace FantaAsta.Models
 			return lista.Where(g => g.Ruolo == ruolo);
 		}
 
-		/// <summary>
-		/// Metodo per deserializzare i dati della lega e mantenerne una copia
-		/// </summary>
-		private void DeserializzaDatiLega()
-		{
-			if (m_legaSalvata == null)
-			{
-				try
-				{
-					m_legaSalvata = XMLSerializer.Deserialize(CommonConstants.DATA_FILE_PATH, typeof(Lega)) as Lega;
-				}
-				catch
-				{ }
-			}
-		}
+		#region Event handlers
 
 		/// <summary>
 		/// Metodo eseguito quando le opzioni vengono modificate
@@ -611,9 +677,10 @@ namespace FantaAsta.Models
 		private void OnOpzioniModificate()
 		{
 			SvuotaRose();
-
 			SalvaSquadre();
 		}
+
+		#endregion
 
 		#endregion
 	}

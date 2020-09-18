@@ -128,7 +128,7 @@
     <Compile Include="Utilities\Dialogs\MessageViewModel.cs" />
     <Compile Include="Utilities\Enums.cs" />
     <Compile Include="Utilities\Events.cs" />
-    <Compile Include="Utilities\XMLSerializer.cs" />
+    <Compile Include="Utilities\XML.cs" />
     <Compile Include="ViewModels\OpzioniViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseNavigationViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseDialogViewModel.cs" />

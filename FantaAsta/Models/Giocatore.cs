@@ -44,11 +44,6 @@ namespace FantaAsta.Models
 
 		#region Public methods
 
-		public object Clone()
-		{
-			return new Giocatore(ID, Ruolo, Nome, Squadra, Quotazione) { Prezzo = Prezzo };
-		}
-
 		public override bool Equals(object obj)
 		{
 			if (obj is Giocatore other)
@@ -70,6 +65,11 @@ namespace FantaAsta.Models
 		public override int GetHashCode()
 		{
 			return base.GetHashCode();
+		}
+
+		public object Clone()
+		{
+			return new Giocatore(ID, Ruolo, Nome, Squadra, Quotazione) { Prezzo = Prezzo };
 		}
 
 		#endregion

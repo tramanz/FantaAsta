@@ -32,6 +32,42 @@ namespace FantaAsta.Models
 
 		#region Public methods
 
+		public override bool Equals(object obj)
+		{
+			if (obj is FantaSquadra other)
+			{
+				bool res = true;
+
+				res &= Nome.Equals(other.Nome, StringComparison.OrdinalIgnoreCase);
+				res &= Budget == other.Budget;
+				res &= Giocatori.Count == other.Giocatori.Count;
+
+				if (res)
+				{
+					foreach (Giocatore giocatore in Giocatori)
+					{
+						res &= other.Giocatori.Contains(giocatore) && giocatore.Prezzo == other.Giocatori.Find(g => g.Equals(giocatore)).Prezzo;
+					}
+				}
+
+				return res;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
+
+		public object Clone()
+		{
+			return new FantaSquadra(Nome, Budget) { Giocatori = Giocatori.Clone() };
+		}
+
 		public void AggiungiGiocatore(Giocatore giocatore)
 		{
 			if (!Giocatori.Contains(giocatore))
@@ -52,48 +88,12 @@ namespace FantaAsta.Models
 			}
 		}
 
-		public object Clone()
-		{
-			return new FantaSquadra(Nome, Budget) { Giocatori = Giocatori.Clone() };
-		}
-
-		public override bool Equals(object obj)
-		{
-			if (obj is FantaSquadra other)
-			{
-				bool res = true;
-
-				res &= Nome.Equals(other.Nome, StringComparison.OrdinalIgnoreCase);
-				res &= Budget == other.Budget;
-				res &= Giocatori.Count == other.Giocatori.Count;
-
-				if (res)
-				{
-					foreach (Giocatore giocatore in Giocatori)
-					{
-						res &= other.Giocatori.Contains(giocatore) && giocatore.Prezzo == other.Giocatori.Find(g => g.Equals(giocatore)).Prezzo;
-					} 
-				}
-
-				return res;
-			}
-			else
-			{
-				return false;
-			}
-		}
-
-		public override int GetHashCode()
-		{
-			return base.GetHashCode();
-		}
-
 		#endregion
 
 		#region Private methods
 
 		[OnDeserialized()]
-		private void AggiornaValoreInDeserializzazione(StreamingContext streamingContext)
+		private void OnDeserialized(StreamingContext streamingContext)
 		{
 			AggiornaValore();
 		}
