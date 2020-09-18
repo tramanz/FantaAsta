@@ -7,6 +7,16 @@ namespace FantaAsta.Utilities
 {
 	public static class XML
 	{
+		#region Private fields
+
+		private static XmlWriterSettings m_xmlWriterSettings = new XmlWriterSettings() { Indent = true };
+
+		private static XmlDictionaryReaderQuotas m_xmlDictionaryReaderQuotas = new XmlDictionaryReaderQuotas();
+
+		#endregion
+
+		#region Public methods
+
 		public static void Serialize(string filePath, object data)
 		{
 			try
@@ -14,7 +24,7 @@ namespace FantaAsta.Utilities
 				DataContractSerializer dcs = new DataContractSerializer(data.GetType());
 
 				using (FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate))
-				using (XmlWriter xdw = XmlWriter.Create(fs))
+				using (XmlWriter xdw = XmlWriter.Create(fs, m_xmlWriterSettings))
 				{
 					dcs.WriteObject(xdw, data);
 				}
@@ -33,7 +43,7 @@ namespace FantaAsta.Utilities
 				{
 					DataContractSerializer ser = new DataContractSerializer(dataType);
 
-					XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas());
+					XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fs, m_xmlDictionaryReaderQuotas);
 
 					return ser.ReadObject(reader);
 				}
@@ -44,5 +54,7 @@ namespace FantaAsta.Utilities
 				return null;
 			}
 		}
+
+		#endregion
 	}
 }
