@@ -14,16 +14,16 @@ namespace FantaAsta.Views
 	{
 		#region Private fields
 
-		private readonly Lega m_lega;
+		private readonly Asta m_asta;
 		private readonly IDialogService m_dialogService;
 
 		#endregion
 
-		public Shell(IDialogService dialogService, Lega lega)
+		public Shell(IDialogService dialogService, Asta asta)
 		{
 			InitializeComponent();
 
-			m_lega = lega;
+			m_asta = asta;
 			m_dialogService = dialogService;
 
 			_ = CommandBindings.Add(new CommandBinding(SystemCommands.CloseWindowCommand, CloseWindow, CanCloseWindow));
@@ -35,15 +35,15 @@ namespace FantaAsta.Views
 
 		private void CloseWindow(object target, ExecutedRoutedEventArgs e)
 		{
-			m_lega.DisattivaModalitaAstaInvernale();
+			m_asta.DisattivaModalitaAstaInvernale();
 
-			if (m_lega.AbilitaSalvataggio())
+			if (m_asta.AbilitaSalvataggio())
 			{
 				ButtonResult result = m_dialogService.ShowMessage("Vuoi salvare le modifiche prima di chiudere?", MessageType.Warning);
 
 				if (result == ButtonResult.Yes)
 				{
-					m_lega.SalvaDati();
+					m_asta.SalvaDati();
 				}
 			}
 

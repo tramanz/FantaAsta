@@ -96,10 +96,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\DatiAsta.cs" />
     <Compile Include="Models\Preferenze.cs" />
     <Compile Include="Resources\Converters\StringDoubleConverter.cs" />
     <Compile Include="Resources\Converters\ThreeInitialsConverter.cs" />
-    <Compile Include="Models\Lega.cs" />
+    <Compile Include="Models\Asta.cs" />
     <Compile Include="Models\Giocatore.cs" />
     <Compile Include="Models\FantaSquadra.cs" />
     <Compile Include="Models\Squadra.cs" />

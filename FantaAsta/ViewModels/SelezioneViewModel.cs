@@ -36,7 +36,7 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public SelezioneViewModel(IRegionManager regionManager, IEventAggregator eventAggregator, IDialogService dialogService, Lega lega) : base(regionManager, eventAggregator, lega)
+		public SelezioneViewModel(IRegionManager regionManager, IEventAggregator eventAggregator, IDialogService dialogService, Asta asta) : base(regionManager, eventAggregator, asta)
 		{
 			m_dialogService = dialogService;
 
@@ -78,7 +78,7 @@ namespace FantaAsta.ViewModels
 			{
 				Mouse.OverrideCursor = Cursors.Wait;
 
-				result = m_lega.ImportaLista(fd.FileName);
+				result = m_asta.ImportaLista(fd.FileName);
 
 				if (result.HasValue && !result.Value)
 				{
@@ -100,14 +100,14 @@ namespace FantaAsta.ViewModels
 
 		private void AvviaAsta()
 		{
-			if (!m_lega.Preferenze.PreferenzeImpostate)
+			if (!m_asta.Preferenze.PreferenzeImpostate)
 			{
 				MostraPreferenze();
 			}
 
-			if (m_lega.Preferenze.PreferenzeImpostate)
+			if (m_asta.Preferenze.PreferenzeImpostate)
 			{
-				if (!m_lega.ListaPresente || m_lega.DatiLega.FantaSquadre.Count == 0)
+				if (!m_asta.ListaPresente || m_asta.DatiAsta.FantaSquadre.Count == 0)
 				{
 					m_dialogService.ShowMessage("Per avviare l'asta importare la lista e aggiungere almeno una fantasquadra", MessageType.Error);
 				}
@@ -120,12 +120,12 @@ namespace FantaAsta.ViewModels
 
 		private void GestisciRose()
 		{
-			if (!m_lega.Preferenze.PreferenzeImpostate)
+			if (!m_asta.Preferenze.PreferenzeImpostate)
 			{
 				MostraPreferenze();
 			}
 
-			if (m_lega.Preferenze.PreferenzeImpostate)
+			if (m_asta.Preferenze.PreferenzeImpostate)
 			{
 				NavigateToGestioneRose();
 			}
@@ -133,7 +133,7 @@ namespace FantaAsta.ViewModels
 
 		private void SvuotaRose()
 		{
-			m_lega.SvuotaRose();
+			m_asta.SvuotaRose();
 
 			_ = m_dialogService.ShowMessage("Rose resettate", MessageType.Notification);
 		}
@@ -145,7 +145,7 @@ namespace FantaAsta.ViewModels
 
 		private void ImportaLista()
 		{
-			m_lega.AvviaImportaLista();
+			m_asta.AvviaImportaLista();
 		}
 
 		private void MostraPreferenze()

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 using Prism.Events;
 using FantaAsta.Constants;
 using FantaAsta.Enums;
@@ -12,7 +11,7 @@ using FantaAsta.Utilities;
 
 namespace FantaAsta.Models
 {
-	public class Lega
+	public class Asta
 	{
 		#region Private fields
 
@@ -20,7 +19,7 @@ namespace FantaAsta.Models
 
 		private readonly IEventAggregator m_eventAggregator;
 
-		private DatiLega m_datiLegaSalvati;
+		private DatiAsta m_datiAstaSalvati;
 
 		#endregion
 
@@ -28,7 +27,7 @@ namespace FantaAsta.Models
 
 		public static List<Squadra> Squadre { get; private set; }
 
-		public DatiLega DatiLega { get; private set; }
+		public DatiAsta DatiAsta { get; private set; }
 
 		public List<Giocatore> Lista { get; private set; }
 
@@ -44,7 +43,7 @@ namespace FantaAsta.Models
 
 		#endregion
 
-		public Lega(IEventAggregator eventAggregator)
+		public Asta(IEventAggregator eventAggregator)
 		{
 			m_eventAggregator = eventAggregator;
 			_ = m_eventAggregator.GetEvent<OpzioniModificateEvent>().Subscribe(OnOpzioniModificate);
@@ -199,21 +198,21 @@ namespace FantaAsta.Models
 		{
 			if (giocatore != null)
 			{
-				giocatore.Scartato = !DatiLega.FantaSquadre.Any(s => s.Rosa.Contains(giocatore));
+				giocatore.Scartato = !DatiAsta.FantaSquadre.Any(s => s.Rosa.Contains(giocatore));
 			}
 		}
 
 		/// <summary>
-		/// Metodo per verificare se ci sono state modifiche ai dati della lega
+		/// Metodo per verificare se ci sono state modifiche ai dati dell'asta
 		/// </summary>
 		/// <returns>True se ci sono state modifiche, false altrimenti</returns>
 		public bool AbilitaSalvataggio()
 		{
-			return !m_datiLegaSalvati.Equals(DatiLega);
+			return !m_datiAstaSalvati.Equals(DatiAsta);
 		}
 
 		/// <summary>
-		/// Metodo per salvare i dati riguardanti la lega
+		/// Metodo per salvare i dati riguardanti l'asta
 		/// </summary>
 		public void SalvaDati()
 		{
@@ -227,9 +226,9 @@ namespace FantaAsta.Models
 				File.Delete(CommonConstants.DATA_FILE_PATH);
 			}
 
-			XML.Serialize(CommonConstants.DATA_FILE_PATH, DatiLega);
+			XML.Serialize(CommonConstants.DATA_FILE_PATH, DatiAsta);
 
-			m_datiLegaSalvati = DatiLega.Clone() as DatiLega;
+			m_datiAstaSalvati = DatiAsta.Clone() as DatiAsta;
 
 			m_eventAggregator.GetEvent<FantaSquadreSalvateEvent>().Publish();
 		}
@@ -285,7 +284,7 @@ namespace FantaAsta.Models
 		/// </summary>
 		public void SvuotaRose()
 		{
-			foreach (FantaSquadra squadra in DatiLega.FantaSquadre)
+			foreach (FantaSquadra squadra in DatiAsta.FantaSquadre)
 			{
 				foreach (Giocatore giocatore in squadra.Rosa)
 				{
@@ -311,13 +310,13 @@ namespace FantaAsta.Models
 		/// <param name="nome">Il nome della fantasquadra</param>
 		public bool AggiungiSquadra(string nome)
 		{
-			if (DatiLega.FantaSquadre.Select(s => s.Nome).Contains(nome))
+			if (DatiAsta.FantaSquadre.Select(s => s.Nome).Contains(nome))
 				return false;
 
 			FantaSquadra squadra = new FantaSquadra(nome, Preferenze.BudgetIniziale);
 
-			DatiLega.FantaSquadre.Add(squadra);
-			_ = DatiLega.FantaSquadre.OrderBy(s => s.Nome);
+			DatiAsta.FantaSquadre.Add(squadra);
+			_ = DatiAsta.FantaSquadre.OrderBy(s => s.Nome);
 
 			m_eventAggregator.GetEvent<FantaSquadraAggiuntaEvent>().Publish(new FantaSquadraEventArgs(squadra));
 
@@ -330,7 +329,7 @@ namespace FantaAsta.Models
 		/// <param name="nome">Il nome della fantasquadra</param>
 		public void RimuoviSquadra(string nome)
 		{
-			FantaSquadra squadra = DatiLega.FantaSquadre.SingleOrDefault(s => s.Nome.Equals(nome));
+			FantaSquadra squadra = DatiAsta.FantaSquadre.SingleOrDefault(s => s.Nome.Equals(nome));
 
 			if (squadra != null)
 			{
@@ -343,7 +342,7 @@ namespace FantaAsta.Models
 					m_eventAggregator.GetEvent<GiocatoreRimossoEvent>().Publish(new GiocatoreRimossoEventArgs(giocatore, squadra, giocatore.Prezzo));
 				}
 
-				_ = DatiLega.FantaSquadre.Remove(squadra);
+				_ = DatiAsta.FantaSquadre.Remove(squadra);
 
 				m_eventAggregator.GetEvent<FantaSquadraRimossaEvent>().Publish(new FantaSquadraEventArgs(squadra));
 			}
@@ -376,11 +375,11 @@ namespace FantaAsta.Models
 		/// </summary>
 		private void AggiornaStatoGiocatoriInRosa()
 		{
-			if (DatiLega.FantaSquadre != null)
+			if (DatiAsta.FantaSquadre != null)
 			{
 				List<Giocatore> listaSupporto; Giocatore giocatoreSupporto;
 
-				foreach (FantaSquadra squadra in DatiLega.FantaSquadre)
+				foreach (FantaSquadra squadra in DatiAsta.FantaSquadre)
 				{
 					listaSupporto = new List<Giocatore>();
 
@@ -436,7 +435,7 @@ namespace FantaAsta.Models
 			{
 				ModalitaAstaInvernaleAttiva = attivaAstaInvernale;
 
-				foreach (FantaSquadra squadra in DatiLega.FantaSquadre)
+				foreach (FantaSquadra squadra in DatiAsta.FantaSquadre)
 				{
 					squadra.Budget += attivaAstaInvernale ? Preferenze.BudgetAggiuntivo : -Preferenze.BudgetAggiuntivo;
 				}
@@ -470,8 +469,8 @@ namespace FantaAsta.Models
 			{
 				try
 				{
-					DatiLega.PercorsoFileLista = Path.Combine(CommonConstants.DATA_DIRECTORY_PATH, $"Quotazioni ({DateTime.Now:dd_MM_yyyy}).csv");
-					File.Copy(filePath, DatiLega.PercorsoFileLista, true);
+					DatiAsta.PercorsoFileLista = Path.Combine(CommonConstants.DATA_DIRECTORY_PATH, $"Quotazioni ({DateTime.Now:dd_MM_yyyy}).csv");
+					File.Copy(filePath, DatiAsta.PercorsoFileLista, true);
 				}
 				catch
 				{
@@ -482,7 +481,7 @@ namespace FantaAsta.Models
 			try
 			{
 				Giocatore giocatore;
-				foreach (string[] data in LeggiFileCSV(DatiLega.PercorsoFileLista))
+				foreach (string[] data in LeggiFileCSV(DatiAsta.PercorsoFileLista))
 				{
 					giocatore = new Giocatore(Convert.ToInt32(data[0]), (Ruoli)Enum.Parse(typeof(Ruoli), data[1]), data[2], Squadre.Single(s => s.Nome.Equals(data[3], StringComparison.OrdinalIgnoreCase)), Convert.ToDouble(data[4]));
 
@@ -511,7 +510,7 @@ namespace FantaAsta.Models
 		/// </summary>
 		private void CaricaLista()
 		{
-			_ = CaricaListaDaFile(DatiLega.PercorsoFileLista, true);
+			_ = CaricaListaDaFile(DatiAsta.PercorsoFileLista, true);
 		}
 
 		/// <summary>
@@ -544,17 +543,17 @@ namespace FantaAsta.Models
 		}
 
 		/// <summary>
-		/// Metodo per deserializzare i dati della lega e mantenerne una copia
+		/// Metodo per deserializzare i dati dell'asta e mantenerne una copia
 		/// </summary>
 		private void CaricaDati()
 		{
-			m_datiLegaSalvati = XML.Deserialize(CommonConstants.DATA_FILE_PATH, typeof(DatiLega)) as DatiLega;
-			if (m_datiLegaSalvati == null)
+			m_datiAstaSalvati = XML.Deserialize(CommonConstants.DATA_FILE_PATH, typeof(DatiAsta)) as DatiAsta;
+			if (m_datiAstaSalvati == null)
 			{
-				m_datiLegaSalvati = new DatiLega();
+				m_datiAstaSalvati = new DatiAsta();
 			}
 
-			DatiLega = m_datiLegaSalvati.Clone() as DatiLega;
+			DatiAsta = m_datiAstaSalvati.Clone() as DatiAsta;
 		}
 
 		/// <summary>
@@ -638,69 +637,6 @@ namespace FantaAsta.Models
 		}
 
 		#endregion
-
-		#endregion
-	}
-
-	[DataContract(Name = "FantaLegaData", Namespace = "")]
-	public class DatiLega : ICloneable
-	{
-		#region Properties
-
-		[DataMember(Name = "FantaSquadre")]
-		public List<FantaSquadra> FantaSquadre { get; set; }
-
-		[DataMember(Name = "PercorsoFileLista")]
-		public string PercorsoFileLista { get; set; }
-
-		#endregion
-
-		public DatiLega()
-		{
-			FantaSquadre = new List<FantaSquadra>();
-			PercorsoFileLista = string.Empty;
-		}
-
-		#region Public methods
-
-		public override bool Equals(object obj)
-		{
-			if (obj is DatiLega other)
-			{
-				bool res = false;
-
-				res |= !string.IsNullOrEmpty(PercorsoFileLista) && !PercorsoFileLista.Equals(other.PercorsoFileLista);
-				res |= FantaSquadre.Count != other.FantaSquadre.Count;
-
-				if (!res)
-				{
-					foreach (FantaSquadra fantaSquadra in FantaSquadre)
-					{
-						res |= !other.FantaSquadre.Contains(fantaSquadra);
-					}
-				}
-
-				return !res;
-			}
-			else
-			{
-				return false;
-			}
-		}
-
-		public override int GetHashCode()
-		{
-			return base.GetHashCode();
-		}
-
-		public object Clone()
-		{
-			return new DatiLega
-			{
-				FantaSquadre = FantaSquadre.Clone(),
-				PercorsoFileLista = PercorsoFileLista
-			};
-		}
 
 		#endregion
 	}

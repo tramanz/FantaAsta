@@ -67,11 +67,11 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public PreferenzeViewModel(IEventAggregator eventAggregator, IDialogService dialogService, Lega lega) : base(eventAggregator, lega)
+		public PreferenzeViewModel(IEventAggregator eventAggregator, IDialogService dialogService, Asta asta) : base(eventAggregator, asta)
 		{
 			m_dialogService = dialogService;
 
-			m_copiaPreferenze = m_lega.Preferenze.Clone() as Preferenze;
+			m_copiaPreferenze = m_asta.Preferenze.Clone() as Preferenze;
 			
 			DiminuisciBudgetInizialeCommand = new DelegateCommand(DiminuisciBudgetIniziale);
 			AumentaBudgetInizialeCommand = new DelegateCommand(AumentaBudgetIniziale);
@@ -122,7 +122,7 @@ namespace FantaAsta.ViewModels
 
 		private void Salva()
 		{
-			m_lega.SalvaPreferenze(m_copiaPreferenze);
+			m_asta.SalvaPreferenze(m_copiaPreferenze);
 		}
 
 		private bool Valida()
@@ -141,7 +141,7 @@ namespace FantaAsta.ViewModels
 			{
 				if (m_copiaPreferenze.PreferenzeImpostate)
 				{
-					if (!m_copiaPreferenze.Equals(m_lega.Preferenze))
+					if (!m_copiaPreferenze.Equals(m_asta.Preferenze))
 					{
 						ButtonResult result = m_dialogService.ShowMessage("Le rose si resetteranno. Sei sicuro di voler salvare le modifiche?", MessageType.Warning);
 						if (result == ButtonResult.Yes)

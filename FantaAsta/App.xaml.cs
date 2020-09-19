@@ -35,7 +35,7 @@ namespace FantaAsta
 
 			containerRegistry.RegisterDialogWindow<DialogWindow>();
 
-			_ = containerRegistry.RegisterSingleton<Lega>();
+			_ = containerRegistry.RegisterSingleton<Asta>();
 		}
 
 		protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

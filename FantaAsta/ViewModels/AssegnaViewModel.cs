@@ -61,7 +61,7 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public AssegnaViewModel(IEventAggregator eventAggregator, IDialogService dialogService, Lega lega) : base(eventAggregator, lega)
+		public AssegnaViewModel(IEventAggregator eventAggregator, IDialogService dialogService, Asta asta) : base(eventAggregator, asta)
 		{
 			m_dialogService = dialogService;
 		}
@@ -75,7 +75,7 @@ namespace FantaAsta.ViewModels
 			m_giocatore = parameters.GetValue<Giocatore>(typeof(Giocatore).ToString());
 			Prezzo = m_giocatore.Quotazione.ToString();
 
-			Squadre = new ObservableCollection<string>(m_lega?.DatiLega.FantaSquadre.Select(s => s.Nome).OrderBy(s => s));
+			Squadre = new ObservableCollection<string>(m_asta?.DatiAsta.FantaSquadre.Select(s => s.Nome).OrderBy(s => s));
 		}
 
 		#endregion
@@ -102,7 +102,7 @@ namespace FantaAsta.ViewModels
 
 		private void Conferma()
 		{
-			FantaSquadra fantaSquadra = m_lega?.DatiLega.FantaSquadre.Single(s => s.Nome.Equals(SquadraSelezionata));
+			FantaSquadra fantaSquadra = m_asta?.DatiAsta.FantaSquadre.Single(s => s.Nome.Equals(SquadraSelezionata));
 
 			if (double.IsNaN(m_prezzo))
 			{
@@ -124,7 +124,7 @@ namespace FantaAsta.ViewModels
 			}
 			else
 			{
-				bool result = m_lega.AggiungiGiocatore(fantaSquadra, m_giocatore, m_prezzo);
+				bool result = m_asta.AggiungiGiocatore(fantaSquadra, m_giocatore, m_prezzo);
 
 				if (!result)
 				{

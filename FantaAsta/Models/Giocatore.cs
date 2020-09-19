@@ -87,7 +87,7 @@ namespace FantaAsta.Models
 		[OnDeserialized()]
 		private void OnDeserialized(StreamingContext context)
 		{
-			Squadra = Lega.Squadre.Single(s => s.Nome.Equals(SquadraString));
+			Squadra = Asta.Squadre.Single(s => s.Nome.Equals(SquadraString));
 		}
 
 		#endregion

@@ -12,15 +12,15 @@ namespace FantaAsta.ViewModels
 
 		protected readonly SynchronizationContext m_syncContext;
 
-		protected readonly Lega m_lega;
+		protected readonly Asta m_asta;
 
 		#endregion
 
-		protected BaseNavigationViewModel(IRegionManager regionManager, IEventAggregator eventAggregator, Lega lega) : base(regionManager, eventAggregator)
+		protected BaseNavigationViewModel(IRegionManager regionManager, IEventAggregator eventAggregator, Asta asta) : base(regionManager, eventAggregator)
 		{
 			m_syncContext = SynchronizationContext.Current;
 
-			m_lega = lega;
+			m_asta = asta;
 		}
 	}
 }

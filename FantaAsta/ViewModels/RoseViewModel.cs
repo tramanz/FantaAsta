@@ -63,7 +63,7 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public RoseViewModel(IRegionManager regionManager, IEventAggregator eventAggregator, IDialogService dialogService, Lega lega) : base(regionManager, eventAggregator, lega)
+		public RoseViewModel(IRegionManager regionManager, IEventAggregator eventAggregator, IDialogService dialogService, Asta asta) : base(regionManager, eventAggregator, asta)
 		{
 			m_dialogService = dialogService;
 
@@ -76,8 +76,8 @@ namespace FantaAsta.ViewModels
 			_ = m_eventAggregator.GetEvent<ListaImportataEvent>().Subscribe(OnListaImportata);
 			_ = m_eventAggregator.GetEvent<FantaSquadreSalvateEvent>().Subscribe(OnFantaSquadreSalvate);
 
-			Media = m_lega.QuotazioneMedia;
-			Squadre = new ObservableCollection<FantaSquadraViewModel>(m_lega.DatiLega.FantaSquadre.Select(s => new FantaSquadraViewModel(s)).OrderBy(s => s.FantaSquadra.Nome));
+			Media = m_asta.QuotazioneMedia;
+			Squadre = new ObservableCollection<FantaSquadraViewModel>(m_asta.DatiAsta.FantaSquadre.Select(s => new FantaSquadraViewModel(s)).OrderBy(s => s.FantaSquadra.Nome));
 
 			SalvaCommand = new DelegateCommand(Salva, AbilitaSalva);
 			IndietroCommand = new DelegateCommand(NavigateToSelezione);
@@ -158,7 +158,7 @@ namespace FantaAsta.ViewModels
 
 		private void OnListaImportata()
 		{
-			Media = m_lega.QuotazioneMedia;
+			Media = m_asta.QuotazioneMedia;
 
 			ModificaCommand?.RaiseCanExecuteChanged();
 			SalvaCommand?.RaiseCanExecuteChanged();
@@ -179,7 +179,7 @@ namespace FantaAsta.ViewModels
 
 			if (res == ButtonResult.Yes)
 			{
-				m_lega.RimuoviSquadra(squadraVM.Nome);
+				m_asta.RimuoviSquadra(squadraVM.Nome);
 
 				_ = m_dialogService.ShowMessage("Squadra eliminata", MessageType.Notification);
 			}
@@ -187,11 +187,11 @@ namespace FantaAsta.ViewModels
 
 		private void Modifica(FantaSquadraViewModel squadraVM)
 		{
-			m_dialogService.ShowDialog(CommonConstants.MODIFICA_DIALOG, new DialogParameters { { typeof(FantaSquadra).ToString(), m_lega.DatiLega.FantaSquadre.Single(s => s.Equals(squadraVM.FantaSquadra)) } }, null);
+			m_dialogService.ShowDialog(CommonConstants.MODIFICA_DIALOG, new DialogParameters { { typeof(FantaSquadra).ToString(), m_asta.DatiAsta.FantaSquadre.Single(s => s.Equals(squadraVM.FantaSquadra)) } }, null);
 		}
 		private bool AbilitaModifica(FantaSquadraViewModel squadraVM)
 		{
-			return m_lega.ListaPresente;
+			return m_asta.ListaPresente;
 		}
 
 		private void NavigateToSelezione()
@@ -203,13 +203,13 @@ namespace FantaAsta.ViewModels
 		{
 			Mouse.OverrideCursor = Cursors.Wait;
 
-			m_lega.SalvaDati();
+			m_asta.SalvaDati();
 
 			Mouse.OverrideCursor = Cursors.Arrow;
 		}
 		private bool AbilitaSalva()
 		{
-			return m_lega.AbilitaSalvataggio();
+			return m_asta.AbilitaSalvataggio();
 		}
 
 		#endregion

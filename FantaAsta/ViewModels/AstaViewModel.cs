@@ -101,26 +101,26 @@ namespace FantaAsta.ViewModels
 
 		public bool IsAstaEstivaSelected
 		{
-			get { return !m_lega.ModalitaAstaInvernaleAttiva; }
+			get { return !m_asta.ModalitaAstaInvernaleAttiva; }
 			set 
 			{
 				_ = SetProperty(ref m_isAstaEstivaSelected, value);
 				if (value)
 				{
-					m_lega.CambiaModalitaAsta();
+					m_asta.CambiaModalitaAsta();
 				}
 			}
 		}
 
 		public bool IsAstaInvernaleSelected
 		{ 
-			get { return m_lega.ModalitaAstaInvernaleAttiva; }
+			get { return m_asta.ModalitaAstaInvernaleAttiva; }
 			set
 			{
 				_ = SetProperty(ref m_isAstaInvernaleSelected, value);
 				if (value)
 				{
-					m_lega.CambiaModalitaAsta();
+					m_asta.CambiaModalitaAsta();
 				}
 			}
 		}
@@ -136,7 +136,7 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public AstaViewModel(IEventAggregator eventAggregator, IDialogService dialogService, Lega lega) : base(eventAggregator, lega)
+		public AstaViewModel(IEventAggregator eventAggregator, IDialogService dialogService, Asta asta) : base(eventAggregator, asta)
 		{
 			m_dialogService = dialogService;
 
@@ -158,7 +158,7 @@ namespace FantaAsta.ViewModels
 
 		private void OnTick(object sender, ElapsedEventArgs e)
 		{
-			GiocatoreCorrente = m_lega.EstraiGiocatore(m_ruoloSelezionato);
+			GiocatoreCorrente = m_asta.EstraiGiocatore(m_ruoloSelezionato);
 
 			if (++m_repetitions == MAX_REPETITIONS)
 			{
@@ -195,7 +195,7 @@ namespace FantaAsta.ViewModels
 
 		private void EstraiGiocatore()
 		{
-			m_lega.ControllaAcquistoGiocatore(GiocatoreCorrente);
+			m_asta.ControllaAcquistoGiocatore(GiocatoreCorrente);
 
 			m_timer.Enabled = true;
 			m_timer.Start();

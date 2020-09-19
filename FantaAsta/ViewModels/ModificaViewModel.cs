@@ -56,7 +56,7 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public ModificaViewModel(IDialogService dialogService, IEventAggregator eventAggregator, Lega lega) : base(eventAggregator, lega)
+		public ModificaViewModel(IDialogService dialogService, IEventAggregator eventAggregator, Asta asta) : base(eventAggregator, asta)
 		{
 			m_dialogService = dialogService;
 
@@ -77,7 +77,7 @@ namespace FantaAsta.ViewModels
 			m_squadra = parameters.GetValue<FantaSquadra>(typeof(FantaSquadra).ToString());
 
 			Rosa = new ObservableCollection<Giocatore>(m_squadra.Rosa.OrderBy(g => g.Ruolo).ThenByDescending(g => g.Prezzo).ThenBy(g => g.Nome));
-			Svincolati = new ObservableCollection<Giocatore>(m_lega.Svincolati.OrderBy(g => g.Nome));
+			Svincolati = new ObservableCollection<Giocatore>(m_asta.Svincolati.OrderBy(g => g.Nome));
 
 			_ = m_eventAggregator.GetEvent<GiocatoreAggiuntoEvent>().Subscribe(OnGiocatoreAggiunto);
 			_ = m_eventAggregator.GetEvent<GiocatoreRimossoEvent>().Subscribe(OnGiocatoreRimosso);
@@ -123,7 +123,7 @@ namespace FantaAsta.ViewModels
 			if (args.FantaSquadra.Equals(m_squadra) && Rosa.Contains(args.Giocatore) && !Svincolati.Contains(args.Giocatore))
 			{
 				_ = Rosa.Remove(args.Giocatore);
-				Svincolati = new ObservableCollection<Giocatore>(m_lega.Svincolati.OrderBy(g => g.Nome));
+				Svincolati = new ObservableCollection<Giocatore>(m_asta.Svincolati.OrderBy(g => g.Nome));
 			}
 		}
 
@@ -133,7 +133,7 @@ namespace FantaAsta.ViewModels
 
 		private void Aggiungi()
 		{
-			if (m_lega.DatiLega.FantaSquadre.Select(s => s.Rosa).Where(g => g.Contains(SvincolatoSelezionato)).Count() > 0)
+			if (m_asta.DatiAsta.FantaSquadre.Select(s => s.Rosa).Where(g => g.Contains(SvincolatoSelezionato)).Count() > 0)
 			{
 				_ = m_dialogService.ShowMessage("Il giocatore selezionato è già assegnato ad una fantasquadra", MessageType.Warning);
 			}

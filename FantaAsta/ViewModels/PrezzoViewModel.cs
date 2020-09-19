@@ -47,7 +47,7 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public PrezzoViewModel(IEventAggregator eventAggregator, IDialogService dialogService, Lega lega) : base(eventAggregator, lega)
+		public PrezzoViewModel(IEventAggregator eventAggregator, IDialogService dialogService, Asta asta) : base(eventAggregator, asta)
 		{
 			m_dialogService = dialogService;
 		}
@@ -135,7 +135,7 @@ namespace FantaAsta.ViewModels
 			}
 			else
 			{
-				bool result = m_lega.AggiungiGiocatore(m_squadra, m_giocatore, m_prezzo);
+				bool result = m_asta.AggiungiGiocatore(m_squadra, m_giocatore, m_prezzo);
 
 				if (!result)
 				{
@@ -154,7 +154,7 @@ namespace FantaAsta.ViewModels
 			}
 			else
 			{
-				m_lega.RimuoviGiocatore(m_squadra, m_giocatore, m_prezzo);
+				m_asta.RimuoviGiocatore(m_squadra, m_giocatore, m_prezzo);
 			}
 		}
 

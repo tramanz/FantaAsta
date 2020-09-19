@@ -7,9 +7,9 @@ namespace FantaAsta.Constants
 	{
 		#region PERCORSI
 
-		public static string DATA_DIRECTORY_PATH = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "FantaLegaManager");
-		public static string DATA_FILE_PATH = Path.Combine(DATA_DIRECTORY_PATH, "FantaLegaData.xml");
-		public static string SETTINGS_FILE_PATH = Path.Combine(DATA_DIRECTORY_PATH, "FantaLegaSettings.xml");
+		public static string DATA_DIRECTORY_PATH = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "FantaAstaManager");
+		public static string DATA_FILE_PATH = Path.Combine(DATA_DIRECTORY_PATH, "FantaAstaData.xml");
+		public static string SETTINGS_FILE_PATH = Path.Combine(DATA_DIRECTORY_PATH, "FantaAstaSettings.xml");
 
 		#endregion
 

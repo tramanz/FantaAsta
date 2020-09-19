@@ -18,7 +18,7 @@ namespace FantaAsta.Modules
 
 		private IDialogService m_dialogService;
 
-		private Lega m_lega;
+		private Asta m_asta;
 
 		#endregion
 
@@ -26,7 +26,7 @@ namespace FantaAsta.Modules
 
 		public void OnInitialized(IContainerProvider containerProvider)
 		{
-			m_lega = containerProvider.Resolve<Lega>();
+			m_asta = containerProvider.Resolve<Asta>();
 
 			m_dialogService = containerProvider.Resolve<IDialogService>();
 			
@@ -74,7 +74,7 @@ namespace FantaAsta.Modules
 
 		private void Salva()
 		{
-			m_lega.SalvaDati();
+			m_asta.SalvaDati();
 		}
 
 		private void ChiudiApplicazione()

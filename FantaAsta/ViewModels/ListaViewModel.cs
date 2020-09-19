@@ -43,7 +43,7 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public ListaViewModel(IEventAggregator eventAggregator, Lega lega) : base(eventAggregator, lega)
+		public ListaViewModel(IEventAggregator eventAggregator, Asta asta) : base(eventAggregator, asta)
 		{
 			InizializzaListe();
 
@@ -65,7 +65,7 @@ namespace FantaAsta.ViewModels
 			if (args.Giocatore.InLista)
 			{
 				ObservableCollection<Giocatore> lista = SelezionaListaDaRuolo(args.Giocatore.Ruolo);
-				lista = new ObservableCollection<Giocatore>(m_lega.Svincolati.OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
+				lista = new ObservableCollection<Giocatore>(m_asta.Svincolati.OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
 			}
 		}
 
@@ -81,12 +81,12 @@ namespace FantaAsta.ViewModels
 
 		private void InizializzaListe()
 		{
-			if (m_lega.ListaPresente)
+			if (m_asta.ListaPresente)
 			{
-				Portieri = new ObservableCollection<Giocatore>(m_lega.Svincolati.Where(g => g.Ruolo == Ruoli.P).OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
-				Difensori = new ObservableCollection<Giocatore>(m_lega.Svincolati.Where(g => g.Ruolo == Ruoli.D).OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
-				Centrocampisti = new ObservableCollection<Giocatore>(m_lega.Svincolati.Where(g => g.Ruolo == Ruoli.C).OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
-				Attaccanti = new ObservableCollection<Giocatore>(m_lega.Svincolati.Where(g => g.Ruolo == Ruoli.A).OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
+				Portieri = new ObservableCollection<Giocatore>(m_asta.Svincolati.Where(g => g.Ruolo == Ruoli.P).OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
+				Difensori = new ObservableCollection<Giocatore>(m_asta.Svincolati.Where(g => g.Ruolo == Ruoli.D).OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
+				Centrocampisti = new ObservableCollection<Giocatore>(m_asta.Svincolati.Where(g => g.Ruolo == Ruoli.C).OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
+				Attaccanti = new ObservableCollection<Giocatore>(m_asta.Svincolati.Where(g => g.Ruolo == Ruoli.A).OrderByDescending(g => g.Quotazione).ThenBy(g => g.Nome));
 			}
 		}
 

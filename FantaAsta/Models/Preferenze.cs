@@ -4,7 +4,7 @@ using FantaAsta.Constants;
 
 namespace FantaAsta.Models
 {
-	[DataContract(Name = "FantaLegaSettings", Namespace = "")]
+	[DataContract(Name = "FantaAstaSettings", Namespace = "")]
 	public class Preferenze : ICloneable
 	{
 		#region Properties

@@ -34,7 +34,7 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public AggiungiSquadraViewModel(IEventAggregator eventAggregator, IDialogService dialogService, Lega lega) : base(eventAggregator, lega)
+		public AggiungiSquadraViewModel(IEventAggregator eventAggregator, IDialogService dialogService, Asta asta) : base(eventAggregator, asta)
 		{
 			m_dialogService = dialogService;
 		}
@@ -61,7 +61,7 @@ namespace FantaAsta.ViewModels
 
 		private void Aggiungi()
 		{
-			bool result = m_lega.AggiungiSquadra(Nome);
+			bool result = m_asta.AggiungiSquadra(Nome);
 
 			if (result)
 			{

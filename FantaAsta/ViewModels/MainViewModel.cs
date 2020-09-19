@@ -17,7 +17,7 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public MainViewModel(IRegionManager regionManager, IEventAggregator eventAggregator, Lega lega) : base(regionManager, eventAggregator, lega)
+		public MainViewModel(IRegionManager regionManager, IEventAggregator eventAggregator, Asta asta) : base(regionManager, eventAggregator, asta)
 		{
 			_ = m_eventAggregator.GetEvent<GiocatoreAggiuntoEvent>().Subscribe(OnGiocatoreAggiunto);
 			_ = m_eventAggregator.GetEvent<GiocatoreRimossoEvent>().Subscribe(OnGiocatoreRimosso);
@@ -83,13 +83,13 @@ namespace FantaAsta.ViewModels
 		{
 			Mouse.OverrideCursor = Cursors.Wait;
 
-			m_lega.SalvaDati();
+			m_asta.SalvaDati();
 
 			Mouse.OverrideCursor = Cursors.Arrow;
 		}
 		private bool AbilitaSalva()
 		{
-			return m_lega.AbilitaSalvataggio();
+			return m_asta.AbilitaSalvataggio();
 		}
 
 		#endregion

@@ -13,17 +13,17 @@ namespace FantaAsta.ViewModels
 
 		protected readonly SynchronizationContext m_syncContext;
 
-		protected readonly Lega m_lega;
+		protected readonly Asta m_asta;
 
 		#endregion
 
-		protected BaseViewModel(IEventAggregator eventAggregator, Lega lega)
+		protected BaseViewModel(IEventAggregator eventAggregator, Asta asta)
 		{
 			m_eventAggregator = eventAggregator;
 
 			m_syncContext = SynchronizationContext.Current;
 
-			m_lega = lega;
+			m_asta = asta;
 		}
 	}
 }

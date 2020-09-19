@@ -13,7 +13,7 @@ namespace FantaAsta.ViewModels
 
 		#endregion
 
-		public StoricoViewModel(IEventAggregator eventAggregator, Lega lega) : base(eventAggregator, lega)
+		public StoricoViewModel(IEventAggregator eventAggregator, Asta asta) : base(eventAggregator, asta)
 		{
 			Azioni = new ObservableCollection<string>();
 
