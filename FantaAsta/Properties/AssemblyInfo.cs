@@ -4,11 +4,11 @@ using System.Windows;
 
 // Le informazioni generali relative a un assembly sono controllate dal seguente set di attributi.
 // Modificare i valori di questi attributi per modificare le informazioni associate a un assembly.
-[assembly: AssemblyTitle("FantaLegaManager")]
+[assembly: AssemblyTitle("FantaAstaManager")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Marco Tramarin")]
-[assembly: AssemblyProduct("FantaLegaManager")]
+[assembly: AssemblyProduct("FantaAstaManager")]
 [assembly: AssemblyCopyright("Marco Tramarin © 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -42,5 +42,5 @@ using System.Windows;
 // È possibile specificare tutti i valori oppure impostare valori predefiniti per i numeri relativi alla revisione e alla build
 // usando l'asterisco '*' come illustrato di seguito:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.3")]
-[assembly: AssemblyFileVersion("1.0.3")]
+[assembly: AssemblyVersion("1.1.0")]
+[assembly: AssemblyFileVersion("1.1.0")]
