@@ -56,9 +56,9 @@ namespace FantaAsta.ViewModels
 
 		public override void OnDialogOpened(IDialogParameters parameters)
 		{
-			m_giocatore = parameters.GetValue<Giocatore>("Giocatore");
-			m_squadra = parameters.GetValue<FantaSquadra>("FantaSquadra");
-			m_movimento = parameters.GetValue<Movimenti>("Movimento");
+			m_giocatore = parameters.GetValue<Giocatore>(typeof(Giocatore).ToString()); ;
+			m_squadra = parameters.GetValue<FantaSquadra>(typeof(FantaSquadra).ToString());
+			m_movimento = parameters.GetValue<Movimenti>(typeof(Movimenti).ToString());
 
 			base.OnDialogOpened(parameters);
 
@@ -74,7 +74,7 @@ namespace FantaAsta.ViewModels
 
 		protected override void InizializzaTitolo(IDialogParameters parameters)
 		{
-			Title = $"Inserisci il prezzo di {parameters.GetValue<Movimenti>("Movimento").ToString().ToLower()}";
+			Title = $"Inserisci il prezzo di {parameters.GetValue<Movimenti>(typeof(Movimenti).ToString()).ToString().ToLower()}";
 		}
 
 		protected override void InizializzaBottoni(IDialogParameters parameters)
@@ -148,7 +148,7 @@ namespace FantaAsta.ViewModels
 		{
 			if (m_prezzo <= 0)
 			{
-				_ = m_dialogService.ShowMessage("Il prezzo di vendita non può essere minore o uguale a 0.", MessageType.Error);
+				_ = m_dialogService.ShowMessage("Il prezzo di vendita non può essere minore o uguale a 0", MessageType.Error);
 
 				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
 			}

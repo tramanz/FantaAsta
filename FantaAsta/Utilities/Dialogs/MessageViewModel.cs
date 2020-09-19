@@ -38,7 +38,7 @@ namespace FantaAsta.Utilities.Dialogs
 		{
 			base.OnDialogOpened(parameters);
 
-			Message = parameters.GetValue<string>("Message");
+			Message = parameters.GetValue<string>(typeof(string).ToString());
 		}
 
 		#endregion
@@ -47,7 +47,7 @@ namespace FantaAsta.Utilities.Dialogs
 
 		protected override void InizializzaIcona(IDialogParameters parameters)
 		{
-			MessageType messageType = parameters.GetValue<MessageType>("Type");
+			MessageType messageType = parameters.GetValue<MessageType>(typeof(MessageType).ToString());
 			switch (messageType)
 			{
 				case MessageType.Error:
@@ -75,7 +75,7 @@ namespace FantaAsta.Utilities.Dialogs
 
 		protected override void InizializzaTitolo(IDialogParameters parameters)
 		{
-			MessageType messageType = parameters.GetValue<MessageType>("Type");
+			MessageType messageType = parameters.GetValue<MessageType>(typeof(MessageType).ToString());
 			switch (messageType)
 			{
 				case MessageType.Error:
@@ -100,7 +100,7 @@ namespace FantaAsta.Utilities.Dialogs
 
 		protected override void InizializzaBottoni(IDialogParameters parameters)
 		{
-			MessageType messageType = parameters.GetValue<MessageType>("Type");
+			MessageType messageType = parameters.GetValue<MessageType>(typeof(MessageType).ToString());
 			switch (messageType)
 			{
 				case MessageType.Error:

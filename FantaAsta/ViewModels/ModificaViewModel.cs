@@ -74,7 +74,7 @@ namespace FantaAsta.ViewModels
 
 		public override void OnDialogOpened(IDialogParameters parameters)
 		{
-			m_squadra = parameters.GetValue<FantaSquadra>("squadra");
+			m_squadra = parameters.GetValue<FantaSquadra>(typeof(FantaSquadra).ToString());
 
 			Rosa = new ObservableCollection<Giocatore>(m_squadra.Rosa.OrderBy(g => g.Ruolo).ThenByDescending(g => g.Prezzo).ThenBy(g => g.Nome));
 			Svincolati = new ObservableCollection<Giocatore>(m_lega.Svincolati.OrderBy(g => g.Nome));
@@ -94,7 +94,7 @@ namespace FantaAsta.ViewModels
 
 		protected override void InizializzaTitolo(IDialogParameters parameters)
 		{
-			Title = $"Modifica la rosa di {parameters.GetValue<FantaSquadra>("squadra").Nome}";
+			Title = $"Modifica la rosa di {parameters.GetValue<FantaSquadra>(typeof(FantaSquadra).ToString()).Nome}";
 		}
 
 		protected override void InizializzaBottoni(IDialogParameters parameters)
@@ -135,17 +135,16 @@ namespace FantaAsta.ViewModels
 		{
 			if (m_lega.DatiLega.FantaSquadre.Select(s => s.Rosa).Where(g => g.Contains(SvincolatoSelezionato)).Count() > 0)
 			{
-				_ = m_dialogService.ShowMessage("Il giocatore selezionato è già assegnato ad una fantasquadra.", MessageType.Warning);
+				_ = m_dialogService.ShowMessage("Il giocatore selezionato è già assegnato ad una fantasquadra", MessageType.Warning);
 			}
 			else
 			{
 				m_dialogService.ShowDialog(CommonConstants.PREZZO_DIALOG, new DialogParameters
 				{
-					{ "Type", DialogType.Popup },
-					{ "Movimento", Movimenti.Acquisto },
-					{ "FantaSquadra", m_squadra},
-					{ "Giocatore", SvincolatoSelezionato }
-				}, null);
+					{ typeof(Movimenti).ToString(), Movimenti.Acquisto },
+					{ typeof(FantaSquadra).ToString(), m_squadra},
+					{ typeof(Giocatore).ToString(), SvincolatoSelezionato }
+				}, null); ;
 			}
 		}
 		private bool AbilitaAggiungi()
@@ -157,15 +156,15 @@ namespace FantaAsta.ViewModels
 		{
 			if (!m_squadra.Rosa.Contains(GiocatoreSelezionato))
 			{
-				_ = m_dialogService.ShowMessage("Il giocatore selezionato non è presente nella rosa della fantasquadra.", MessageType.Warning);
+				_ = m_dialogService.ShowMessage("Il giocatore selezionato non è presente nella rosa della fantasquadra", MessageType.Warning);
 			}
 			else
 			{
 				m_dialogService.ShowDialog(CommonConstants.PREZZO_DIALOG, new DialogParameters
 				{
-					{ "Movimento", Movimenti.Vendita },
-					{ "FantaSquadra", m_squadra},
-					{ "Giocatore", GiocatoreSelezionato }
+					{ typeof(Movimenti).ToString(), Movimenti.Vendita },
+					{ typeof(FantaSquadra).ToString(), m_squadra},
+					{ typeof(Giocatore).ToString(), GiocatoreSelezionato }
 				}, null);
 			}
 		}

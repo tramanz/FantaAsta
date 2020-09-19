@@ -330,7 +330,7 @@ namespace FantaAsta.Models
 		/// <param name="nome">Il nome della fantasquadra</param>
 		public void RimuoviSquadra(string nome)
 		{
-			FantaSquadra squadra = DatiLega.FantaSquadre.Where(s => s.Nome.Equals(nome)).SingleOrDefault();
+			FantaSquadra squadra = DatiLega.FantaSquadre.SingleOrDefault(s => s.Nome.Equals(nome));
 
 			if (squadra != null)
 			{

@@ -212,11 +212,7 @@ namespace FantaAsta.ViewModels
 
 		private void AssegnaGiocatore()
 		{
-			m_dialogService.ShowDialog(CommonConstants.ASSEGNA_DIALOG, new DialogParameters
-				{
-					{ "Type", DialogType.Popup },
-					{ "Giocatore", GiocatoreCorrente }
-				}, null);
+			m_dialogService.ShowDialog(CommonConstants.ASSEGNA_DIALOG, new DialogParameters { { typeof(Giocatore).ToString(), GiocatoreCorrente } }, null);
 
 			AssegnaGiocatoreCommand?.RaiseCanExecuteChanged();
 		}

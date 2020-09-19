@@ -1,11 +1,5 @@
 ﻿namespace FantaAsta.Enums
 {
-	public enum DialogType
-	{
-		Message,
-		Popup
-	}
-
 	public enum MessageType
 	{
 		Error,

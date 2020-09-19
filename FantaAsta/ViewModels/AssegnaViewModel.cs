@@ -72,7 +72,7 @@ namespace FantaAsta.ViewModels
 		{
 			base.OnDialogOpened(parameters);
 			
-			m_giocatore = parameters.GetValue<Giocatore>("Giocatore");
+			m_giocatore = parameters.GetValue<Giocatore>(typeof(Giocatore).ToString());
 			Prezzo = m_giocatore.Quotazione.ToString();
 
 			Squadre = new ObservableCollection<string>(m_lega?.DatiLega.FantaSquadre.Select(s => s.Nome).OrderBy(s => s));
@@ -87,7 +87,7 @@ namespace FantaAsta.ViewModels
 
 		protected override void InizializzaTitolo(IDialogParameters parameters)
 		{
-			Title = $"Chi si aggiudica {parameters.GetValue<Giocatore>("Giocatore").Nome}?";
+			Title = $"Chi si aggiudica {parameters.GetValue<Giocatore>(typeof(Giocatore).ToString()).Nome}?";
 		}
 
 		protected override void InizializzaBottoni(IDialogParameters parameters)
@@ -106,19 +106,19 @@ namespace FantaAsta.ViewModels
 
 			if (double.IsNaN(m_prezzo))
 			{
-				_ = m_dialogService.ShowMessage("Inserire un prezzo.", MessageType.Error);
+				_ = m_dialogService.ShowMessage("Inserire un prezzo", MessageType.Error);
 
 				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
 			}
 			else if (m_prezzo < m_giocatore.Quotazione)
 			{
-				_ = m_dialogService.ShowMessage("Il prezzo di acquisto non può essere inferiore alla quotazione del giocatore.", MessageType.Error);
+				_ = m_dialogService.ShowMessage("Il prezzo di acquisto non può essere inferiore alla quotazione del giocatore", MessageType.Error);
 
 				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
 			}
 			else if (m_prezzo > fantaSquadra.Budget)
 			{
-				_ = m_dialogService.ShowMessage("Budget non disponibile.", MessageType.Error);
+				_ = m_dialogService.ShowMessage("Budget non disponibile", MessageType.Error);
 
 				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
 			}

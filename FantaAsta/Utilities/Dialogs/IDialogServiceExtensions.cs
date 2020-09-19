@@ -10,8 +10,8 @@ namespace FantaAsta.Utilities.Dialogs
 		{
 			DialogParameters parameters = new DialogParameters
 			{
-				{ "Message", message },
-				{ "Type", type }
+				{ typeof(MessageType).ToString(), type },
+				{ typeof(string).ToString(), message }
 			};
 
 			ButtonResult result = ButtonResult.None;

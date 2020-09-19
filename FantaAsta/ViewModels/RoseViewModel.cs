@@ -187,13 +187,7 @@ namespace FantaAsta.ViewModels
 
 		private void Modifica(FantaSquadraViewModel squadraVM)
 		{
-			FantaSquadra fantaSquadra = m_lega.DatiLega.FantaSquadre.Where(s => s.Equals(squadraVM.FantaSquadra)).Single();
-
-			m_dialogService.ShowDialog(CommonConstants.MODIFICA_DIALOG, new DialogParameters
-			{
-				{ "Type", DialogType.Popup },
-				{ "squadra", fantaSquadra }
-			}, null);
+			m_dialogService.ShowDialog(CommonConstants.MODIFICA_DIALOG, new DialogParameters { { typeof(FantaSquadra).ToString(), m_lega.DatiLega.FantaSquadre.Single(s => s.Equals(squadraVM.FantaSquadra)) } }, null);
 		}
 		private bool AbilitaModifica(FantaSquadraViewModel squadraVM)
 		{

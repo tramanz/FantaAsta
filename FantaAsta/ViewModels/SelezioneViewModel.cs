@@ -42,10 +42,8 @@ namespace FantaAsta.ViewModels
 
 			_ = m_eventAggregator.GetEvent<ApriFileDialogEvent>().Subscribe(OnApriFileDialog);
 			_ = m_eventAggregator.GetEvent<ListaImportataEvent>().Subscribe(OnListaImportata);
-			_ = m_eventAggregator.GetEvent<FantaSquadraAggiuntaEvent>().Subscribe(AggiornaComandoAvviaAsta);
-			_ = m_eventAggregator.GetEvent<FantaSquadraRimossaEvent>().Subscribe(AggiornaComandoAvviaAsta);
 
-			AvviaAstaCommand = new DelegateCommand(AvviaAsta, AbilitaAvviaAsta);
+			AvviaAstaCommand = new DelegateCommand(AvviaAsta);
 			GestisciRoseCommand = new DelegateCommand(GestisciRose);
 			SvuotaRoseCommand = new DelegateCommand(SvuotaRose);
 			AggiungiSquadraCommand = new DelegateCommand(AggiungiSquadra);
@@ -94,13 +92,6 @@ namespace FantaAsta.ViewModels
 			Mouse.OverrideCursor = Cursors.Arrow;
 
 			_ = m_dialogService.ShowMessage("Lista importata con successo", MessageType.Notification);
-
-			AggiornaComandoAvviaAsta(null);
-		}
-
-		private void AggiornaComandoAvviaAsta(FantaSquadraEventArgs args)
-		{
-			AvviaAstaCommand?.RaiseCanExecuteChanged();
 		}
 
 		#endregion
@@ -116,12 +107,15 @@ namespace FantaAsta.ViewModels
 
 			if (m_lega.Preferenze.PreferenzeImpostate)
 			{
-				NavigateToMain();
+				if (!m_lega.ListaPresente || m_lega.DatiLega.FantaSquadre.Count == 0)
+				{
+					m_dialogService.ShowMessage("Per avviare l'asta importare la lista e aggiungere almeno una fantasquadra", MessageType.Error);
+				}
+				else
+				{
+					NavigateToMain();
+				}
 			}
-		}
-		private bool AbilitaAvviaAsta()
-		{
-			return m_lega.ListaPresente && m_lega.DatiLega.FantaSquadre.Count > 0;
 		}
 
 		private void GestisciRose()
@@ -146,7 +140,7 @@ namespace FantaAsta.ViewModels
 
 		private void AggiungiSquadra()
 		{
-			m_dialogService.ShowDialog(CommonConstants.AGGIUNGI_DIALOG, new DialogParameters { { "Type", DialogType.Popup } }, (res) => AggiornaComandoAvviaAsta(null));
+			m_dialogService.ShowDialog(CommonConstants.AGGIUNGI_DIALOG, new DialogParameters(), null);
 		}
 
 		private void ImportaLista()
@@ -156,7 +150,7 @@ namespace FantaAsta.ViewModels
 
 		private void MostraPreferenze()
 		{
-			_ = m_dialogService.ShowMessage("Le preferenze non sono ancora state impostate.", MessageType.Error);
+			_ = m_dialogService.ShowMessage("Le preferenze non sono ancora state impostate", MessageType.Error);
 
 			m_dialogService.ShowDialog(CommonConstants.PREFERENZE_DIALOG, new DialogParameters(), null);
 		}
