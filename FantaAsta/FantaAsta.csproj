@@ -130,6 +130,7 @@
     <Compile Include="Utilities\Enums.cs" />
     <Compile Include="Utilities\Events.cs" />
     <Compile Include="Utilities\XML.cs" />
+    <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\PreferenzeViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseNavigationViewModel.cs" />
     <Compile Include="ViewModels\Base\BaseDialogViewModel.cs" />
@@ -147,6 +148,9 @@
     <Compile Include="ViewModels\StoricoViewModel.cs" />
     <Compile Include="Views\AggiungiSquadraView.xaml.cs">
       <DependentUpon>AggiungiSquadraView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AboutView.xaml.cs">
+      <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AstaView.xaml.cs">
       <DependentUpon>AstaView.xaml</DependentUpon>
@@ -198,6 +202,10 @@
     <Page Include="Views\AggiungiSquadraView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AboutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
@@ -297,7 +305,7 @@
     <Resource Include="Resources\Fonts\SIL Open Font License.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\FantaAstaManager.ico" />
+    <Resource Include="Resources\FantaAstaManager.ico" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

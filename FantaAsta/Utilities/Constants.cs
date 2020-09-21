@@ -36,6 +36,7 @@ namespace FantaAsta.Constants
 		public const string AGGIUNGI_DIALOG = "Aggiungi";
 		public const string ASSEGNA_DIALOG = "Assegna";
 		public const string PREFERENZE_DIALOG = "Preferenze";
+		public const string ABOUT_DIALOG = "About";
 
 		#endregion
 	}

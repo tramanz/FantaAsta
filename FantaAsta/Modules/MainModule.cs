@@ -5,10 +5,10 @@ using Prism.Commands;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
+using Prism.Services.Dialogs;
 using FantaAsta.Constants;
 using FantaAsta.Models;
 using FantaAsta.Views;
-using Prism.Services.Dialogs;
 
 namespace FantaAsta.Modules
 {
@@ -60,16 +60,25 @@ namespace FantaAsta.Modules
 			// Opzioni
 			MenuItem optionsMenuItem = new MenuItem { Header = "Preferenze", Command = new DelegateCommand(ApriPreferenze), TabIndex = 1 };
 
+			// About
+			MenuItem aboutMenuItem = new MenuItem { Header = "Info", Command = new DelegateCommand(ApriAbout), TabIndex = 2 };
+
 			return new List<MenuItem>
 			{
 				fileMenuItem,
-				optionsMenuItem
+				optionsMenuItem,
+				aboutMenuItem
 			};
 		}
 
 		private void ApriPreferenze()
 		{
 			m_dialogService.ShowDialog(CommonConstants.PREFERENZE_DIALOG, new DialogParameters(), null);
+		}
+
+		private void ApriAbout()
+		{
+			m_dialogService.ShowDialog(CommonConstants.ABOUT_DIALOG, new DialogParameters(), null);
 		}
 
 		private void Salva()

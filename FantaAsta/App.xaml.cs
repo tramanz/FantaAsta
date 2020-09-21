@@ -32,6 +32,7 @@ namespace FantaAsta
 			containerRegistry.RegisterDialog<AggiungiSquadraView, AggiungiSquadraViewModel>(CommonConstants.AGGIUNGI_DIALOG);
 			containerRegistry.RegisterDialog<AssegnaView, AssegnaViewModel>(CommonConstants.ASSEGNA_DIALOG);
 			containerRegistry.RegisterDialog<PreferenzeView, PreferenzeViewModel>(CommonConstants.PREFERENZE_DIALOG);
+			containerRegistry.RegisterDialog<AboutView, AboutViewModel>(CommonConstants.ABOUT_DIALOG);
 
 			containerRegistry.RegisterDialogWindow<DialogWindow>();
 
