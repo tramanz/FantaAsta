@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using FantaAsta.ViewModels;
 
@@ -24,7 +25,7 @@ namespace FantaAsta.Views
 			}
 		}
 
-		private void OnSelectNameTextBox(object sender, System.EventArgs e)
+		private void OnSelectNameTextBox(object sender, EventArgs e)
 		{
 			_ = nomeTxtBox.Focus();
 			nomeTxtBox.SelectAll();

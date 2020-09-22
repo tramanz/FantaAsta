@@ -35,7 +35,6 @@ namespace FantaAsta.ViewModels
 				if (double.TryParse(value, NumberStyles.Integer, null, out double number))
 				{
 					m_copiaPreferenze.BudgetIniziale = number;
-
 					RaisePropertyChanged(nameof(BudgetIniziale));
 				}
 			}
@@ -49,8 +48,33 @@ namespace FantaAsta.ViewModels
 				if (double.TryParse(value, NumberStyles.Integer, null, out double number))
 				{
 					m_copiaPreferenze.BudgetAggiuntivo = number;
-
 					RaisePropertyChanged(nameof(BudgetAggiuntivo));
+				}
+			}
+		}
+
+		public bool IsUnoSelected
+		{
+			get { return m_copiaPreferenze.PuntataMinima == PuntataMinima.Uno; }
+			set
+			{
+				if (value)
+				{
+					m_copiaPreferenze.PuntataMinima = PuntataMinima.Uno;
+					RaisePropertyChanged(nameof(IsUnoSelected));
+				}
+			}
+		}
+
+		public bool IsQuotazioneSelected
+		{
+			get { return m_copiaPreferenze.PuntataMinima == PuntataMinima.Quotazione; }
+			set
+			{
+				if (value)
+				{
+					m_copiaPreferenze.PuntataMinima = PuntataMinima.Quotazione;
+					RaisePropertyChanged(nameof(IsQuotazioneSelected));
 				}
 			}
 		}

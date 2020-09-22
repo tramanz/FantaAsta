@@ -12,42 +12,49 @@
 		
 	</UserControl.Resources>
 	
-	<Grid>
+	<Grid Grid.IsSharedSizeScope="True">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition/>
 			<ColumnDefinition/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
-			<RowDefinition/>
-			<RowDefinition/>
+			<RowDefinition SharedSizeGroup="Rows"/>
+			<RowDefinition SharedSizeGroup="Rows"/>
+			<RowDefinition SharedSizeGroup="Rows"/>
 		</Grid.RowDefinitions>
 
-		<Label Grid.Row="0" Grid.Column="0" Content="Budget iniziale:" FontSize="24" VerticalAlignment="Center" Margin="{StaticResource LabelMargin}"/>
-		<Grid Grid.Row="0" Grid.Column="1" Height="45" Margin="{StaticResource ControlMargin}">
+		<Label Grid.Row="0" Grid.Column="0" Content="Budget iniziale" FontSize="24" VerticalAlignment="Center" Margin="{StaticResource LabelMargin}"/>
+		<Grid Grid.Row="0" Grid.Column="1" Margin="{StaticResource ControlMargin}" HorizontalAlignment="Center">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition/>
-				<ColumnDefinition/>
-				<ColumnDefinition/>
+				<ColumnDefinition Width="45"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="45"/>
 			</Grid.ColumnDefinitions>
 
 			<RepeatButton Grid.Column="0" Style="{StaticResource IconRepeatButton}" Content="{StaticResource MinusIcon}" Command="{Binding DiminuisciBudgetInizialeCommand}" Margin="0,0,5,0"/>
-			<TextBox Grid.Column="1" Text="{Binding BudgetIniziale, UpdateSourceTrigger=PropertyChanged}" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="100"/>
+			<TextBox Grid.Column="1" Text="{Binding BudgetIniziale, UpdateSourceTrigger=PropertyChanged}" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="100"/>
 			<RepeatButton Grid.Column="2" Style="{StaticResource IconRepeatButton}" Content="{StaticResource PlusIcon}" Command="{Binding AumentaBudgetInizialeCommand}" Margin="5,0,0,0"/>
 		</Grid>
 
-		<Label Grid.Row="1" Grid.Column="0" Content="Budget aggiuntivo:" FontSize="24" VerticalAlignment="Center" Margin="{StaticResource LabelMargin}"/>
-		<Grid Grid.Row="1" Grid.Column="1" Height="45" Margin="{StaticResource ControlMargin}">
+		<Label Grid.Row="1" Grid.Column="0" Content="Budget aggiuntivo" FontSize="24" VerticalAlignment="Center" Margin="{StaticResource LabelMargin}"/>
+		<Grid Grid.Row="1" Grid.Column="1" Margin="{StaticResource ControlMargin}" HorizontalAlignment="Center">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition/>
-				<ColumnDefinition/>
-				<ColumnDefinition/>
+				<ColumnDefinition Width="45"/>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="45"/>
 			</Grid.ColumnDefinitions>
 
 			<RepeatButton Grid.Column="0" Style="{StaticResource IconRepeatButton}" Content="{StaticResource MinusIcon}" Command="{Binding DiminuisciBudgetAggiuntivoCommand}" Margin="0,0,5,0"/>
-			<TextBox Grid.Column="1" Text="{Binding BudgetAggiuntivo, UpdateSourceTrigger=PropertyChanged}" FontSize="24" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="100"/>
+			<TextBox Grid.Column="1" Text="{Binding BudgetAggiuntivo, UpdateSourceTrigger=PropertyChanged}" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="100"/>
 			<RepeatButton Grid.Column="2" Style="{StaticResource IconRepeatButton}" Content="{StaticResource PlusIcon}" Command="{Binding AumentaBudgetAggiuntivoCommand}" Margin="5,0,0,0"/>
 		</Grid>
 
+		<Label Grid.Row="2" Grid.Column="0" Content="Puntata minima" FontSize="24" VerticalAlignment="Center" Margin="{StaticResource LabelMargin}"/>
+		<UniformGrid Grid.Row="2" Grid.Column="1" Columns="2" Margin="{StaticResource ControlMargin}">
+			<RadioButton GroupName="PuntataMinima" Content="1" IsChecked="{Binding IsUnoSelected}" FontSize="20" Padding="5,0"/>
+			<RadioButton GroupName="PuntataMinima" Content="Quotazione" IsChecked="{Binding IsQuotazioneSelected}" FontSize="20" Padding="5,0"/>
+		</UniformGrid>
+		
 	</Grid>
 
 </UserControl>

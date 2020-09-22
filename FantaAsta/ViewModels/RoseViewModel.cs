@@ -196,7 +196,7 @@ namespace FantaAsta.ViewModels
 
 		private void NavigateToSelezione()
 		{
-			m_regionManager.RequestNavigate("MainRegion", nameof(SelezioneView));
+			m_regionManager.RequestNavigate(CommonConstants.MAIN_REGION, nameof(SelezioneView));
 		}
 
 		private void Salva()

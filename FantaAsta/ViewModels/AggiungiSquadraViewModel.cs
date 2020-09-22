@@ -72,7 +72,7 @@ namespace FantaAsta.ViewModels
 				_ = m_dialogService.ShowMessage("Non è possibile aggiungere una squadra con lo stesso nome di una già esistente", MessageType.Error);
 			}
 
-			SelectNameTextBox?.Invoke(this, System.EventArgs.Empty);
+			SelectNameTextBox?.Invoke(this, EventArgs.Empty);
 		}
 		private bool AbilitaAggiungi()
 		{

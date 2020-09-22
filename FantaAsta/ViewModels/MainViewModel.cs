@@ -2,6 +2,7 @@
 using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
+using FantaAsta.Constants;
 using FantaAsta.Events;
 using FantaAsta.Models;
 using FantaAsta.Views;
@@ -76,7 +77,7 @@ namespace FantaAsta.ViewModels
 
 		private void NavigateToSelezione()
 		{
-			m_regionManager.RequestNavigate("MainRegion", nameof(SelezioneView));
+			m_regionManager.RequestNavigate(CommonConstants.MAIN_REGION, nameof(SelezioneView));
 		}
 
 		private void Salva()

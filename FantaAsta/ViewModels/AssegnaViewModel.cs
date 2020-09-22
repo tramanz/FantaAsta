@@ -103,24 +103,19 @@ namespace FantaAsta.ViewModels
 		private void Conferma()
 		{
 			FantaSquadra fantaSquadra = m_asta?.DatiAsta.FantaSquadre.Single(s => s.Nome.Equals(SquadraSelezionata));
+			double puntataMinima = m_asta.Preferenze.PuntataMinima == PuntataMinima.Quotazione ? m_giocatore.Quotazione : 1;
 
-			if (double.IsNaN(m_prezzo))
+			if (m_prezzo < puntataMinima)
 			{
-				_ = m_dialogService.ShowMessage("Inserire un prezzo", MessageType.Error);
+				_ = m_dialogService.ShowMessage("Il prezzo di acquisto non può essere inferiore alla puntata minima consentita", MessageType.Error);
 
-				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
-			}
-			else if (m_prezzo < m_giocatore.Quotazione)
-			{
-				_ = m_dialogService.ShowMessage("Il prezzo di acquisto non può essere inferiore alla quotazione del giocatore", MessageType.Error);
-
-				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
+				SelectPrezzoTextBox?.Invoke(this, EventArgs.Empty);
 			}
 			else if (m_prezzo > fantaSquadra.Budget)
 			{
-				_ = m_dialogService.ShowMessage("Budget non disponibile", MessageType.Error);
+				_ = m_dialogService.ShowMessage("La fantasquadra non dispone del budget necessario", MessageType.Error);
 
-				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
+				SelectPrezzoTextBox?.Invoke(this, EventArgs.Empty);
 			}
 			else
 			{

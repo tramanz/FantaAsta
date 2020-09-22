@@ -20,4 +20,10 @@
 		Acquisto,
 		Vendita
 	}
+
+	public enum PuntataMinima
+	{
+		Quotazione,
+		Uno
+	}
 }

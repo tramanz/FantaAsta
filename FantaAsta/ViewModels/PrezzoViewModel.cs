@@ -89,25 +89,16 @@ namespace FantaAsta.ViewModels
 
 		private void Conferma()
 		{
-			if (double.IsNaN(m_prezzo))
+			if (m_movimento == Movimenti.Acquisto)
 			{
-				_ = m_dialogService.ShowMessage("Inserire un prezzo", MessageType.Error);
-
-				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
+				AcquistaGiocatore();
 			}
-			else
+			else if (m_movimento == Movimenti.Vendita)
 			{
-				if (m_movimento == Movimenti.Acquisto)
-				{
-					AcquistaGiocatore();
-				}
-				else if (m_movimento == Movimenti.Vendita)
-				{
-					VendiGiocatore();
-				}
-
-				Annulla();
+				VendiGiocatore();
 			}
+
+			Annulla();
 		}
 		private bool AbilitaConferma()
 		{
@@ -121,17 +112,18 @@ namespace FantaAsta.ViewModels
 
 		private void AcquistaGiocatore()
 		{
-			if (m_prezzo < m_giocatore.Quotazione)
+			double puntataMinima = m_asta.Preferenze.PuntataMinima == PuntataMinima.Quotazione ? m_giocatore.Quotazione : 1;
+			if (m_prezzo < puntataMinima)
 			{
-				_ = m_dialogService.ShowMessage("Il prezzo di acquisto non può essere inferiore alla quotazione del giocatore.", MessageType.Error);
+				_ = m_dialogService.ShowMessage("Il prezzo di acquisto non può essere inferiore alla puntata minima consentita", MessageType.Error);
 
-				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
+				SelectPrezzoTextBox?.Invoke(this, EventArgs.Empty);
 			}
 			else if (m_prezzo > m_squadra.Budget)
 			{
-				_ = m_dialogService.ShowMessage("Budget non disponibile.", MessageType.Error);
+				_ = m_dialogService.ShowMessage("La fantasquadra non dispone del budget necessario", MessageType.Error);
 
-				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
+				SelectPrezzoTextBox?.Invoke(this, EventArgs.Empty);
 			}
 			else
 			{
@@ -150,7 +142,7 @@ namespace FantaAsta.ViewModels
 			{
 				_ = m_dialogService.ShowMessage("Il prezzo di vendita non può essere minore o uguale a 0", MessageType.Error);
 
-				SelectPrezzoTextBox?.Invoke(this, System.EventArgs.Empty);
+				SelectPrezzoTextBox?.Invoke(this, EventArgs.Empty);
 			}
 			else
 			{

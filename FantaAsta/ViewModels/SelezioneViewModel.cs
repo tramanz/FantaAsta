@@ -54,12 +54,12 @@ namespace FantaAsta.ViewModels
 
 		private void NavigateToMain()
 		{
-			m_regionManager.RequestNavigate("MainRegion", nameof(MainView));
+			m_regionManager.RequestNavigate(CommonConstants.MAIN_REGION, nameof(MainView));
 		}
 
 		private void NavigateToGestioneRose()
 		{
-			m_regionManager.RequestNavigate("MainRegion", nameof(RoseView));
+			m_regionManager.RequestNavigate(CommonConstants.MAIN_REGION, nameof(RoseView));
 		}
 
 		#region Event handlers

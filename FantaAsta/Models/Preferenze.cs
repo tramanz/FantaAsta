@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using FantaAsta.Constants;
+using FantaAsta.Enums;
 
 namespace FantaAsta.Models
 {
@@ -17,6 +18,9 @@ namespace FantaAsta.Models
 
 		[DataMember(Name = "BudgetAggiuntivo")]
 		public double BudgetAggiuntivo { get; set; }
+
+		[DataMember(Name = "PuntataMinima")]
+		public PuntataMinima PuntataMinima { get; set; }
 
 		#endregion
 
@@ -35,6 +39,7 @@ namespace FantaAsta.Models
 
 				res &= BudgetIniziale == other.BudgetIniziale;
 				res &= BudgetAggiuntivo == other.BudgetAggiuntivo;
+				res &= PuntataMinima == other.PuntataMinima;
 
 				return res;
 			}
@@ -55,7 +60,8 @@ namespace FantaAsta.Models
 			{
 				PreferenzeImpostate = PreferenzeImpostate,
 				BudgetIniziale = BudgetIniziale,
-				BudgetAggiuntivo = BudgetAggiuntivo
+				BudgetAggiuntivo = BudgetAggiuntivo,
+				PuntataMinima = PuntataMinima
 			};
 		}
 
@@ -74,6 +80,7 @@ namespace FantaAsta.Models
 			PreferenzeImpostate = false;
 			BudgetIniziale = CommonConstants.BUDGET_INIZIALE_DEFAULT;
 			BudgetAggiuntivo = CommonConstants.BUDGET_AGGIUNTIVO_DEFAULT;
+			PuntataMinima = PuntataMinima.Quotazione;
 		}
 
 		#endregion
