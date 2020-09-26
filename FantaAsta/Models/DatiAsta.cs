@@ -30,20 +30,21 @@ namespace FantaAsta.Models
 		{
 			if (obj is DatiAsta other)
 			{
-				bool res = false;
+				bool res = true;
 
-				res |= !string.IsNullOrEmpty(PercorsoFileLista) && !PercorsoFileLista.Equals(other.PercorsoFileLista);
-				res |= FantaSquadre.Count != other.FantaSquadre.Count;
-
-				if (!res)
+				res &= (string.IsNullOrEmpty(PercorsoFileLista) && string.IsNullOrEmpty(other.PercorsoFileLista)) || 
+					   (!string.IsNullOrEmpty(PercorsoFileLista) && !string.IsNullOrEmpty(other.PercorsoFileLista) && PercorsoFileLista.Equals(other.PercorsoFileLista));
+				
+				res &= FantaSquadre.Count == other.FantaSquadre.Count;
+				if (res)
 				{
 					foreach (FantaSquadra fantaSquadra in FantaSquadre)
 					{
-						res |= !other.FantaSquadre.Contains(fantaSquadra);
+						res &= other.FantaSquadre.Contains(fantaSquadra);
 					}
 				}
 
-				return !res;
+				return res;
 			}
 			else
 			{
